@@ -6,6 +6,8 @@ use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
 {
+
+    
     /**
      * The application's global HTTP middleware stack.
      *
@@ -41,6 +43,8 @@ class Kernel extends HttpKernel
             'throttle:60,1',
             'bindings',
         ],
+        'is_admin' => 
+        [\App\Http\Middleware\IsAdmin::class],
     ];
 
     /**

@@ -2,10 +2,12 @@
 
 
 namespace App\Http\Controllers;
+use App\RoleUser;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Role;
 use Validator;
 
 
@@ -64,6 +66,13 @@ class AuthController extends Controller
 
         $user = User::create($input);
         $token = $user->createToken('HNGApp')->accessToken;
+
+        $role = Role::findByName('intern');
+
+        RoleUser::create([
+            'role_id' => $role->id,
+            'user_id' => $user->id,
+        ]);
 
         return response()->json([
             'status' => true,

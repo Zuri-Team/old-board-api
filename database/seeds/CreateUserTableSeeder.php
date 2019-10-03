@@ -30,13 +30,15 @@ class CreateUserTableSeeder extends Seeder
             'password' => bcrypt('secret'),
         ]);
 
-        $role = Role::findByName('superadmin');
+        $role = Role::findByName('superadmin', 'superadmin');
 
+
+        /** @var \App\RoleUser $user */
         RoleUser::create([
             'role_id' => $role->id,
             'user_id' => $superadmin->id
         ]);
-        //$superadmin->assignRole($role->id);
+
 
 
     }

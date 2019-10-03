@@ -51,6 +51,7 @@ class AuthController extends Controller
             'password' => 'required',
             'confirm_password' => 'required|same:password',
             'stack' => 'required',
+            'locked' => '',
             'location' => 'required',
         ]);
 
@@ -67,7 +68,7 @@ class AuthController extends Controller
         $user = User::create($input);
         $token = $user->createToken('HNGApp')->accessToken;
 
-        $role = Role::findByName('intern');
+        $role = Role::findByName('intern', 'intern');
 
         RoleUser::create([
             'role_id' => $role->id,

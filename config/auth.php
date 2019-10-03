@@ -45,6 +45,18 @@ return [
             'driver' => 'passport',
             'provider' => 'users',
         ],
+        'superadmin' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+        'intern' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
     ],
 
     /*

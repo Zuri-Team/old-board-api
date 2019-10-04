@@ -15,7 +15,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $this->middleware(['role:superadmin']);
+
+
     }
 
     /**
@@ -45,9 +47,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $id)
     {
-        //
+
     }
 
     /**
@@ -70,13 +72,19 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = Auth::user();
+        $user = User::findorFail($id);
+        $lock_profile = $request->input('locked');
 
-        $this->validate($request,[
-            'locked' => '',
-        ]);
+        if($lock_profile){
+            $user->locked = 1;
+            $user->save();
 
-        $user->update();
+            return response()->json([
+                'status' => true,
+                'message' => 'User Profile successfully changed',
+                'user' => $user
+            ], 200);
+        }
     }
 
     /**

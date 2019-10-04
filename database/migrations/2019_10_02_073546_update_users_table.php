@@ -15,6 +15,7 @@ class UpdateUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('location');
+            $table->integer('locked')->default(0);
         });
     }
 
@@ -27,6 +28,7 @@ class UpdateUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('location');
+            $table->dropColumn('locked');
         });
     }
 }

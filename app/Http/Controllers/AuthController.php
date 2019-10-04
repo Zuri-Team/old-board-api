@@ -67,13 +67,6 @@ class AuthController extends Controller
         $user = User::create($input);
         $token = $user->createToken('HNGApp')->accessToken;
 
-        $role = Role::findByName('intern');
-
-        RoleUser::create([
-            'role_id' => $role->id,
-            'user_id' => $user->id,
-        ]);
-
         return response()->json([
             'status' => true,
             'message' => 'Registration successful',

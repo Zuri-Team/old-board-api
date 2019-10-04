@@ -98,7 +98,14 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        //
+        $category = Category::findOrFail($id);
+            return response()->json([
+                'status' => true,
+                'message' => 'successfully fetched category',
+                'category' => $category
+            ],
+            200
+        );
     }
 
     /**
@@ -109,7 +116,8 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+            //
+
     }
 
     /**
@@ -121,7 +129,40 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $messages = [];
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'description' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors(),
+            ], 401);
+        }
+
+        $input = $request->all();
+
+        $category = Category::findOrfail($id);
+        $category->title = $input['title'];
+        $category->description = $input['description'];
+        $category->save();
+
+        if ($category) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Successfully updated category',
+                'category' => $category,
+            ], 200);
+
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Something went wrong',
+            ], 500);
+        }
+
     }
 
     /**
@@ -132,6 +173,21 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $category = Category::findOrfail($id);
+        $category->delete();
+
+        if ($category) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Successfully deleted category',
+            ], 200);
+
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Something went wrong',
+            ], 500);
+        }
+
     }
 }

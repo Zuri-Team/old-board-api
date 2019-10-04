@@ -2,13 +2,15 @@
 
 
 namespace App\Http\Controllers;
+
 use App\RoleUser;
+use App\User;
+use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\User;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
-use Validator;
+
 
 
 class AuthController extends Controller

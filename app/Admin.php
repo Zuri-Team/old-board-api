@@ -9,11 +9,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 
 
-
-class User extends Authenticatable implements JWTSubject
+class Admin extends Authenticatable implements JWTSubject
 {
-    use  Notifiable, HasRoles;
-
+    use Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -21,10 +19,8 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'firstname', 'lastname', 'username', 'email', 'password', 'location', 'stack',
+        'firstname', 'lastname', 'username', 'email', 'password', 'is_super'
     ];
-
-    //protected $guarded = [];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -44,16 +40,11 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
-    public function tracks(){
-        return $this->belongsToMany('App\Track');
-    }
-
-     /**
+        /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
      * @return mixed
      */
-
     public function getJWTIdentifier()
     {
         return $this->getKey();
@@ -68,4 +59,5 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
 }

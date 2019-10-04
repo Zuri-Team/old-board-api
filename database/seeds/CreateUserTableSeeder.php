@@ -24,19 +24,20 @@ class CreateUserTableSeeder extends Seeder
             'firstname' => 'Seyi',
             'lastname' => 'Onifade',
             'username' => '@xyluz',
-            'email' => 'xyluz@hng.com',
+            'email' => 'xyluz@hng.tech',
             'stack' => '',
             'location' => '',
             'password' => bcrypt('secret'),
+            'role' => 'superadmin',
         ]);
 
-        $role = Role::findByName('superadmin');
+        // $role = Role::findByName('superadmin');
 
-        RoleUser::create([
-            'role_id' => $role->id,
-            'user_id' => $superadmin->id
-        ]);
-        //$superadmin->assignRole($role->id);
+        // RoleUser::create([
+        //     'role_id' => $role->id,
+        //     'user_id' => $superadmin->id
+        // ]);
+        $superadmin->assignRole('superadmin');
 
 
     }

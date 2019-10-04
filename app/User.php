@@ -23,7 +23,7 @@ class User extends Authenticatable
         'firstname', 'lastname', 'username', 'email', 'password', 'location', 'stack',
     ];
 
-    //protected $guarded = [];
+    protected $guard_name = 'api';
 
     /**
      * The attributes that should be hidden for arrays.

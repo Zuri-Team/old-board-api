@@ -11,7 +11,6 @@ class CategoriesController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['role:superadmin', 'role:admin']);
     }
 
     /**
@@ -45,6 +44,8 @@ class CategoriesController extends Controller
      */
     public function store(StoreCategory $request)
     {
+        $this->middleware(['role:superadmin', 'role:admin']);
+
         $data = $request->validated();
 
         $category = Category::create($data);
@@ -93,6 +94,7 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->middleware(['role:superadmin', 'role:admin']);
 
         $data = $request->validate([
             'title' => 'required|unique:categories',
@@ -120,6 +122,8 @@ class CategoriesController extends Controller
      */
     public function destroy($id)
     {
+        $this->middleware(['role:superadmin', 'role:admin']);
+
         if (Category::find($id)->delete()) {
             return response()->json([
                 'message' => 'Category deleted successfully',

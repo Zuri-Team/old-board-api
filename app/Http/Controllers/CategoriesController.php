@@ -11,7 +11,7 @@ class CategoriesController extends Controller
 {
     public function __construct()
     {
-        $this->user = auth('api')->user();
+        $this->middleware(['role:superadmin', 'role:admin']);
     }
 
     /**
@@ -45,20 +45,15 @@ class CategoriesController extends Controller
      */
     public function store(StoreCategory $request)
     {
-        if ($this->user->can('add category')) {
-            $data = $request->validated();
+        $data = $request->validated();
 
-            $category = Category::create($data);
+        $category = Category::create($data);
 
-            if ($category) {
-                $categories = Category::orderBy('created_at', 'desc')->paginate(10);
-                return CategoryResource::collection($categories);
-            }
-        } else {
-            return response()->json([
-                'message' => 'Unauthorized',
-            ], 401);
+        if ($category) {
+            $categories = Category::orderBy('created_at', 'desc')->paginate(10);
+            return CategoryResource::collection($categories);
         }
+
     }
 
     /**
@@ -98,27 +93,23 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if ($this->user->can('edit category')) {
-            $data = $request->validate([
-                'title' => 'required|unique:categories',
-                'description' => 'nullable',
-                'updated_by' => 'required',
-            ]);
 
-            if ($category = Category::find($id)) {
-                if ($category->update($data)) {
-                    return new CategoryResource($category);
-                }
-            } else {
-                return response()->json([
-                    'message' => 'Category not found',
-                ], 404);
+        $data = $request->validate([
+            'title' => 'required|unique:categories',
+            'description' => 'nullable',
+            'updated_by' => 'required',
+        ]);
+
+        if ($category = Category::find($id)) {
+            if ($category->update($data)) {
+                return new CategoryResource($category);
             }
         } else {
             return response()->json([
-                'message' => 'Unauthorized',
-            ], 401);
+                'message' => 'Category not found',
+            ], 404);
         }
+
     }
 
     /**

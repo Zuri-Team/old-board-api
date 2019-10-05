@@ -66,8 +66,8 @@ class UserController extends Controller
         } catch (JWTException $e) {
             return response()->json(['message' => 'Could not create token!'], 401);
         }
-
-        return $this->respondWithToken($token);
+        $status = true;
+        return $this->respondWithToken($token, $status);
     } 
 
     public function register(Request $request)
@@ -100,6 +100,8 @@ class UserController extends Controller
 
         $token = auth()->login($user);
 
+        $status = true;
+
         // $role = Role::findByName('intern');
 
         // RoleUser::create([
@@ -107,15 +109,16 @@ class UserController extends Controller
         //     'user_id' => $user->id,
         // ]);
 
-        return $this->respondWithToken($token);
+        return $this->respondWithToken($token, $status);
     }
 
-    protected function respondWithToken($token): JsonResponse
+    protected function respondWithToken($token, $status): JsonResponse
     {
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
+            "status" => $status,
             // 'user_id' => auth()->user()->id,
             // 'role' => auth()->user()->role,
             // 'name' => auth()->user()->name,

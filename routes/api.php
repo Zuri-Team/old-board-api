@@ -20,7 +20,7 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 
-Route::group(['middleware' => ['api'],'namespace'=>'JWT',], function () {
+Route::group(['middleware' => ['api', 'cors'],'namespace'=>'JWT',], function () {
     
     // User Routes
     Route::post('user/login', 'UserController@login');

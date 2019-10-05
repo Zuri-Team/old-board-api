@@ -67,7 +67,9 @@ class AdminController extends Controller
             return response()->json(['message' => 'Could not create token!'], 401);
         }
 
-        return $this->respondWithToken($token);
+        $status = true;
+
+        return $this->respondWithToken($token, $status);
     }
     
     public function register(Request $request)
@@ -106,10 +108,12 @@ class AdminController extends Controller
         //     'user_id' => $user->id,
         // ]);
 
-        return $this->respondWithToken($token);
+        $status = true;
+
+        return $this->respondWithToken($$token, $status);
     }
 
-    protected function respondWithToken($token): JsonResponse
+    protected function respondWithToken($token, $status): JsonResponse
     {
         return response()->json([
             'access_token' => $token,

@@ -16,5 +16,9 @@ Route::post('register', 'AuthController@register');
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('categories', 'CategoriesController');
+    Route::resource('teams', 'TeamController');
+    Route::post('teams/add-member', 'TeamController@addMember');
+    Route::post('teams/remove-member', 'TeamController@removeMember');
+    Route::get('teams/members/{id}', 'TeamController@viewMembers');
 });
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Register - HNG OJET</title>
+    <title>Edit a Team - HNG OJET</title>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="../bootstrap-theme.css">
     <link rel="stylesheet" href="../highlight/styles/gruvbox-light.css">
@@ -23,16 +23,16 @@
 	<div class="panel-group" role="tablist">
 		<div class="panel panel-default">
 					
-																																		
+																									
 
 			<div class="panel-heading" role="tab" id="collapseListGroupHeading1">
-				<h4 class="panel-title"> <a href="#collapseListGroup1" class="" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="collapseListGroup1">Auth</a> </h4>
+				<h4 class="panel-title"> <a href="#collapseListGroup1" class="collapsed" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="collapseListGroup1">Auth</a> </h4>
 			</div>
-			<div class="panel-collapse collapse in" role="tabpanel" id="collapseListGroup1" aria-labelledby="collapseListGroupHeading1" aria-expanded="true" style="">
+			<div class="panel-collapse collapse " role="tabpanel" id="collapseListGroup1" aria-labelledby="collapseListGroupHeading1" aria-expanded="false" style="height: 0px;">
 				<ul class="list-group">
 					
 
-															<li style="word-wrap: break-word;" class="list-group-item active">
+															<li style="word-wrap: break-word;" class="list-group-item ">
 						<a href="../requests/post_Register.html">POST - Register</a>
 					</li>
 															<li style="word-wrap: break-word;" class="list-group-item ">
@@ -83,19 +83,19 @@
 									</ul> 
 			</div>
 					
-																																																																																
+																																																																																									
 
 			<div class="panel-heading" role="tab" id="collapseListGroupHeading4">
-				<h4 class="panel-title"> <a href="#collapseListGroup4" class="collapsed" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="collapseListGroup4">Team</a> </h4>
+				<h4 class="panel-title"> <a href="#collapseListGroup4" class="" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="collapseListGroup4">Team</a> </h4>
 			</div>
-			<div class="panel-collapse collapse " role="tabpanel" id="collapseListGroup4" aria-labelledby="collapseListGroupHeading4" aria-expanded="false" style="height: 0px;">
+			<div class="panel-collapse collapse in" role="tabpanel" id="collapseListGroup4" aria-labelledby="collapseListGroupHeading4" aria-expanded="true" style="">
 				<ul class="list-group">
 					
 
 															<li style="word-wrap: break-word;" class="list-group-item ">
 						<a href="../requests/post_Create_a_New_Team.html">POST - Create a New Team</a>
 					</li>
-															<li style="word-wrap: break-word;" class="list-group-item ">
+															<li style="word-wrap: break-word;" class="list-group-item active">
 						<a href="../requests/put_Edit_a_Team.html">PUT - Edit a Team</a>
 					</li>
 															<li style="word-wrap: break-word;" class="list-group-item ">
@@ -119,16 +119,17 @@
 	</div>
 </div>
         <div class="col-sm-8 col-sm-offset-4 col-md-9 col-md-offset-3 main">
-            <h1> Register </h1>
+            <h1> Edit a Team </h1>
 
             <div class="panel panel-primary">
                 <div class="panel-heading">Request Information</div>
                 <div class="panel-body">
                     <table class="table table-hover ">
                       <tbody>
-                        <tr><th>URL</th><td><span class="label label-primary">POST</span> localhost:3000/api/register<br></td></tr>
-                        <tr><th>Category</th><td>Auth</td></tr>
-                                              </tbody>
+                        <tr><th>URL</th><td><span class="label label-primary">PUT</span> localhost:8000/api/teams/1<br></td></tr>
+                        <tr><th>Category</th><td>Team</td></tr>
+                        <tr><th>Description</th><td><p>Edit a Team Information. Only accessible to <code>superadmin</code> &amp; <code>admin</code> roles</p>
+</td></tr>                      </tbody>
                     </table>
                 </div>
             </div>
@@ -139,68 +140,36 @@
                     <table class="table table-hover ">
                         <tbody>
                                                                         <tr><th>Content-Type</th><td>application/x-www-form-urlencoded</td></tr>
-                                                                                                <tr><th>Accept</th><td>application/json</td></tr>
                                                                         </tbody>
                     </table>
                 </div>
             </div>
             
-                                    <div class="panel panel-primary">
-                <div class="panel-heading">Form-data Parameters </div>
+                                                
+                        <h2>Example responses</h2>
+                        <div class="panel panel-success">
+                <div class="panel-heading">Successful</div>
                 <div class="panel-body">
-                    <table class="table table-hover ">
-                        <thead>
-                        <tr>
-                            <th>Key</th>
-                            <th>Type</th>
-                            <th>Example Value</th>
-                        </tr>
-                        </thead>
-                                                <tr>
-                            <td>firstname</td>
-                            <td>text</td>
-                                                        <td>Test</td>
-                                                    </tr>
-                                                <tr>
-                            <td>lastname</td>
-                            <td>text</td>
-                                                        <td>Test2</td>
-                                                    </tr>
-                                                <tr>
-                            <td>username</td>
-                            <td>text</td>
-                                                        <td>test</td>
-                                                    </tr>
-                                                <tr>
-                            <td>email</td>
-                            <td>text</td>
-                                                        <td>test@mailinator.com</td>
-                                                    </tr>
-                                                <tr>
-                            <td>password</td>
-                            <td>text</td>
-                                                        <td>secret</td>
-                                                    </tr>
-                                                <tr>
-                            <td>confirm_password</td>
-                            <td>text</td>
-                                                        <td>secret</td>
-                                                    </tr>
-                                                <tr>
-                            <td>stack</td>
-                            <td>text</td>
-                                                        <td>Laravel PHP, Flutter, React</td>
-                                                    </tr>
-                                                <tr>
-                            <td>location</td>
-                            <td>text</td>
-                                                        <td>Abuja, Nigeria</td>
-                                                    </tr>
-                                            </table>
+                    <h5>Response Code:</h5>
+                    <pre><code>200 OK</code></pre>
+                    <h5>Response Body:</h5>
+                    <pre><code class='json'>{
+    &quot;status&quot;: true,
+    &quot;message&quot;: &quot;Team has been updated successfully.&quot;,
+    &quot;code&quot;: 200,
+    &quot;data&quot;: {
+        &quot;id&quot;: 2,
+        &quot;team_name&quot;: &quot;Oracle JET Team&quot;,
+        &quot;max_team_mates&quot;: &quot;30&quot;,
+        &quot;team_description&quot;: &quot;Oracle Jet team for HNG&quot;,
+        &quot;created_at&quot;: &quot;2019-10-07 12:48:32&quot;,
+        &quot;updated_at&quot;: &quot;2019-10-07 14:31:19&quot;,
+        &quot;team_lead&quot;: &quot;1&quot;
+    }
+}</code></pre>
                 </div>
             </div>
-                                    
-                        <br>
+                                    <br>
             <footer>
                 API Documentation generated by <a href="https://github.com/JakeWorrell/docodile">Docodile</a> on 10/07/2019 at 16:52:57
             </footer>

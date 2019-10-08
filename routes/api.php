@@ -26,6 +26,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     
     Route::resource('categories', 'CategoriesController');
 
+
     Route::post('track/create', 'TrackController@create_track');
     Route::put('track/edit', 'TrackController@edit_track');
     Route::delete('track/delete', 'TrackController@delete_track');
@@ -36,9 +37,13 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('track/list', 'TrackController@get_all_tracks');
     Route::get('track/{track}', 'TrackController@get_track_by_id');
     Route::get('users/track/{id}/list', 'TrackController@get_all_users_in_track');
+
+    Route::resource('tasks', 'TasksController'); #URL for tasks
+
     Route::resource('teams', 'TeamController');
     Route::post('teams/add-member', 'TeamController@addMember');
     Route::post('teams/remove-member', 'TeamController@removeMember');
     Route::get('teams/members/{id}', 'TeamController@viewMembers');
+
 });
 

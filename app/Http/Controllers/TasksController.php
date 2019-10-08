@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreTask;
 use App\Http\Resources\Task\TaskCollection;
 use App\Http\Resources\Task\TaskResource;
+use App\TrackUser;
 use Symfony\Component\HttpFoundation\Response;
 use App\Task;
 use Illuminate\Http\Request;
@@ -133,6 +134,20 @@ class TasksController extends Controller
 
         if($task->delete()){
             return response(null, Response::HTTP_NO_CONTENT);
+        }
+    }
+
+    public function viewTask($track_id, $id){
+
+        $this->middleware(['role: intern']);
+
+        $user_id = auth()->user()->id;
+
+        $user_track = TrackUser::where('track_id', $track_id)->where('user_id', $user_id);
+
+        if($user_track){
+            $task = Task::where('track_id', $track_id)->where('id', $id);
+            return TaskResource::collection($task);
         }
     }
 }

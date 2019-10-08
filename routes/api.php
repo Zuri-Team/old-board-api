@@ -36,7 +36,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('track/list', 'TrackController@get_all_tracks');
     Route::get('track/{track}', 'TrackController@get_track_by_id');
     Route::get('users/track/{id}/list', 'TrackController@get_all_users_in_track');
-    // Route::get('user/track/{id}', 'TrackController@get_track_by_user');
-    // Route::get('track/user/{id}', 'TrackController@get_user_by_track');
+    Route::resource('teams', 'TeamController');
+    Route::post('teams/add-member', 'TeamController@addMember');
+    Route::post('teams/remove-member', 'TeamController@removeMember');
+    Route::get('teams/members/{id}', 'TeamController@viewMembers');
 });
 

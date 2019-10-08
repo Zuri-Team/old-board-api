@@ -13,6 +13,7 @@
 
 Route::post('login', 'AuthController@login');
 Route::post('register', 'AuthController@register');
+Route::resource('submissions', 'TaskSubmissionController');
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('categories', 'CategoriesController');
@@ -21,4 +22,3 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('teams/remove-member', 'TeamController@removeMember');
     Route::get('teams/members/{id}', 'TeamController@viewMembers');
 });
-

@@ -45,4 +45,12 @@ class User extends Authenticatable
     {
         return $this->belongsToMany('App\Track');
     }
+
+    /**
+     * The teams that belong a user belongs to.
+     */
+    public function teams()
+    {
+        return $this->belongsToMany('App\Team')->withTimestamps();
+    }
 }

@@ -15,13 +15,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/docs', function () {
-    return File::get(public_path() . '/docs/index.html');
-    // return view('docs');
-});
-
-Route::get('/requests', function () {
-    return File::get(public_path() . '/docs/requests/post_Register.html');
-    // return view('docs');
-});
 

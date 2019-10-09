@@ -14,6 +14,10 @@
 // Route::routes();
 
 //
+
+//Route group to handle cors
+Route::group(['middleware' => 'cors'], function () {
+
 Route::post('login', 'AuthController@login');
 Route::post('register', 'AuthController@register');
 Route::resource('submissions', 'TaskSubmissionController');
@@ -57,6 +61,8 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::post('profile/{user}/edit', 'ProfileController@update');
 
+
+});
 
 });
 

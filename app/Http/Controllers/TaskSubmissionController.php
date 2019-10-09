@@ -9,6 +9,7 @@ use App\TaskSubmission;
 use App\TrackUser;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TaskSubmissionController extends Controller
 {
@@ -19,7 +20,13 @@ class TaskSubmissionController extends Controller
      */
     public function index()
     {
-        //
+        if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
+            return $this->ERROR('You dont have the permission to perform this action');
+        }
+        $submissions = TaskSubmission::orderBy('created_at', 'desc')->paginate(10);
+        if ($submissions) {
+            return TaskSubmissionResource::collection($submissions);
+        }
     }
 
     /**
@@ -40,6 +47,10 @@ class TaskSubmissionController extends Controller
      */
     public function store(StoreTaskSubmission $request)
     {
+        if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin', 'intern'])) {
+            return $this->ERROR('You dont have the permission to perform this action');
+        }
+        
         $data = $request->validated();
 
         // Check if the User is found in the trackUser
@@ -72,7 +83,15 @@ class TaskSubmissionController extends Controller
      */
     public function show($id)
     {
-        //
+        if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin', 'intern'])) {
+            return $this->ERROR('You dont have the permission to perform this action');
+        }
+
+        if ($submission = TaskSubmission::whereId($id)->where('user_id', auth('api')->user()->id)->first()) {
+            return new TaskSubmissionResource($submission);
+        } else {
+            return $this->errorResponse('Submission not found', 404);
+        }
     }
 
     /**

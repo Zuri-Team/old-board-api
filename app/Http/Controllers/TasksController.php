@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreTask;
 use App\Http\Resources\Task\TaskCollection;
 use App\Http\Resources\Task\TaskResource;
-use App\TrackUser;
-use Symfony\Component\HttpFoundation\Response;
 use App\Task;
+use App\TrackUser;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Symfony\Component\HttpFoundation\Response;
 
 class TasksController extends Controller
 {
@@ -21,8 +22,8 @@ class TasksController extends Controller
     {
         $this->middleware(['role:superadmin', 'role:admin']);
 
-            $tasks = Task::paginate(20);
-            return TaskCollection::collection($tasks);
+        $tasks = Task::paginate(20);
+        return TaskCollection::collection($tasks);
     }
 
     /**
@@ -51,8 +52,8 @@ class TasksController extends Controller
         $task = Task::create($data);
 
 //        if ($task) {
-//            return TaskResource::collection(Task::all()->paginate(20));
-//        }
+        //            return TaskResource::collection(Task::all()->paginate(20));
+        //        }
 
         return response([
             'data' => TaskResource::collection($task->paginate(20)),
@@ -73,9 +74,9 @@ class TasksController extends Controller
 
         $task = Task::find($id);
 
-        if($task){
+        if ($task) {
             return TaskResource::collection($task);
-        }else{
+        } else {
             return response()->json([
                 'message' => 'No Task found',
             ], 404);
@@ -110,12 +111,12 @@ class TasksController extends Controller
         if ($task) {
             if ($task->update($request->all())) {
                 return response([
-                    'data' => new TaskResource($task)
+                    'data' => new TaskResource($task),
                 ]);
             }
         } else {
             return response([
-                'message' => 'Task not Found'
+                'message' => 'Task not Found',
             ], 404);
         }
     }
@@ -132,12 +133,13 @@ class TasksController extends Controller
 
         $task = Task::find($id);
 
-        if($task->delete()){
+        if ($task->delete()) {
             return response(null, Response::HTTP_NO_CONTENT);
         }
     }
 
-    public function viewTask($track_id, $id){
+    public function viewTask($track_id, $id)
+    {
 
         $this->middleware(['role: intern']);
 
@@ -145,9 +147,24 @@ class TasksController extends Controller
 
         $user_track = TrackUser::where('track_id', $track_id)->where('user_id', $user_id);
 
-        if($user_track){
+        if ($user_track) {
             $task = Task::where('track_id', $track_id)->where('id', $id);
             return TaskResource::collection($task);
         }
     }
+
+    public function changeTaskStatus(Request $request, $id)
+    {
+        $this->middleware(['role:superadmin', 'role:admin']);
+        $request->validate([
+            'status' => ['required', Rule::in(['OPEN', 'CLOSED'])],
+        ]);
+
+        $task = Task::find($id)->first();
+        $task->status = $request->status;
+        if ($task->save()) {
+            return self::SUCCESS('Task ' . $request->status . ' successfully', $task);
+        }
+    }
+
 }

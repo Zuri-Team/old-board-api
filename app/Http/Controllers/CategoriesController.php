@@ -46,7 +46,9 @@ class CategoriesController extends Controller
      */
     public function store(StoreCategory $request)
     {
-        $this->middleware(['role:superadmin', 'role:admin']);
+        if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
+            return $this->ERROR('You dont have the permission to perform this action');
+        }
 
         $data = $request->validated();
 
@@ -100,7 +102,9 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->middleware(['role:superadmin', 'role:admin']);
+        if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
+            return $this->ERROR('You dont have the permission to perform this action');
+        }
 
         $data = $request->validate([
             'title' => 'required|unique:categories',
@@ -128,7 +132,9 @@ class CategoriesController extends Controller
      */
     public function destroy($id)
     {
-        $this->middleware(['role:superadmin', 'role:admin']);
+        if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
+            return $this->ERROR('You dont have the permission to perform this action');
+        }
 
         if (Category::find($id)->delete()) {
             return response()->json([

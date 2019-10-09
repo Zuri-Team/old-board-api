@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Create a new Category - HNG OJET</title>
+    <title>view a single post by ID - HNG OJET</title>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="../bootstrap-theme.css">
     <link rel="stylesheet" href="../highlight/styles/gruvbox-light.css">
@@ -53,19 +53,19 @@
 									</ul> 
 			</div>
 					
-																																																																			
+																																																										
 
 			<div class="panel-heading" role="tab" id="collapseListGroupHeading2">
-				<h4 class="panel-title"> <a href="#collapseListGroup2" class="" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="collapseListGroup2">Category</a> </h4>
+				<h4 class="panel-title"> <a href="#collapseListGroup2" class="collapsed" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="collapseListGroup2">Category</a> </h4>
 			</div>
-			<div class="panel-collapse collapse in" role="tabpanel" id="collapseListGroup2" aria-labelledby="collapseListGroupHeading2" aria-expanded="true" style="">
+			<div class="panel-collapse collapse " role="tabpanel" id="collapseListGroup2" aria-labelledby="collapseListGroupHeading2" aria-expanded="false" style="height: 0px;">
 				<ul class="list-group">
 					
 
 															<li style="word-wrap: break-word;" class="list-group-item ">
 						<a href="../requests/get_Get_list_of_Categories.html">GET - Get list of Categories</a>
 					</li>
-															<li style="word-wrap: break-word;" class="list-group-item active">
+															<li style="word-wrap: break-word;" class="list-group-item ">
 						<a href="../requests/post_Create_a_new_Category.html">POST - Create a new Category</a>
 					</li>
 															<li style="word-wrap: break-word;" class="list-group-item ">
@@ -80,12 +80,12 @@
 									</ul> 
 			</div>
 					
-																																																																					
+																																																																														
 
 			<div class="panel-heading" role="tab" id="collapseListGroupHeading3">
-				<h4 class="panel-title"> <a href="#collapseListGroup3" class="collapsed" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="collapseListGroup3">Post</a> </h4>
+				<h4 class="panel-title"> <a href="#collapseListGroup3" class="" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="collapseListGroup3">Post</a> </h4>
 			</div>
-			<div class="panel-collapse collapse " role="tabpanel" id="collapseListGroup3" aria-labelledby="collapseListGroupHeading3" aria-expanded="false" style="height: 0px;">
+			<div class="panel-collapse collapse in" role="tabpanel" id="collapseListGroup3" aria-labelledby="collapseListGroupHeading3" aria-expanded="true" style="">
 				<ul class="list-group">
 					
 
@@ -104,7 +104,7 @@
 															<li style="word-wrap: break-word;" class="list-group-item ">
 						<a href="../requests/get_View_all_Posts_in_a_Category.html">GET - View all Posts in a Category</a>
 					</li>
-															<li style="word-wrap: break-word;" class="list-group-item ">
+															<li style="word-wrap: break-word;" class="list-group-item active">
 						<a href="../requests/get_view_a_single_post_by_ID.html">GET - view a single post by ID</a>
 					</li>
 									</ul> 
@@ -257,59 +257,82 @@
 	</div>
 </div>
         <div class="col-sm-8 col-sm-offset-4 col-md-9 col-md-offset-3 main">
-            <h1> Create a new Category </h1>
+            <h1> view a single post by ID </h1>
 
             <div class="panel panel-primary">
                 <div class="panel-heading">Request Information</div>
                 <div class="panel-body">
                     <table class="table table-hover ">
                       <tbody>
-                        <tr><th>URL</th><td><span class="label label-primary">POST</span> localhost:8000/api/teams<br></td></tr>
-                        <tr><th>Category</th><td>Category</td></tr>
-                        <tr><th>Description</th><td><p>Create a new category. Route only accessible by <code>admin</code> or <code>superadmin</code></p>
-</td></tr>                      </tbody>
+                        <tr><th>URL</th><td><span class="label label-primary">GET</span> localhost:8000/api/posts/2<br></td></tr>
+                        <tr><th>Category</th><td>Post</td></tr>
+                                              </tbody>
                     </table>
                 </div>
             </div>
 
-                        <div class="panel panel-primary">
-                <div class="panel-heading">Header</div>
-                <div class="panel-body">
-                    <table class="table table-hover ">
-                        <tbody>
-                                                                        <tr><th>Content-Type</th><td>application/x-www-form-urlencoded</td></tr>
-                                                                                                <tr><th>Accept</th><td>application/json</td></tr>
-                                                                        </tbody>
-                    </table>
-                </div>
-            </div>
             
-                                    <div class="panel panel-primary">
-                <div class="panel-heading">Form-data Parameters </div>
+            
+                        <h2>Example responses</h2>
+                        <div class="panel panel-success">
+                <div class="panel-heading">Successful</div>
                 <div class="panel-body">
-                    <table class="table table-hover ">
-                        <thead>
-                        <tr>
-                            <th>Key</th>
-                            <th>Type</th>
-                            <th>Example Value</th>
-                        </tr>
-                        </thead>
-                                                <tr>
-                            <td>title</td>
-                            <td>text</td>
-                                                        <td>HNG General</td>
-                                                    </tr>
-                                                <tr>
-                            <td>description</td>
-                            <td>text</td>
-                                                        <td>All General Posts</td>
-                                                    </tr>
-                                            </table>
+                    <h5>Response Code:</h5>
+                    <pre><code>200 OK</code></pre>
+                    <h5>Response Body:</h5>
+                    <pre><code class='json'>{
+    &quot;status&quot;: true,
+    &quot;message&quot;: &quot;View a Post&quot;,
+    &quot;code&quot;: 200,
+    &quot;data&quot;: {
+        &quot;id&quot;: 2,
+        &quot;category_id&quot;: 1,
+        &quot;post_title&quot;: &quot;More Posts&quot;,
+        &quot;post_body&quot;: &quot;Lots of many text on how to do blah blash..&quot;,
+        &quot;created_at&quot;: &quot;2019-10-09 02:12:02&quot;,
+        &quot;updated_at&quot;: &quot;2019-10-09 02:12:02&quot;,
+        &quot;user_id&quot;: 5,
+        &quot;category&quot;: {
+            &quot;id&quot;: 1,
+            &quot;title&quot;: &quot;HNG General&quot;,
+            &quot;description&quot;: &quot;All General Posts&quot;,
+            &quot;created_at&quot;: &quot;2019-10-09 02:04:51&quot;,
+            &quot;updated_at&quot;: &quot;2019-10-09 02:04:51&quot;,
+            &quot;created_by&quot;: 5,
+            &quot;updated_by&quot;: 5
+        },
+        &quot;user&quot;: {
+            &quot;id&quot;: 5,
+            &quot;username&quot;: &quot;@xyluz&quot;,
+            &quot;firstname&quot;: &quot;Seyi&quot;,
+            &quot;lastname&quot;: &quot;Onifade&quot;,
+            &quot;email&quot;: &quot;xyluz@hng.tech&quot;,
+            &quot;email_verified_at&quot;: null,
+            &quot;stack&quot;: &quot;&quot;,
+            &quot;created_at&quot;: &quot;2019-10-04 02:54:46&quot;,
+            &quot;updated_at&quot;: &quot;2019-10-04 02:54:46&quot;,
+            &quot;location&quot;: &quot;&quot;,
+            &quot;role&quot;: &quot;intern&quot;
+        }
+    }
+}</code></pre>
                 </div>
             </div>
-                                    
-                        <br>
+                        <div class="panel panel-warning">
+                <div class="panel-heading">Post not found</div>
+                <div class="panel-body">
+                    <h5>Response Code:</h5>
+                    <pre><code>404 Not Found</code></pre>
+                    <h5>Response Body:</h5>
+                    <pre><code class='json'>{
+    &quot;status&quot;: false,
+    &quot;message&quot;: &quot;Post not found&quot;,
+    &quot;code&quot;: 404,
+    &quot;data&quot;: []
+}</code></pre>
+                </div>
+            </div>
+                                    <br>
             <footer>
                 API Documentation generated by <a href="https://github.com/JakeWorrell/docodile">Docodile</a> on 10/09/2019 at 05:28:09
             </footer>

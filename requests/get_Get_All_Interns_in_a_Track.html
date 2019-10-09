@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Create a new Category - HNG OJET</title>
+    <title>Get All Interns in a Track - HNG OJET</title>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="../bootstrap-theme.css">
     <link rel="stylesheet" href="../highlight/styles/gruvbox-light.css">
@@ -53,19 +53,19 @@
 									</ul> 
 			</div>
 					
-																																																																			
+																																																										
 
 			<div class="panel-heading" role="tab" id="collapseListGroupHeading2">
-				<h4 class="panel-title"> <a href="#collapseListGroup2" class="" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="collapseListGroup2">Category</a> </h4>
+				<h4 class="panel-title"> <a href="#collapseListGroup2" class="collapsed" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="collapseListGroup2">Category</a> </h4>
 			</div>
-			<div class="panel-collapse collapse in" role="tabpanel" id="collapseListGroup2" aria-labelledby="collapseListGroupHeading2" aria-expanded="true" style="">
+			<div class="panel-collapse collapse " role="tabpanel" id="collapseListGroup2" aria-labelledby="collapseListGroupHeading2" aria-expanded="false" style="height: 0px;">
 				<ul class="list-group">
 					
 
 															<li style="word-wrap: break-word;" class="list-group-item ">
 						<a href="../requests/get_Get_list_of_Categories.html">GET - Get list of Categories</a>
 					</li>
-															<li style="word-wrap: break-word;" class="list-group-item active">
+															<li style="word-wrap: break-word;" class="list-group-item ">
 						<a href="../requests/post_Create_a_new_Category.html">POST - Create a new Category</a>
 					</li>
 															<li style="word-wrap: break-word;" class="list-group-item ">
@@ -143,12 +143,12 @@
 									</ul> 
 			</div>
 					
-																																																																																																						
+																																																																																																															
 
 			<div class="panel-heading" role="tab" id="collapseListGroupHeading5">
-				<h4 class="panel-title"> <a href="#collapseListGroup5" class="collapsed" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="collapseListGroup5">Tracks</a> </h4>
+				<h4 class="panel-title"> <a href="#collapseListGroup5" class="" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="collapseListGroup5">Tracks</a> </h4>
 			</div>
-			<div class="panel-collapse collapse " role="tabpanel" id="collapseListGroup5" aria-labelledby="collapseListGroupHeading5" aria-expanded="false" style="height: 0px;">
+			<div class="panel-collapse collapse in" role="tabpanel" id="collapseListGroup5" aria-labelledby="collapseListGroupHeading5" aria-expanded="true" style="">
 				<ul class="list-group">
 					
 
@@ -176,7 +176,7 @@
 															<li style="word-wrap: break-word;" class="list-group-item ">
 						<a href="../requests/get_Get_Track_by_ID.html">GET - Get Track by ID</a>
 					</li>
-															<li style="word-wrap: break-word;" class="list-group-item ">
+															<li style="word-wrap: break-word;" class="list-group-item active">
 						<a href="../requests/get_Get_All_Interns_in_a_Track.html">GET - Get All Interns in a Track</a>
 					</li>
 									</ul> 
@@ -257,61 +257,74 @@
 	</div>
 </div>
         <div class="col-sm-8 col-sm-offset-4 col-md-9 col-md-offset-3 main">
-            <h1> Create a new Category </h1>
+            <h1> Get All Interns in a Track </h1>
 
             <div class="panel panel-primary">
                 <div class="panel-heading">Request Information</div>
                 <div class="panel-body">
                     <table class="table table-hover ">
                       <tbody>
-                        <tr><th>URL</th><td><span class="label label-primary">POST</span> localhost:8000/api/teams<br></td></tr>
-                        <tr><th>Category</th><td>Category</td></tr>
-                        <tr><th>Description</th><td><p>Create a new category. Route only accessible by <code>admin</code> or <code>superadmin</code></p>
-</td></tr>                      </tbody>
+                        <tr><th>URL</th><td><span class="label label-primary">GET</span> localhost:8000/api/users/track/1/list<br></td></tr>
+                        <tr><th>Category</th><td>Tracks</td></tr>
+                                              </tbody>
                     </table>
                 </div>
             </div>
 
-                        <div class="panel panel-primary">
-                <div class="panel-heading">Header</div>
-                <div class="panel-body">
-                    <table class="table table-hover ">
-                        <tbody>
-                                                                        <tr><th>Content-Type</th><td>application/x-www-form-urlencoded</td></tr>
-                                                                                                <tr><th>Accept</th><td>application/json</td></tr>
-                                                                        </tbody>
-                    </table>
-                </div>
-            </div>
             
-                                    <div class="panel panel-primary">
-                <div class="panel-heading">Form-data Parameters </div>
+            
+                        <h2>Example responses</h2>
+                        <div class="panel panel-success">
+                <div class="panel-heading">Successful</div>
                 <div class="panel-body">
-                    <table class="table table-hover ">
-                        <thead>
-                        <tr>
-                            <th>Key</th>
-                            <th>Type</th>
-                            <th>Example Value</th>
-                        </tr>
-                        </thead>
-                                                <tr>
-                            <td>title</td>
-                            <td>text</td>
-                                                        <td>HNG General</td>
-                                                    </tr>
-                                                <tr>
-                            <td>description</td>
-                            <td>text</td>
-                                                        <td>All General Posts</td>
-                                                    </tr>
-                                            </table>
+                    <h5>Response Code:</h5>
+                    <pre><code>200 OK</code></pre>
+                    <h5>Response Body:</h5>
+                    <pre><code class='json'>{
+    &quot;status&quot;: &quot;success&quot;,
+    &quot;message&quot;: &quot;Track retrieved&quot;,
+    &quot;data&quot;: [
+        {
+            &quot;id&quot;: 1,
+            &quot;username&quot;: &quot;judejay&quot;,
+            &quot;firstname&quot;: &quot;Jude&quot;,
+            &quot;lastname&quot;: &quot;Jonathan&quot;,
+            &quot;email&quot;: &quot;jonathanjude27@gmail.com&quot;,
+            &quot;email_verified_at&quot;: null,
+            &quot;stack&quot;: &quot;Laravel, PHP, FLutter&quot;,
+            &quot;created_at&quot;: &quot;2019-10-02 07:37:36&quot;,
+            &quot;updated_at&quot;: &quot;2019-10-02 07:37:36&quot;,
+            &quot;location&quot;: &quot;Abuja&quot;,
+            &quot;role&quot;: &quot;intern&quot;,
+            &quot;pivot&quot;: {
+                &quot;track_id&quot;: 1,
+                &quot;user_id&quot;: 1
+            }
+        },
+        {
+            &quot;id&quot;: 5,
+            &quot;username&quot;: &quot;@xyluz&quot;,
+            &quot;firstname&quot;: &quot;Seyi&quot;,
+            &quot;lastname&quot;: &quot;Onifade&quot;,
+            &quot;email&quot;: &quot;xyluz@hng.tech&quot;,
+            &quot;email_verified_at&quot;: null,
+            &quot;stack&quot;: &quot;&quot;,
+            &quot;created_at&quot;: &quot;2019-10-04 02:54:46&quot;,
+            &quot;updated_at&quot;: &quot;2019-10-04 02:54:46&quot;,
+            &quot;location&quot;: &quot;&quot;,
+            &quot;role&quot;: &quot;intern&quot;,
+            &quot;pivot&quot;: {
+                &quot;track_id&quot;: 1,
+                &quot;user_id&quot;: 5
+            }
+        }
+    ]
+}</code></pre>
                 </div>
             </div>
-                                    
-                        <br>
+                                    <br>
             <footer>
-                API Documentation generated by <a href="https://github.com/JakeWorrell/docodile">Docodile</a> on 10/09/2019 at 05:28:09
+                API Documentation generated by <a href="https://github.com/JakeWorrell/docodile">Docodile</a> on 10/09/2019 at 05:28:10
             </footer>
         </div>
     </div>

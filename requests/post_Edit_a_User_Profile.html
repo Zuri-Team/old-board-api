@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Create a new Category - HNG OJET</title>
+    <title>Edit a User Profile - HNG OJET</title>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="../bootstrap-theme.css">
     <link rel="stylesheet" href="../highlight/styles/gruvbox-light.css">
@@ -53,19 +53,19 @@
 									</ul> 
 			</div>
 					
-																																																																			
+																																																										
 
 			<div class="panel-heading" role="tab" id="collapseListGroupHeading2">
-				<h4 class="panel-title"> <a href="#collapseListGroup2" class="" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="collapseListGroup2">Category</a> </h4>
+				<h4 class="panel-title"> <a href="#collapseListGroup2" class="collapsed" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="collapseListGroup2">Category</a> </h4>
 			</div>
-			<div class="panel-collapse collapse in" role="tabpanel" id="collapseListGroup2" aria-labelledby="collapseListGroupHeading2" aria-expanded="true" style="">
+			<div class="panel-collapse collapse " role="tabpanel" id="collapseListGroup2" aria-labelledby="collapseListGroupHeading2" aria-expanded="false" style="height: 0px;">
 				<ul class="list-group">
 					
 
 															<li style="word-wrap: break-word;" class="list-group-item ">
 						<a href="../requests/get_Get_list_of_Categories.html">GET - Get list of Categories</a>
 					</li>
-															<li style="word-wrap: break-word;" class="list-group-item active">
+															<li style="word-wrap: break-word;" class="list-group-item ">
 						<a href="../requests/post_Create_a_new_Category.html">POST - Create a new Category</a>
 					</li>
 															<li style="word-wrap: break-word;" class="list-group-item ">
@@ -236,16 +236,16 @@
 									</ul> 
 			</div>
 					
-																									
+																																		
 
 			<div class="panel-heading" role="tab" id="collapseListGroupHeading8">
-				<h4 class="panel-title"> <a href="#collapseListGroup8" class="collapsed" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="collapseListGroup8">User Profile</a> </h4>
+				<h4 class="panel-title"> <a href="#collapseListGroup8" class="" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="collapseListGroup8">User Profile</a> </h4>
 			</div>
-			<div class="panel-collapse collapse " role="tabpanel" id="collapseListGroup8" aria-labelledby="collapseListGroupHeading8" aria-expanded="false" style="height: 0px;">
+			<div class="panel-collapse collapse in" role="tabpanel" id="collapseListGroup8" aria-labelledby="collapseListGroupHeading8" aria-expanded="true" style="">
 				<ul class="list-group">
 					
 
-															<li style="word-wrap: break-word;" class="list-group-item ">
+															<li style="word-wrap: break-word;" class="list-group-item active">
 						<a href="../requests/post_Edit_a_User_Profile.html">POST - Edit a User Profile</a>
 					</li>
 															<li style="word-wrap: break-word;" class="list-group-item ">
@@ -257,17 +257,16 @@
 	</div>
 </div>
         <div class="col-sm-8 col-sm-offset-4 col-md-9 col-md-offset-3 main">
-            <h1> Create a new Category </h1>
+            <h1> Edit a User Profile </h1>
 
             <div class="panel panel-primary">
                 <div class="panel-heading">Request Information</div>
                 <div class="panel-body">
                     <table class="table table-hover ">
                       <tbody>
-                        <tr><th>URL</th><td><span class="label label-primary">POST</span> localhost:8000/api/teams<br></td></tr>
-                        <tr><th>Category</th><td>Category</td></tr>
-                        <tr><th>Description</th><td><p>Create a new category. Route only accessible by <code>admin</code> or <code>superadmin</code></p>
-</td></tr>                      </tbody>
+                        <tr><th>URL</th><td><span class="label label-primary">POST</span> localhost:8000/api/profile/1/edit<br></td></tr>
+                        <tr><th>Category</th><td>User Profile</td></tr>
+                                              </tbody>
                     </table>
                 </div>
             </div>
@@ -278,7 +277,6 @@
                     <table class="table table-hover ">
                         <tbody>
                                                                         <tr><th>Content-Type</th><td>application/x-www-form-urlencoded</td></tr>
-                                                                                                <tr><th>Accept</th><td>application/json</td></tr>
                                                                         </tbody>
                     </table>
                 </div>
@@ -296,14 +294,19 @@
                         </tr>
                         </thead>
                                                 <tr>
-                            <td>title</td>
-                            <td>text</td>
-                                                        <td>HNG General</td>
+                            <td>profile_img</td>
+                            <td>file</td>
+                                                        <td></td>
                                                     </tr>
                                                 <tr>
-                            <td>description</td>
+                            <td>bio</td>
                             <td>text</td>
-                                                        <td>All General Posts</td>
+                                                        <td>Just me..</td>
+                                                    </tr>
+                                                <tr>
+                            <td>url</td>
+                            <td>text</td>
+                                                        <td>https://start.ng</td>
                                                     </tr>
                                             </table>
                 </div>
@@ -311,7 +314,7 @@
                                     
                         <br>
             <footer>
-                API Documentation generated by <a href="https://github.com/JakeWorrell/docodile">Docodile</a> on 10/09/2019 at 05:28:09
+                API Documentation generated by <a href="https://github.com/JakeWorrell/docodile">Docodile</a> on 10/09/2019 at 05:28:10
             </footer>
         </div>
     </div>

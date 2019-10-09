@@ -18,7 +18,7 @@ class TeamController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['role:superadmin'])->except(['index', 'viewMembers']);
+        $this->middleware(['role:superadmin', 'role:admin'])->except(['index', 'viewMembers']);
     }
 
     /**
@@ -170,28 +170,47 @@ class TeamController extends Controller
             return $this->sendError('', 400, $validator->errors());
         }
 
-        try {
-
-            //validations
-            $team = Team::where('id', $request->team_id)->count();
-            $user = User::where('id', $request->user_id)->count();
-
-            if(!$team) return $this->sendError('Team does not exist', 404, []);
+        $request = $request->all();
+        $user = User::find($request['user_id']);
+        $team = Team::find($request['team_id']);
+        $has_joined = TeamUser::where($request)->first();
+        try{
             if(!$user) return $this->sendError('User does not exist', 404, []);
 
-            $userTeamsArray = User::find($request->user_id)->teams->pluck('id')->toArray();
-            if(in_array($request->team_id, $userTeamsArray)) return $this->sendError('Intern already among the team', 400, []);
+            if (!$team) return $this->sendError('Team does not exist', 404, []);
 
-            if ($teamUser = TeamUser::create($request->all())) {
-                    return $this->sendSuccess($teamUser, 'Intern added to team successfully', 200);
-            } else {
-                return $this->sendError('Something went wrong ', 400, []);
-            }
+            if($has_joined) return $this->sendError('Intern already among the team', 400, []);
+            
+            TeamUser::create($request);
+            return $this->sendSuccess($team, 'Intern added to team successfully', 200);
 
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return $this->sendError('Internal server error.', 500, []);
         }
+
+        // try {
+
+        //     //validations
+        //     $team = Team::where('id', $request->team_id)->count();
+        //     $user = User::where('id', $request->user_id)->count();
+
+        //     if(!$team) return $this->sendError('Team does not exist', 404, []);
+        //     if(!$user) return $this->sendError('User does not exist', 404, []);
+
+        //     $userTeamsArray = User::find($request->user_id)->teams->pluck('id')->toArray();
+        //     if(in_array($request->team_id, $userTeamsArray)) return $this->sendError('Intern already among the team', 400, []);
+
+        //     if ($teamUser = TeamUser::create($request->all())) {
+        //             return $this->sendSuccess($teamUser, 'Intern added to team successfully', 200);
+        //     } else {
+        //         return $this->sendError('Something went wrong ', 400, []);
+        //     }
+
+        // } catch (\Exception $e) {
+        //     Log::error($e->getMessage());
+        //     return $this->sendError('Internal server error.', 500, []);
+        // }
 
 
     }
@@ -206,30 +225,27 @@ class TeamController extends Controller
             return $this->sendError('', 400, $validator->errors());
         }
 
-        try {
+            $request = $request->all();
+            $user = User::find($request['user_id']);
+            $team = TeamUser::where($request)->first();
 
-            //validations
-            $team = Team::where('id', $request->team_id)->count();
-            $user = User::where('id', $request->user_id)->count();
+            try {
+                if (!$user) {
+                    return $this->sendError('User does not exist', 404, []);
+                }
 
-            if(!$team) return $this->sendError('Team does not exist', 404, []);
-            if(!$user) return $this->sendError('User does not exist', 404, []);
+                if (!$team) {
+                    return $this->sendError('Intern is not on the Team', 400, []);
+                }
 
-            $userTeams = User::find($request->user_id)->teams;
+                $team->delete();
+                // logger(Auth::user()->email . ' removed ' . $user->email . ' from a track');
+                return $this->sendSuccess([], 'Intern removed from team successfully', 200);
 
-            $userTeamsArray = $userTeams->pluck('id')->toArray();
-            if(!in_array($request->team_id, $userTeamsArray)) return $this->sendError('Intern is not on the Team', 400, []);
-
-            if ($teamUser = $userTeams->find($request->team_id)->delete()) {
-                    return $this->sendSuccess($teamUser, 'Intern removed from team successfully', 200);
-            } else {
-                return $this->sendError('Something went wrong ', 400, []);
+            } catch (\Exception $e) {
+                Log::error($e->getMessage());
+                return $this->sendError('Internal server error.', 500, []);
             }
-
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
-            return $this->sendError('Internal server error.', 500, []);
-        }
 
 
     }

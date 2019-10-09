@@ -45,5 +45,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('teams/remove-member', 'TeamController@removeMember');
     Route::get('teams/members/{id}', 'TeamController@viewMembers');
 
+    Route::resource('posts', 'PostsController');
+    Route::get('categories/posts/{id}', 'PostsController@view_posts_in_category');
+
+
 });
 

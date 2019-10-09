@@ -18,8 +18,6 @@ class CreateTeamsTable extends Migration
             $table->string('team_name');
             $table->integer('max_team_mates')->default(1);
             $table->string('team_description')->nullable();
-            
-
             $table->timestamps();
         });
     }

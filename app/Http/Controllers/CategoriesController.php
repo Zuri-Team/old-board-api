@@ -6,6 +6,8 @@ use App\Category;
 use App\Http\Requests\StoreCategory;
 use App\Http\Resources\CategoryResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class CategoriesController extends Controller
 {
@@ -47,6 +49,10 @@ class CategoriesController extends Controller
         $this->middleware(['role:superadmin', 'role:admin']);
 
         $data = $request->validated();
+
+        $request = $request->all();
+        $data['created_by'] = Auth::user()->id;
+        $data['updated_by'] = Auth::user()->id;
 
         $category = Category::create($data);
 

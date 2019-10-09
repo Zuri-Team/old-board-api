@@ -18,5 +18,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('categories', 'CategoriesController');
 
     Route::resource('tasks', 'TasksController'); #URL for tasks
+    Route::get('tasks/{track}', 'TasksController@viewTrack');
+    Route::get('tasks/track/{id}', 'TasksController@viewTask');
 });
 

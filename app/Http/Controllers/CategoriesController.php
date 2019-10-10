@@ -6,6 +6,8 @@ use App\Category;
 use App\Http\Requests\StoreCategory;
 use App\Http\Resources\CategoryResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class CategoriesController extends Controller
 {
@@ -44,9 +46,15 @@ class CategoriesController extends Controller
      */
     public function store(StoreCategory $request)
     {
-        $this->middleware(['role:superadmin', 'role:admin']);
+        if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
+            return $this->ERROR('You dont have the permission to perform this action');
+        }
 
         $data = $request->validated();
+
+        $request = $request->all();
+        $data['created_by'] = Auth::user()->id;
+        $data['updated_by'] = Auth::user()->id;
 
         $category = Category::create($data);
 
@@ -94,7 +102,9 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->middleware(['role:superadmin', 'role:admin']);
+        if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
+            return $this->ERROR('You dont have the permission to perform this action');
+        }
 
         $data = $request->validate([
             'title' => 'required|unique:categories',
@@ -122,7 +132,9 @@ class CategoriesController extends Controller
      */
     public function destroy($id)
     {
-        $this->middleware(['role:superadmin', 'role:admin']);
+        if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
+            return $this->ERROR('You dont have the permission to perform this action');
+        }
 
         if (Category::find($id)->delete()) {
             return response()->json([

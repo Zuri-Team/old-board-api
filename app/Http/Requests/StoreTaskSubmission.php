@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCategory extends FormRequest
+class StoreTaskSubmission extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,9 +13,7 @@ class StoreCategory extends FormRequest
      */
     public function authorize()
     {
-        // $user = auth('api')->user();
-        // var_dump($user);
-        return true; //$user->role == 'admin' || $user->role == 'superadmin';
+        return true;
     }
 
     /**
@@ -26,8 +24,18 @@ class StoreCategory extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['bail', 'required', 'unique:categories', 'string'],
-            'description' => 'bail|nullable|string',
+
+            'task_id' => ['bail', 'required', 'integer'],
+            'user_id' => 'bail|integer|unique:task_submissions',
+            'submission_link' => 'url',
+
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'user_id.unique' => "You have already submitted",
         ];
     }
 }

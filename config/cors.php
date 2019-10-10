@@ -1,11 +1,11 @@
 <?php
 
 return [
-    'supportsCrdentials' => false,
+    'supportsCredentials' => true,
     'allowedOrigins' => ['*'],
-    'allowedOriginPatterns' => [],
-    'allowedHeaders' => ['Content-Type', 'X-Requested-With'],
-    'allowedMethods' => ['*'],
-    'exposedMethods' => [],
-    'maxAge' => 0,
+    'allowedHeaders' => ['*'],
+    'allowedMethods' => ['GET', 'POST', 'PUT',  'DELETE'],
+    'exposedHeaders' => ['DAV', 'content-length', 'Allow'],
+    'maxAge' => 86400,
+    'hosts' => [],
 ];

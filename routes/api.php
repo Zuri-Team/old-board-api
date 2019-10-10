@@ -48,6 +48,11 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('users/track/{id}/list', 'TrackController@get_all_users_in_track');
 
     Route::resource('tasks', 'TasksController'); #URL for tasks
+
+  
+    Route::get('tasks/{track}', 'TasksController@viewTrack');
+    Route::get('tasks/track/{id}', 'TasksController@viewTask');
+
     Route::put('tasks/changestatus/{id}', 'TasksController@changeTaskStatus');
 
     Route::resource('teams', 'TeamController');

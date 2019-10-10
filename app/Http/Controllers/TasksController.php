@@ -23,7 +23,7 @@ class TasksController extends Controller
         $this->middleware(['role:superadmin', 'role:admin']);
 
         $tasks = Task::paginate(20);
-        return TaskCollection::collection($tasks);
+        return TaskResource::collection($tasks);
     }
 
     /**

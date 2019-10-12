@@ -1,13 +1,15 @@
 <?php
 
 return [
-    'supportsCredentials' => false,
+    'supportsCredentials' => true,
     'allowedOrigins' => ['*'],
     // 'allowedHeaders' => ['*'],
-    'allowedHeaders' => ['Accept', 'Content-Type', 'Origin', 'User-Agent', 'X-Requested-With', 'Authorization'],
-    'allowedMethods' => ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+    'allowedHeaders' => ["Access-Control-Allow-Headers", "Access-Control-Allow-Headers", "Origin,Accept", "X-Requested-With", "Content-Type", "Access-Control-Request-Method", "Access-Control-Request-Headers", "Authorization"],
+    'allowedMethods' => ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
     'exposedHeaders' => ['DAV', 'content-length', 'Allow'],
     // 'exposedHeaders' => [],
     'maxAge' => 86400,
     'hosts' => [],
+    
+    //"Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
 ];

@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Classes\ResponseTrait;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Http\JsonResponse;
 use App\User;
 
 class InternsController extends Controller

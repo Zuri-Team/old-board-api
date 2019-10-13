@@ -11,11 +11,13 @@ use App\User;
 
 class InternsController extends Controller
 {
+
+    use ResponseTrait;
+
     public function get_all_interns(){
-        $interns = User::role('intern')->get();
+        $interns = User::role('intern')->with('teams')->get();
         
         if ($interns) {
-
             return $this->sendSuccess($interns, 'Fetch all intenrs', 200);
         }
         return $this->sendError('Internal server error.', 500, []);

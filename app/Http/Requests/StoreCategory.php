@@ -28,7 +28,6 @@ class StoreCategory extends FormRequest
         return [
             'title' => ['bail', 'required', 'unique:categories', 'string'],
             'description' => 'bail|nullable|string',
-            'created_by' => 'bail|integer|required',
         ];
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTasksTable extends Migration
+class CreateProfilesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateTasksTable extends Migration
      */
     public function up()
     {
-        Schema::create('tasks', function (Blueprint $table) {
+        Schema::create('profiles', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('track_id')->unsigned();
-            $table->foreign('track_id')->references('id')->on('tracks')->onDelete('cascade')->onUpdate('cascade');
-            $table->string('title');
-            $table->text('body');
-            $table->dateTime('deadline');
+            $table->unsignedBigInteger('user_id');
+            $table->string('profile_img')->nullable();
+            $table->text('bio')->nullable();
+            $table->text('url')->nullable();
             $table->timestamps();
+            $table->index('user_id');
         });
     }
 
@@ -31,6 +31,6 @@ class CreateTasksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tasks');
+        Schema::dropIfExists('profiles');
     }
 }

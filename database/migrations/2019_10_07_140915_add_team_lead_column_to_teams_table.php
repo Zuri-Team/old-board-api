@@ -15,7 +15,7 @@ class AddTeamLeadColumnToTeamsTable extends Migration
     {
         Schema::table('teams', function (Blueprint $table) {
             $table->bigInteger('team_lead')->unsigned();
-            $table->foreign('team_lead')->references('id')->on('users');
+            // $table->foreign('team_lead')->references('id')->on('users');
 
         });
     }

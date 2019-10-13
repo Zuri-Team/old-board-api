@@ -141,7 +141,7 @@ class TrackController extends Controller
         if(!Auth::user()->hasAnyRole(['admin', 'superadmin'])){
             return $this->ERROR('You dont have the permission to perform this action');
         }
-        $this->RESTRICTED_TO('admin');
+        // $this->RESTRICTED_TO('admin');
 
         $tracks = Track::orderBy('created_at', 'desc')->paginate(10);
         logger('Tracks retrieved');        

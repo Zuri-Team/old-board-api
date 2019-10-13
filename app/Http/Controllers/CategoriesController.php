@@ -6,6 +6,8 @@ use App\Category;
 use App\Http\Requests\StoreCategory;
 use App\Http\Resources\CategoryResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class CategoriesController extends Controller
 {
@@ -49,6 +51,10 @@ class CategoriesController extends Controller
         }
 
         $data = $request->validated();
+
+        $request = $request->all();
+        $data['created_by'] = Auth::user()->id;
+        $data['updated_by'] = Auth::user()->id;
 
         $category = Category::create($data);
 
@@ -95,6 +101,30 @@ class CategoriesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
+    {
+        if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
+            return $this->ERROR('You dont have the permission to perform this action');
+        }
+
+        $data = $request->validate([
+            'title' => 'required|unique:categories',
+            'description' => 'nullable',
+            'updated_by' => 'required',
+        ]);
+
+        if ($category = Category::find($id)) {
+            if ($category->update($data)) {
+                return new CategoryResource($category);
+            }
+        } else {
+            return response()->json([
+                'message' => 'Category not found',
+            ], 404);
+        }
+
+    }
+
+    public function updateCategory(Request $request, $id)
     {
         if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
             return $this->ERROR('You dont have the permission to perform this action');

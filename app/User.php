@@ -53,4 +53,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany('App\Team')->withTimestamps();
     }
+
+    public function profile()
+    {
+        //
+        return $this->hasOne(Profile::class);
+    }
 }

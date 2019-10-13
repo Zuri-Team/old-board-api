@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTaskSubmissionsTable extends Migration
+class AddUserIdColumnToPostsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,9 @@ class CreateTaskSubmissionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('task_submissions', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->bigInteger('task_id')->unsigned();
-            $table->foreign('task_id')->references('id')->on('tasks')->onDelete('cascade')->onUpdate('cascade');
+        Schema::table('posts', function (Blueprint $table) {
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->string('submission_link');
-            $table->timestamps();
         });
     }
 
@@ -31,6 +26,8 @@ class CreateTaskSubmissionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('task_submissions');
+        Schema::table('posts', function (Blueprint $table) {
+            $table->dropColumn('user_id');
+        });
     }
 }

@@ -3,8 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTask;
-use App\Http\Resources\Task\TaskCollection;
-use App\Http\Resources\Task\TaskResource;
+
+use App\Http\Resources\TaskResource;
+use App\TrackUser;
+use Symfony\Component\HttpFoundation\Response;
+
+//use App\Http\Resources\Task\TaskCollection;
+//use App\Http\Resources\Task\TaskResource;
+
 use App\Task;
 use App\TrackUser;
 use Illuminate\Http\Request;
@@ -22,8 +28,17 @@ class TasksController extends Controller
     {
         $this->middleware(['role:superadmin', 'role:admin']);
 
-        $tasks = Task::paginate(20);
-        return TaskCollection::collection($tasks);
+
+            $tasks = Task::orderBy('id', 'desc')->paginate(20);
+
+            if($tasks){
+                return TaskResource::collection($tasks);
+            }else{
+                return response([
+                    'message' => Response::HTTP_NOT_FOUND
+                ], 404);
+            }
+
     }
 
     /**
@@ -131,25 +146,53 @@ class TasksController extends Controller
     {
         $this->middleware(['role:superadmin', 'role:admin']);
 
-        $task = Task::find($id);
+        $task = Task::findOrFail($id);
 
         if ($task->delete()) {
             return response(null, Response::HTTP_NO_CONTENT);
         }
     }
 
-    public function viewTask($track_id, $id)
-    {
+  
+    public function viewTrack($track){
 
-        $this->middleware(['role: intern']);
+
+        $this->middleware(['role: intern', 'role:superadmin']);
 
         $user_id = auth()->user()->id;
 
-        $user_track = TrackUser::where('track_id', $track_id)->where('user_id', $user_id);
+        $user_track = TrackUser::where('user_id', $user_id)->where('track_name', 'LIKE', "%{$track}%");
 
-        if ($user_track) {
-            $task = Task::where('track_id', $track_id)->where('id', $id);
+
+        if($user_track){
+            $task = Task::find($user_track->id);
+
             return TaskResource::collection($task);
+        }else{
+            return \response([
+                'message' => 'Track not available'
+            ]);
+        }
+    }
+
+    public function viewTask($track_id, $id){
+
+        $this->middleware(['role: intern', 'role:superadmin']);
+
+        $user_id = auth()->user()->id;
+
+        $user_track = TrackUser::where('user_id', $user_id)->where('track_trid', $track_id);
+
+        $task_track = Task::where('track_id', $track_id)->where();
+
+        if($user_track && $task_track){
+
+            $task = Task::find($user_track->id);
+            return TaskResource::collection($task);
+        }else{
+            return \response([
+                'message' => 'No Task available'
+            ]);
         }
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
 
 class InternsController extends Controller
 {
@@ -11,7 +12,7 @@ class InternsController extends Controller
         
         if ($interns) {
 
-            return $this->sendSuccess($intenrs, 'Fetch all intenrs', 200);
+            return $this->sendSuccess($interns, 'Fetch all intenrs', 200);
         }
         return $this->sendError('Internal server error.', 500, []);
     }

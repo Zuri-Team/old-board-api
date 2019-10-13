@@ -79,7 +79,7 @@ Route::get('/interns', 'InternsController@get_all_interns');
 });
 
 // });
-Route::fallback(function(){
-    return response()->json([
-        'message' => 'Not Found', 404);
-});
+// Route::fallback(function(){
+//     return response()->json([
+//         'message' => 'Not Found', 404);
+// });

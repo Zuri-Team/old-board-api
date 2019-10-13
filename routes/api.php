@@ -28,7 +28,14 @@ Route::post('/password/reset', 'AuthController@resetPassword');
 
 Route::get('profile/{user}', 'ProfileController@index');
 
+
+
 Route::group(['middleware' => 'auth:api'], function () {
+
+    
+//stat
+Route::get('/stats/dashboard', 'StatsController@dashboard');
+Route::get('/interns', 'InternsController@get_all_interns');
 
     Route::post('/password/update', 'AuthController@updatePassword');
     Route::post('/logout', 'AuthController@logout');

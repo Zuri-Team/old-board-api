@@ -124,6 +124,30 @@ class CategoriesController extends Controller
 
     }
 
+    public function updateCategory(Request $request, $id)
+    {
+        if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
+            return $this->ERROR('You dont have the permission to perform this action');
+        }
+
+        $data = $request->validate([
+            'title' => 'required|unique:categories',
+            'description' => 'nullable',
+            'updated_by' => 'required',
+        ]);
+
+        if ($category = Category::find($id)) {
+            if ($category->update($data)) {
+                return new CategoryResource($category);
+            }
+        } else {
+            return response()->json([
+                'message' => 'Category not found',
+            ], 404);
+        }
+
+    }
+
     /**
      * Remove the specified resource from storage.
      *

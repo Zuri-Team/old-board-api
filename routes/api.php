@@ -35,6 +35,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/clear_session', 'AuthController@clear_session');
 
     Route::resource('categories', 'CategoriesController');
+    Route::post('categories/update/{id}', 'CategoriesController@updateCategory');
+
 
     Route::post('track/create', 'TrackController@create_track');
     Route::put('track/edit', 'TrackController@edit_track');

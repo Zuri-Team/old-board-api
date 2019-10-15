@@ -32,7 +32,7 @@ class ProfileController extends Controller
 
         $fileNameWithExt = request()->file('profile_img')->getClientOriginalName();
 
-        $data['profile_img'] = request()->file('profile_img')->store('uploads/'.$fileNameWithExt, 'public');
+        $data['profile_img'] = request()->file('profile_img')->store('profile_img/'.$fileNameWithExt, 'public');
 
         $updatedProfile = auth()->user()->profile->update($data);
 

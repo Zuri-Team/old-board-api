@@ -58,8 +58,8 @@ Route::get('/interns', 'InternsController@get_all_interns');
 
     Route::resource('tasks', 'TasksController'); #URL for tasks
 
-    Route::get('track/{id}/tasks', 'TasksController@viewTracktask');
-    Route::get('tasks/{id}', 'TasksController@viewTask');
+    Route::get('track/{id}/tasks', 'TasksController@view_track_task');
+    Route::get('tasks/{id}', 'TuasksController@view_task');
 
 //    Route::get('track/{id}/tasks', 'TasksController@viewTracktask');
 //    Route::get('tasks/{id}', 'TasksController@viewTask');

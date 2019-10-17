@@ -154,20 +154,18 @@ class TasksController extends Controller
     }
 
 
-    public function viewTracktask($track_id)
+    public function view_track_task($track_id)
     {
 
         $this->middleware(['role: intern', 'role:superadmin']);
 
-        $user_id = auth()->user()->id;
-
-        $track_tasks = Task::where('track_id', $track_id);
+        $track_tasks = Task::where('track_id', $track_id)->orderBy('created_at', 'desc')->get(10);;
 
         if ($track_tasks) {
             return TaskResource::collection($track_tasks);
         } else {
             return \response([
-                'message' => 'Track not available'
+                'message' => 'Track task not available'
             ]);
         }
     }

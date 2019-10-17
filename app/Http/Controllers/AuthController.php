@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\User;
 use Validator;
 use App\RoleUser;
+use App\TrackUser;
 use Carbon\Carbon;
 use App\PasswordReset;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -71,17 +73,25 @@ class AuthController extends Controller
         $input['role'] = 'intern';
         $input['token'] = $token;
 
+        DB::beginTransaction();
         $user = User::create($input);
 
+        $tracks = $request->tracks;
+        foreach($tracks as $track){
+            $trackUser = new TrackUser;
+            $trackUser->user_id = 1;
+            $trackUser->track_id = $track;
+            $trackUser->save(); 
+        }
+        DB::commit();
         
-        // $token = $user->createToken('HNGApp')->accessToken;
         $user->assignRole('intern');
         $user->notify(new UserRegistration($user));
         return response()->json([
             'status' => true,
             'message' => 'Registration successful',
-            // 'token' => $token,
-            'user' => $user
+            'user' => $user,
+            'tracks' => $tracks
         ], 200);
         
     } 
@@ -123,7 +133,7 @@ class AuthController extends Controller
     }
 
     public function resetPassword(Request $request){
-        DB::transaction();
+        DB::beginTransaction();
         try{
             $validation = Validator::make($request->all(), [
                 'email' => 'required|string|email',

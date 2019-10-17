@@ -159,7 +159,7 @@ class TasksController extends Controller
 
         $this->middleware(['role: intern', 'role:superadmin']);
 
-        $track_tasks = Task::where('track_id', $track_id)->orderBy('created_at', 'desc')->get(10);;
+        $track_tasks = Task::where('track_id', $track_id)->orderBy('created_at', 'desc')->get();
 
         if ($track_tasks) {
             return TaskResource::collection($track_tasks);

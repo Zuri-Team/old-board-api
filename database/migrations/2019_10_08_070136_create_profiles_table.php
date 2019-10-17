@@ -19,6 +19,7 @@ class CreateProfilesTable extends Migration
             $table->string('profile_img')->nullable();
             $table->text('bio')->nullable();
             $table->text('url')->nullable();
+            $table->text('phone')->nullable();
             $table->timestamps();
             $table->index('user_id');
         });

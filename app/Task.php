@@ -12,4 +12,8 @@ class Task extends Model
     public function users(){
         return $this->belongsToMany('App\User');
     }
+
+    public function tracks(){
+        return $this->hasMany('App\Tracks');
+    }
 }

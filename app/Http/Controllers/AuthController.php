@@ -2,15 +2,16 @@
 
 
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
 use App\User;
 use Validator;
 use App\RoleUser;
 use Carbon\Carbon;
 use App\PasswordReset;
+use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\UserRegistration;
 
 
 class AuthController extends Controller
@@ -43,7 +44,7 @@ class AuthController extends Controller
 
     public function register(Request $request) { 
         //logic for sign up
-
+        
         $messages = [];
         $validator = Validator::make($request->all(),[
             'firstname' => 'required',
@@ -54,6 +55,7 @@ class AuthController extends Controller
             'confirm_password' => 'required|same:password',
             'stack' => 'required',
             'location' => 'required',
+            'gender' => 'nullable'
         ]);
 
         if($validator->fails()){
@@ -63,18 +65,22 @@ class AuthController extends Controller
             ], 401);
         }
 
+        $token = $this->generateOTP(8);
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
         $input['role'] = 'intern';
+        $input['token'] = $token;
 
         $user = User::create($input);
-        $token = $user->createToken('HNGApp')->accessToken;
-        $user->assignRole('intern');
 
+        
+        // $token = $user->createToken('HNGApp')->accessToken;
+        $user->assignRole('intern');
+        $user->notify(new UserRegistration($user));
         return response()->json([
             'status' => true,
             'message' => 'Registration successful',
-            'token' => $token,
+            // 'token' => $token,
             'user' => $user
         ], 200);
         
@@ -202,4 +208,29 @@ class AuthController extends Controller
             ]);
         return $this->SUCCESS();
     }
+
+
+    public function verify(Request $request, $token)
+    {
+        if ($user = User::where('token', $request->token)->first()) {
+            $user->token = null;
+            if ($user->save() && $user->markEmailAsVerified()) {
+                return $this->SUCCESS('You are successfully verified');
+            }
+        } else {
+            return $this->ERROR('Invalid verification code');
+        }
+    }
+
+    private function generateOTP(int $n)
+    {
+        $generator = "1234567890";
+        $result = "";
+
+        for ($i = 1; $i <= $n; $i++) {
+            $result .= \substr($generator, (rand() % (strlen($generator))), 1);
+        }
+        return $result;
+    }
+
 }

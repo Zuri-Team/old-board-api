@@ -15,7 +15,6 @@ use App\Task;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Symfony\Component\HttpFoundation\Response;
 
 class TasksController extends Controller
 {

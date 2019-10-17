@@ -47,9 +47,9 @@ class TeamController extends Controller
     public function store(Request $request) : JsonResponse
     {
         $validator = Validator::make($request->all(), [
-            'team_name' => 'bail|required|unique:teams,team_name|min:4',
+            'team_name' => 'bail|required|unique:teams,team_name|min:3',
             'max_team_mates' => 'required|integer',
-            'team_lead' => 'required|integer',
+            // 'team_lead' => 'required|integer',
             'team_description' => 'nullable|string|max:100',
         ]);
 
@@ -59,6 +59,7 @@ class TeamController extends Controller
 
         $teamCollection = [];
         try{
+            $request['team_lead'] = 1; //to remove
             $teamCollection = Team::create($request->all());
 
         }catch (\Exception $e){
@@ -109,9 +110,9 @@ class TeamController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'team_name' => 'bail|required|min:4',
+            'team_name' => 'bail|required|min:3',
             'max_team_mates' => 'required|integer',
-            'team_lead' => 'required|integer',
+            // 'team_lead' => 'required|integer',
             'team_description' => 'nullable|string|max:100',
         ]);
 

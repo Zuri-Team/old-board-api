@@ -25,7 +25,7 @@ class StoreTask extends FormRequest
     {
         return [
             'track_id' => 'required',
-            'title' => 'required|max:255|unique:Task',
+            'title' => 'required|max:255',
             'body' => 'required',
             'deadline' => 'required',
             'is_active' => 'required',

@@ -41,6 +41,21 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    protected static function boot()
+    {
+        //
+        parent::boot();
+
+        static::created(
+            function ($user){
+                $user->profile()->create([
+                    'bio' => 'Welcome to Start.Ng.',
+                    // 'profile_img' => 'uploads/avatar-m.jpg'
+                ]);
+            }
+        );
+    }
+
     public function tracks()
     {
         return $this->belongsToMany('App\Track');

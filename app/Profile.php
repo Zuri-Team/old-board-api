@@ -9,7 +9,7 @@ class Profile extends Model
     //
 
     protected $fillable = [
-        'bio', 'url', 'profile_img'
+        'bio', 'url', 'profile_img', 'phone'
     ];
 
     public function user()

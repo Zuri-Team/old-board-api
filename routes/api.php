@@ -27,7 +27,14 @@ Route::post('/password/reset', 'AuthController@resetPassword');
 
 Route::get('profile/{user}', 'ProfileController@index');
 
+
+
 Route::group(['middleware' => 'auth:api'], function () {
+
+    
+//stat
+Route::get('/stats/dashboard', 'StatsController@dashboard');
+Route::get('/interns', 'InternsController@get_all_interns');
 
     Route::post('/password/update', 'AuthController@updatePassword');
     Route::post('/logout', 'AuthController@logout');
@@ -50,9 +57,11 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::resource('tasks', 'TasksController'); #URL for tasks
 
-  
-    Route::get('tasks/{track}', 'TasksController@viewTrack');
-    Route::get('tasks/track/{id}', 'TasksController@viewTask');
+    Route::get('track/{id}/tasks', 'TasksController@viewTracktask');
+    Route::get('tasks/{id}', 'TasksController@viewTask');
+
+//    Route::get('track/{id}/tasks', 'TasksController@viewTracktask');
+//    Route::get('tasks/{id}', 'TasksController@viewTask');
 
     Route::put('tasks/changestatus/{id}', 'TasksController@changeTaskStatus');
 
@@ -70,4 +79,10 @@ Route::group(['middleware' => 'auth:api'], function () {
 
 });
 
+
 // });
+// Route::fallback(function(){
+//     return response()->json([
+//         'message' => 'Not Found', 404);
+// });
+

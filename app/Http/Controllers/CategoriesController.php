@@ -109,7 +109,7 @@ class CategoriesController extends Controller
         $data = $request->validate([
             'title' => 'required|unique:categories',
             'description' => 'nullable',
-            'updated_by' => 'required',
+            // 'updated_by' => 'required',
         ]);
 
         if ($category = Category::find($id)) {
@@ -133,7 +133,7 @@ class CategoriesController extends Controller
         $data = $request->validate([
             'title' => 'required|unique:categories',
             'description' => 'nullable',
-            'updated_by' => 'required',
+            // 'updated_by' => 'required',
         ]);
 
         if ($category = Category::find($id)) {

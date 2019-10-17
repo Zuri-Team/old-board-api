@@ -18,7 +18,7 @@ class TeamController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['role:superadmin', 'role:admin'])->except(['index', 'viewMembers']);
+        $this->middleware(['role:superadmin'])->except(['index', 'viewMembers']);
     }
 
     /**

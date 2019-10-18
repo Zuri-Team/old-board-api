@@ -55,7 +55,6 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required',
             'confirm_password' => 'required|same:password',
-            'stack' => 'required',
             'location' => 'required',
             'gender' => 'nullable'
         ]);
@@ -80,7 +79,7 @@ class AuthController extends Controller
         if ($tracks && is_array($tracks)) {
             foreach ($tracks as $track) {
                 $trackUser = new TrackUser;
-                $trackUser->user_id = 1;
+                $trackUser->user_id = auth()->id();
                 $trackUser->track_id = $track;
                 $trackUser->save();
             }

@@ -16,7 +16,7 @@ class InternsController extends Controller
 
     public function get_all_interns(){
         //$interns = User::role('intern')->with('teams')->get();
-         $interns = User::all()->get();
+         $interns = User::all();
         
         if ($interns) {
             return $this->sendSuccess($interns, 'Fetched all interns', 200);

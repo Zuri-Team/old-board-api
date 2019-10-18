@@ -66,7 +66,7 @@ class AuthController extends Controller
             ], 401);
         }
 
-        $token = $this->generateOTP(8);
+//         $token = $this->generateOTP(8);
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
         $input['role'] = 'intern';
@@ -75,6 +75,7 @@ class AuthController extends Controller
 
         DB::beginTransaction();
         $user = User::create($input);
+//         $token = $user->createToken('HNGApp')->accessToken;
 
         $tracks = $request->tracks;
         if ($tracks && is_array($tracks)) {
@@ -88,12 +89,12 @@ class AuthController extends Controller
         DB::commit();
         
         $user->assignRole('intern');
-        $user->notify(new UserRegistration($user));
+//         $user->notify(new UserRegistration($user));
         return response()->json([
             'status' => true,
             'message' => 'Registration successful',
             'user' => $user,
-            'tracks' => $tracks
+//             'tracks' => $tracks
         ], 200);
         
     } 

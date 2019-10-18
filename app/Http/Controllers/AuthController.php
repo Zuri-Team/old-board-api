@@ -70,7 +70,7 @@ class AuthController extends Controller
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
         $input['role'] = 'intern';
-        $input['token'] = $token;
+//         $input['token'] = $token;
         $input['stack'] = 'Default';
 
         DB::beginTransaction();

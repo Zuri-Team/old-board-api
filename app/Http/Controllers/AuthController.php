@@ -77,11 +77,13 @@ class AuthController extends Controller
         $user = User::create($input);
 
         $tracks = $request->tracks;
-        foreach($tracks as $track){
-            $trackUser = new TrackUser;
-            $trackUser->user_id = 1;
-            $trackUser->track_id = $track;
-            $trackUser->save(); 
+        if ($tracks && is_array($tracks)) {
+            foreach ($tracks as $track) {
+                $trackUser = new TrackUser;
+                $trackUser->user_id = 1;
+                $trackUser->track_id = $track;
+                $trackUser->save();
+            }
         }
         DB::commit();
         

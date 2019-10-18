@@ -28,7 +28,8 @@ Route::post('/password/reset', 'AuthController@resetPassword');
 
 Route::get('profile/{user}', 'ProfileController@index');
 
-
+//get all tracks without signing in
+Route::get('track/all', 'TrackController@all');
 
 Route::group(['middleware' => 'auth:api'], function () {
 

@@ -20,8 +20,7 @@
 
 Route::post('login', 'AuthController@login');
 Route::post('register', 'AuthController@register');
-Route::resource('submissions', 'TaskSubmissionController');
-
+Route::get('/verify/{token}', 'AuthController@verify')->name('verify');
 Route::post('/password/forgot', 'AuthController@requestReset');
 Route::get('/password/reset/{token}', 'AuthController@findResetToken');
 Route::post('/password/reset', 'AuthController@resetPassword');
@@ -44,7 +43,7 @@ Route::get('/interns', 'InternsController@get_all_interns');
     Route::resource('categories', 'CategoriesController');
     Route::post('categories/update/{id}', 'CategoriesController@updateCategory');
 
-
+    Route::resource('submissions', 'TaskSubmissionController');
     Route::post('track/create', 'TrackController@create_track');
     Route::put('track/edit', 'TrackController@edit_track');
     Route::delete('track/delete', 'TrackController@delete_track');
@@ -80,8 +79,10 @@ Route::get('/interns', 'InternsController@get_all_interns');
 
 });
 
+
 // });
 // Route::fallback(function(){
 //     return response()->json([
 //         'message' => 'Not Found', 404);
 // });
+

@@ -29,6 +29,7 @@ class CreateUserTableSeeder extends Seeder
             'location' => '',
             'password' => bcrypt('secret'),
             'role' => 'superadmin',
+            'email_verified_at' => now(),
         ]);
 
         // $role = Role::findByName('superadmin');

@@ -81,7 +81,7 @@ class AuthController extends Controller
         if ($tracks && is_array($tracks)) {
             foreach ($tracks as $track) {
                 $trackUser = new TrackUser;
-                $trackUser->user_id = auth()->id();
+                $trackUser->user_id = $user->id;
                 $trackUser->track_id = $track;
                 $trackUser->save();
             }

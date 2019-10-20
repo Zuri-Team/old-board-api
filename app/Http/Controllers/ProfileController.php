@@ -31,6 +31,7 @@ class ProfileController extends Controller
         $data = request()->all();
 
         $image = request()->file('profile_img')->getRealPath();
+        //fixed
 
         Cloudder::upload($image, null, $options = array("folder" => "hngojet/profile_img/",));
         

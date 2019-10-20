@@ -50,7 +50,7 @@ class User extends Authenticatable
             function ($user){
                 $user->profile()->create([
                     'bio' => 'Welcome to Start.Ng.',
-                    // 'profile_img' => 'uploads/avatar-m.jpg'
+                    'profile_img' => 'http://localhost:8000/storage/profile_img/avatar.png'
                 ]);
             }
         );

@@ -20,15 +20,15 @@
 
 Route::post('login', 'AuthController@login');
 Route::post('register', 'AuthController@register');
-Route::resource('submissions', 'TaskSubmissionController');
-
+Route::get('/verify/{token}', 'AuthController@verify')->name('verify');
 Route::post('/password/forgot', 'AuthController@requestReset');
 Route::get('/password/reset/{token}', 'AuthController@findResetToken');
 Route::post('/password/reset', 'AuthController@resetPassword');
 
 Route::get('profile/{user}', 'ProfileController@index');
 
-
+//get all tracks without signing in
+Route::get('track/all', 'TrackController@all');
 
 Route::group(['middleware' => 'auth:api'], function () {
 
@@ -44,7 +44,7 @@ Route::get('/interns', 'InternsController@get_all_interns');
     Route::resource('categories', 'CategoriesController');
     Route::post('categories/update/{id}', 'CategoriesController@updateCategory');
 
-
+    Route::resource('submissions', 'TaskSubmissionController');
     Route::post('track/create', 'TrackController@create_track');
     Route::put('track/edit', 'TrackController@edit_track');
     Route::delete('track/delete', 'TrackController@delete_track');
@@ -58,9 +58,11 @@ Route::get('/interns', 'InternsController@get_all_interns');
 
     Route::resource('tasks', 'TasksController'); #URL for tasks
 
-  
-    Route::get('tasks/{track}', 'TasksController@viewTrack');
-    Route::get('tasks/track/{id}', 'TasksController@viewTask');
+    Route::get('track/{id}/tasks', 'TasksController@view_track_task');
+    Route::get('tasks/{id}', 'TuasksController@view_task');
+
+//    Route::get('track/{id}/tasks', 'TasksController@viewTracktask');
+//    Route::get('tasks/{id}', 'TasksController@viewTask');
 
     Route::put('tasks/changestatus/{id}', 'TasksController@changeTaskStatus');
 
@@ -78,8 +80,10 @@ Route::get('/interns', 'InternsController@get_all_interns');
 
 });
 
+
 // });
 // Route::fallback(function(){
 //     return response()->json([
 //         'message' => 'Not Found', 404);
 // });
+

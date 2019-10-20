@@ -2,15 +2,18 @@
 
 
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
 use App\User;
 use Validator;
 use App\RoleUser;
+use App\TrackUser;
 use Carbon\Carbon;
 use App\PasswordReset;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\UserRegistration;
 
 
 class AuthController extends Controller
@@ -43,7 +46,7 @@ class AuthController extends Controller
 
     public function register(Request $request) { 
         //logic for sign up
-
+        
         $messages = [];
         $validator = Validator::make($request->all(),[
             'firstname' => 'required',
@@ -52,8 +55,8 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required',
             'confirm_password' => 'required|same:password',
-            'stack' => 'required',
             'location' => 'required',
+            'gender' => 'nullable'
         ]);
 
         if($validator->fails()){
@@ -63,19 +66,35 @@ class AuthController extends Controller
             ], 401);
         }
 
+//         $token = $this->generateOTP(8);
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
         $input['role'] = 'intern';
+//         $input['token'] = $token;
+        $input['stack'] = 'Default';
 
+        DB::beginTransaction();
         $user = User::create($input);
-        $token = $user->createToken('HNGApp')->accessToken;
-        $user->assignRole('intern');
+//         $token = $user->createToken('HNGApp')->accessToken;
 
+        $tracks = $request->tracks;
+        if ($tracks && is_array($tracks)) {
+            foreach ($tracks as $track) {
+                $trackUser = new TrackUser;
+                $trackUser->user_id = $user->id;
+                $trackUser->track_id = $track;
+                $trackUser->save();
+            }
+        }
+        DB::commit();
+        
+        $user->assignRole('intern');
+//         $user->notify(new UserRegistration($user));
         return response()->json([
             'status' => true,
             'message' => 'Registration successful',
-            'token' => $token,
-            'user' => $user
+            'user' => $user,
+//             'tracks' => $tracks
         ], 200);
         
     } 
@@ -117,7 +136,7 @@ class AuthController extends Controller
     }
 
     public function resetPassword(Request $request){
-        DB::transaction();
+        DB::beginTransaction();
         try{
             $validation = Validator::make($request->all(), [
                 'email' => 'required|string|email',
@@ -202,4 +221,29 @@ class AuthController extends Controller
             ]);
         return $this->SUCCESS();
     }
+
+
+    public function verify(Request $request, $token)
+    {
+        if ($user = User::where('token', $request->token)->first()) {
+            $user->token = null;
+            if ($user->save() && $user->markEmailAsVerified()) {
+                return $this->SUCCESS('You are successfully verified');
+            }
+        } else {
+            return $this->ERROR('Invalid verification code');
+        }
+    }
+
+    private function generateOTP(int $n)
+    {
+        $generator = "1234567890";
+        $result = "";
+
+        for ($i = 1; $i <= $n; $i++) {
+            $result .= \substr($generator, (rand() % (strlen($generator))), 1);
+        }
+        return $result;
+    }
+
 }

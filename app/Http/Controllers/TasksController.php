@@ -15,7 +15,6 @@ use App\Task;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Symfony\Component\HttpFoundation\Response;
 
 class TasksController extends Controller
 {
@@ -153,48 +152,83 @@ class TasksController extends Controller
         }
     }
 
-  
-    public function viewTrack($track){
 
+    public function view_track_task($track_id)
+    {
 
         $this->middleware(['role: intern', 'role:superadmin']);
 
-        $user_id = auth()->user()->id;
+        $track_tasks = Task::where('track_id', $track_id)->orderBy('created_at', 'desc')->get();
 
-        $user_track = TrackUser::where('user_id', $user_id)->where('track_name', 'LIKE', "%{$track}%");
-
-
-        if($user_track){
-            $task = Task::find($user_track->id);
-
-            return TaskResource::collection($task);
-        }else{
+        if ($track_tasks) {
+            return TaskResource::collection($track_tasks);
+        } else {
             return \response([
-                'message' => 'Track not available'
+                'message' => 'Track task not available'
             ]);
         }
     }
 
-    public function viewTask($track_id, $id){
+    public function viewTask($id)
+    {
 
         $this->middleware(['role: intern', 'role:superadmin']);
 
         $user_id = auth()->user()->id;
 
-        $user_track = TrackUser::where('user_id', $user_id)->where('track_trid', $track_id);
+        $task = Task::where('id', $id)->where();
 
-        $task_track = Task::where('track_id', $track_id)->where();
-
-        if($user_track && $task_track){
-
-            $task = Task::find($user_track->id);
+        if ($task) {
             return TaskResource::collection($task);
-        }else{
+        } else {
             return \response([
                 'message' => 'No Task available'
             ]);
         }
+
     }
+  
+//    public function viewTrack($track){
+//
+//
+//        $this->middleware(['role: intern', 'role:superadmin']);
+//
+//        $user_id = auth()->user()->id;
+//
+//        $user_track = TrackUser::where('user_id', $user_id)->where('track_name', 'LIKE', "%{$track}%");
+//
+//
+//        if($user_track){
+//            $task = Task::find($user_track->id);
+//
+//            return TaskResource::collection($task);
+//        }else{
+//            return \response([
+//                'message' => 'Track not available'
+//            ]);
+//        }
+//    }
+//
+//    public function viewTask($track_id, $id){
+//
+//        $this->middleware(['role: intern', 'role:superadmin']);
+//
+//        $user_id = auth()->user()->id;
+//
+//        $user_track = TrackUser::where('user_id', $user_id)->where('track_trid', $track_id);
+//
+//        $task_track = Task::where('track_id', $track_id)->where();
+//
+//        if($user_track && $task_track){
+//
+//            $task = Task::find($user_track->id);
+//            return TaskResource::collection($task);
+//        }else{
+//            return \response([
+//                'message' => 'No Task available'
+//            ]);
+//        }
+//    }
 
     public function changeTaskStatus(Request $request, $id)
     {

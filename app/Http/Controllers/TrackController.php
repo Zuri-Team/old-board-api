@@ -149,6 +149,14 @@ class TrackController extends Controller
         return $this->SUCCESS('Tracks retrieved', $tracks);
     }
 
+    //get all tracks
+    public function all(){
+        $tracks = Track::orderBy('created_at', 'desc')->paginate(10);
+        logger('Tracks retrieved');        
+        if(!$tracks) return $this->ERROR('No track found');
+        return $this->SUCCESS('Tracks retrieved', $tracks);
+    }
+
     public function get_track_by_id(int $id){
         if(!isset($id)) return $this->ERROR('No track specified');
         $track = Track::find($id);

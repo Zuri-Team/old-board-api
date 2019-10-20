@@ -88,7 +88,7 @@ class AuthController extends Controller
         DB::commit();
         
         $user->assignRole('intern');
-        $user->notify(new UserRegistration($user));
+        // $user->notify(new UserRegistration($user));
         return response()->json([
             'status' => true,
             'message' => 'Registration successful',

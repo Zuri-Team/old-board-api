@@ -22,7 +22,7 @@ class UserProfileController extends Controller
 
     public function index($user) {
 //         $getUser = $user->with('teams')->with('tracks')->first();
-        $user = User::find($user)->with('teams')->with('tracks')->first();
+        $getUser = User::find($user)->with('teams')->with('tracks')->first();
 
         if ($getUser) {
             return $this->sendSuccess($getUser, 'User profile info fetched', 200);

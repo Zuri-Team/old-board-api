@@ -28,7 +28,7 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = Post::orderBy('created_at', 'desc')->paginate(10);
+        $posts = Post::with('user')->with('category')->orderBy('created_at', 'desc')->paginate(10);
         if ($posts) {
 
             return $this->sendSuccess($posts, 'All Posts', 200);
@@ -38,7 +38,7 @@ class PostsController extends Controller
 
     public function view_posts_in_category($id)
     {
-        $posts = Post::where('category_id', $id)->orderBy('created_at', 'desc')->paginate(10);
+        $posts = Post::where('category_id', $id)->with('user')->orderBy('created_at', 'desc')->paginate(10);
         if ($posts) {
             return $this->sendSuccess($posts, 'All Posts in a Category fetched', 200);
         }
@@ -99,9 +99,12 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        if ($post = Post::find($id)) {
+
+        $post = Post::find($id)->with('user')->with('category')->first();
+
+        if ($post) {
              $post['category'] = $post->category;
-             $post['user'] = $post->user;
+            //  $post['user'] = $post->user;
                 return $this->sendSuccess($post, 'View a Post', 200);
         } else {
             return $this->sendError('Post not found', 404, []);

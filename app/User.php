@@ -58,7 +58,7 @@ class User extends Authenticatable
 
     public function tracks()
     {
-        return $this->belongsToMany('App\Track');
+        return $this->belongsToMany('App\Track', 'track_users');
     }
 
     /**

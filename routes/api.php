@@ -32,6 +32,19 @@ Route::get('track/all', 'TrackController@all');
 
 Route::group(['middleware' => 'auth:api'], function () {
 
+    //User Profile Routes
+    Route::group(['prefix' => 'user-profile'], function () {
+        Route::get('/{user}', 'UserProfileController@index');
+        Route::put('/promote/{user}', 'UserProfileController@promote');
+        Route::put('/demote/{user}', 'UserProfileController@demote');
+        Route::put('/update-stage/{user}', 'UserProfileController@update_stage');
+        Route::put('/deactivate/{user}', 'UserProfileController@deactivate');
+        Route::put('/activate/{user}', 'UserProfileController@activate');
+        Route::put('/make-admin/{user}', 'UserProfileController@make_admin');
+        Route::put('/remove-admin/{user}', 'UserProfileController@remove_admin');
+        Route::delete('/delete/{user}', 'UserProfileController@destroy');
+    });
+
     
 //stat
 Route::get('/stats/dashboard', 'StatsController@dashboard');

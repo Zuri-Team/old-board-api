@@ -270,7 +270,7 @@ class UserProfileController extends Controller
 
          try {
 
-            $user = User::find($id);
+            // $user = User::find($id);
             if ($user) {
 
                 if($user->hasAnyRole(['superadmin', 'admin'])){

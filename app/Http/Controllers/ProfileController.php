@@ -31,7 +31,6 @@ class ProfileController extends Controller
             }else{
                 return $this->sendError('User not found', 500, []);
             }
-
     }
 
 
@@ -40,7 +39,6 @@ class ProfileController extends Controller
         //
         $data = request()->all();
 
-        $image = request()->file('profile_img')->getRealPath();
         //fixed
 
         DB::beginTransaction();
@@ -51,6 +49,10 @@ class ProfileController extends Controller
         
         // $picPath = Cloudder::show(Cloudder::getPublicId());
 
+        if($request->hasFile('profile_img')){
+
+        $image = request()->file('profile_img')->getRealPath();
+
             $cloudder     = Cloudder::upload($image);
             //Request the image info from api and save to db
             $uploadResult = $cloudder->getResult();
@@ -60,6 +62,7 @@ class ProfileController extends Controller
             $format       = $uploadResult["format"];
 
             $user_image   = $uploadResult['url'];
+        }
 
 
         // $data['profile_img'] =  $picPath;
@@ -68,9 +71,15 @@ class ProfileController extends Controller
         $getUserId = auth()->id();
 
         $user = User::find($getUserId);
+        if($request->firstname) $user->firstname = $request->firstname;
+        if($request->lastname) $user->lastname = $request->lastname;
+        if($request->username) $user->username = $request->username;
+        if($request->location) $user->location = $request->location;
+        if($request->gender) $user->gender = $request->gender;
+        if($request->email) $user->email = $request->email;
         if($request->bio) $user->bio = $request->bio;
         if($request->url) $user->url = $request->url;
-        if($request->profile_img) $user->profile_img = $user_image;
+        if($user_image) $user->profile_img = $user_image;
 
         $res = $user->save();
         

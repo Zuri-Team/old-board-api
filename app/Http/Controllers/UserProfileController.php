@@ -21,10 +21,10 @@ class UserProfileController extends Controller
     }
 
     public function index(User $user) {
-        $user = $user->with('teams')->with('tracks')->first();
+        $getUser = $user->with('teams')->with('tracks')->first();
 
-        if ($user) {
-            return $this->sendSuccess($user, 'User profile info fetched', 200);
+        if ($getUser) {
+            return $this->sendSuccess($getUser, 'User profile info fetched', 200);
         }
         return $this->sendError('Internal server error.', 500, []);
     }

@@ -25,11 +25,12 @@ class ProfileController extends Controller
 
     public function index(User $user){
 
-        return response()->json([
+        if($user){
+            return $this->sendSuccess($user, 'User Profile ', 200);
 
-            'user' => $user,
-            'profile' => $user->profile
-        ], 200);
+            }else{
+                return $this->sendError('User not found', 500, []);
+            }
 
     }
 
@@ -57,10 +58,8 @@ class ProfileController extends Controller
             $file_url     = $uploadResult["public_id"];
             //Get the image format from the api
             $format       = $uploadResult["format"];
-            $image_link = 'https://res.cloudinary.com/judejax/image/upload/v1571677111/';
 
-            $user_image   = $image_link.$file_url.".".$format;
-
+            $user_image   = $uploadResult['url'];
 
 
         // $data['profile_img'] =  $picPath;

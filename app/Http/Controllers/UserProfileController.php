@@ -20,8 +20,8 @@ class UserProfileController extends Controller
         $this->middleware(['role:superadmin']);
     }
 
-    public function index($id) {
-        $user = User::find($id)->with('teams')->with('tracks')->with('profile')->first();
+    public function index(User $user) {
+        //$user = User::find($id)->with('teams')->with('tracks')->with('profile')->first();
 
         if ($user) {
             return $this->sendSuccess($user, 'User profile info fetched', 200);

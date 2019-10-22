@@ -15,7 +15,7 @@ class InternsController extends Controller
     use ResponseTrait;
 
     public function get_all_interns(){
-        $interns = User::role('intern')->with('teams')->get();
+        $interns = User::role('intern')->with('teams')->with('tracks')->get();
         //  $interns = User::all();
         
         if ($interns) {

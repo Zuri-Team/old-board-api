@@ -68,20 +68,21 @@ class ProfileController extends Controller
         // $data['profile_img'] =  $picPath;
         // $data['profile_img'] =  $user_image;
 
-        $getUserId = auth()->id();
+        $getUserId = auth()->user()->id;
 
         $user = User::find($getUserId);
-        if($request->firstname) $user->firstname = $request->firstname;
-        if($request->lastname) $user->lastname = $request->lastname;
-        if($request->username) $user->username = $request->username;
-        if($request->location) $user->location = $request->location;
-        if($request->gender) $user->gender = $request->gender;
-        if($request->email) $user->email = $request->email;
-        if($request->bio) $user->bio = $request->bio;
-        if($request->url) $user->url = $request->url;
+        $res = $user->update($request->all());
+        // if($request->firstname) $user->firstname = $request->firstname;
+        // if($request->lastname) $user->lastname = $request->lastname;
+        // if($request->username) $user->username = $request->username;
+        // if($request->location) $user->location = $request->location;
+        // if($request->gender) $user->gender = $request->gender;
+        // if($request->email) $user->email = $request->email;
+        // if($request->bio) $user->bio = $request->bio;
+        // if($request->url) $user->url = $request->url;
         if($user_image) $user->profile_img = $user_image;
 
-        $res = $user->save();
+        // $res = $user->save();
         
         // $updatedProfile = auth()->user()->update($data);
 

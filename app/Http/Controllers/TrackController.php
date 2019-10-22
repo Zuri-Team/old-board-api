@@ -7,9 +7,15 @@ use App\User;
 use App\Track;
 use App\TrackUser;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+
+use App\Http\Classes\ResponseTrait;
+use Illuminate\Http\JsonResponse;
 
 class TrackController extends Controller
 {
+
+    use ResponseTrait;
     /**
      * Apply middleware to each CRUD which checks if logged in user can perform
      * the crud roles or return a failure notice
@@ -20,6 +26,16 @@ class TrackController extends Controller
         if(!Auth::user()->hasAnyRole(['admin', 'superadmin'])){
             return $this->ERROR('You dont have the permission to perform this action');
         }
+
+        // $validator = Validator::make($request->all(), [
+        //     'track_id' => 'bail|required|integer',
+        //     'user_id' => 'required|integer',
+        // ]);
+
+        // if ($validator->fails()) {
+        //     return $this->sendError('', 400, $validator->errors());
+        // }
+        
         $track = $request->all();
         $track['user_id'] = Auth::user()->id;
         
@@ -99,6 +115,16 @@ class TrackController extends Controller
         if(!Auth::user()->hasAnyRole(['admin', 'superadmin'])){
             return $this->ERROR('You dont have the permission to perform this action');
         }
+
+        $validator = Validator::make($request->all(), [
+            'track_id' => 'bail|required|integer',
+            'user_id' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('', 400, $validator->errors());
+        }
+
         $request = $request->all();
         $user = User::find($request['user_id']);
         $track = Track::find($request['track_id']);

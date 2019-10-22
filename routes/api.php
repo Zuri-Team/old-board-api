@@ -58,6 +58,12 @@ Route::get('/interns', 'InternsController@get_all_interns');
     Route::post('categories/update/{id}', 'CategoriesController@updateCategory');
 
     Route::resource('submissions', 'TaskSubmissionController');
+    Route::post('task/{id}/submissions', 'TaskSubmissionController@grade_task_for_interns');
+    Route::post('user/{user}/task/{id}/', 'TaskSubmissionController@grade_intern_task');
+    Route::get('user/{user}/task/{id}/', 'TaskSubmissionController@intern_view_task_grade');
+    Route::get('task/{id}/', 'TaskSubmissionController@intern_view_task_grades');
+    Route::get('task/{id}/submissions', 'TaskSubmissionController@view_all_intern_grades');
+
     Route::post('track/create', 'TrackController@create_track');
     Route::put('track/edit', 'TrackController@edit_track');
     Route::delete('track/delete', 'TrackController@delete_track');

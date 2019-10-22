@@ -127,4 +127,96 @@ class TaskSubmissionController extends Controller
     {
         //
     }
+
+    /**
+     * View all interns score for a task resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function view_all_intern_grades(Request $request, $id){
+
+        if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
+            return $this->ERROR('You dont have the permission to perform this action');
+        }
+
+        $interns_task_submission = TaskSubmission::
+        with(['task', 'user'])
+            ->where('task_id', $id)->get();
+
+        if ($interns_task_submission) {
+            return new TaskSubmissionResource($interns_task_submission);
+        } else {
+            return $this->errorResponse('Task has not been graded', 404);
+        }
+    }
+
+    public function grade_task_for_interns(Request $request, $id){
+
+        if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
+            return $this->ERROR('You dont have the permission to perform this action');
+        }
+
+        $interns_task_submissions = TaskSubmission::where('task_id', $id)->get();
+
+        $scores = $request->input('grade_score');
+
+        foreach ($scores as $score) {
+            //dd($value);
+            $data = [
+                'grade_score' => $score['grade_score']
+            ];
+
+            TaskSubmission::where('task_id', $id)->update($data);
+        }
+
+    }
+
+    public function grade_intern_task(Request $request, $user_id, $id){
+
+        if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
+            return $this->ERROR('You dont have the permission to perform this action');
+        }
+
+        $intern_submission = TaskSubmission::where('user_id', $user_id)->where('task_id', $id)->get();
+
+        if ($intern_submission) {
+            $data = [
+                'grade_score' => $request->input('grade_score');
+            ];
+            return TaskSubmission::update($data);
+        } else {
+            return $this->errorResponse('Task has not been graded', 404);
+        }
+    }
+
+    public function intern_view_task_grade(Request $request, $user_id, $id){
+
+        if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin', 'intern'])) {
+            return $this->ERROR('You dont have the permission to perform this action');
+        }
+
+        $intern_submission = TaskSubmission::where('user_id', $user_id)->where('task_id', $id)->get();
+
+        if ($intern_submission) {
+            return TaskSubmissionResource($intern_submission);
+        } else {
+            return $this->errorResponse('Task has not been graded', 404);
+        }
+    }
+
+    public function intern_view_task_grades($id){
+
+        if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin', 'intern'])) {
+            return $this->ERROR('You dont have the permission to perform this action');
+        }
+
+        $task_submission_grades = TaskSubmission::where('task_id', $id)->get();
+
+        if ($task_submission_grades) {
+            return TaskSubmissionResource($task_submission_grades);
+        } else {
+            return $this->errorResponse('Task has not been graded', 404);
+        }
+    }
 }

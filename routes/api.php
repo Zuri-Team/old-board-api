@@ -30,6 +30,7 @@ Route::get('profile/{user}', 'ProfileController@index');
 //get all tracks without signing in
 Route::get('track/all', 'TrackController@all');
 
+Route::get('/stats/summary', 'StatsController@summary');
 Route::group(['middleware' => 'auth:api'], function () {
 
     //User Profile Routes

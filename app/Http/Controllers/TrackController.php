@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\User;
 use App\Track;
 use App\TrackUser;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
-
-use App\Http\Classes\ResponseTrait;
+use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use App\Http\Classes\ResponseTrait;
+
+use Illuminate\Support\Facades\Auth;
+use App\Notifications\TrackNotifications;
+use Illuminate\Support\Facades\Validator;
 
 class TrackController extends Controller
 {
@@ -136,6 +137,13 @@ class TrackController extends Controller
             
             TrackUser::create($request);
             logger(Auth::user()->email . ' added ' . $user->email . ' to ' . $track->track_name . ' track');
+
+            //SEND NOTIFICATION HERE
+            $message = [
+                'message'=>"You have been added to a new track.",
+            ];
+            $user->notify(new TrackNotifications($message));
+
             return $this->SUCCESS('Track joined', $track);
 
         }catch(\Throwable $e){
@@ -156,6 +164,12 @@ class TrackController extends Controller
             if (!$track) return $this->ERROR('User not associated with selected track');
             $track->delete();
             logger(Auth::user()->email . ' removed ' . $user->email . ' from a track');
+
+            $message = [
+                'message'=>`You have been removed from ${$track->track_name} track.`,
+            ];
+            $user->notify(new TrackNotifications($message));
+            
             return $this->SUCCESS('User successfully removed from track');
         }catch(\Throwable $e){
             logger('Track removal failed' . $track);

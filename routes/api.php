@@ -99,4 +99,3 @@ Route::get('/interns', 'InternsController@get_all_interns');
 //     return response()->json([
 //         'message' => 'Not Found', 404);
 // });
-

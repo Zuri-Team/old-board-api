@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Post;
+use App\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\JsonResponse;
 use App\Http\Classes\ResponseTrait;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
 
-use App\Category;
-use App\Post;
+use Illuminate\Support\Facades\Auth;
+use App\Notifications\PostNotifications;
+use Illuminate\Support\Facades\Validator;
 
 class PostsController extends Controller
 {
@@ -76,12 +77,21 @@ class PostsController extends Controller
         $category = Category::find($request['category_id']);
         if(!$category) return $this->sendError('Category does not exist', 400, []);
 
+        $user = Auth::user();
         $request = $request->all();
-        $request['user_id'] = Auth::user()->id;
+        $request['user_id'] = $user->id;
 
         $postCollection = [];
         try{
             $postCollection = Post::create($request);
+
+            //SEND NOTIFICATION HERE (to db)
+            $message = [
+                'message'=>`New post created successfully.`,
+            ];
+            
+            $user->notify(new PostNotifications($message));
+            
             return $this->sendSuccess($postCollection, 'Post has been created successfully.', 201);
 
         }catch (\Exception $e){

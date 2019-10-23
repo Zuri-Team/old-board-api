@@ -182,8 +182,13 @@ class TaskSubmissionController extends Controller
 
         if ($intern_submission) {
             $data = [
-                'grade_score' => $request->input('grade_score');
+                'grade_score' => $request->input('grade_score'),
             ];
+
+            // SEND NOTIFICATION HERE
+
+
+            
             return TaskSubmission::update($data);
         } else {
             return $this->errorResponse('Task has not been graded', 404);

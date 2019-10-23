@@ -98,7 +98,14 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
 
     Route::post('profile/{user}/edit', 'ProfileController@update');
 
+    // NOTIFICATION
 
+    Route::get('notifications', 'NotificationController@index');
+    Route::delete('notifications', 'NotificationController@delete');
+    Route::get('notifications/markasread', 'NotificationController@markAsRead');
+    Route::get('notifications/read', 'NotificationController@markOneAsRead');
+    Route::get('notifications/notification_count', 'NotificationController@notification_count');
+    
 });
 
 
@@ -107,4 +114,3 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
 //     return response()->json([
 //         'message' => 'Not Found', 404);
 // });
-

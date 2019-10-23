@@ -182,7 +182,7 @@ class TaskSubmissionController extends Controller
 
         if ($intern_submission) {
             $data = [
-                'grade_score' => $request->input('grade_score');
+                'grade_score' => $request->input('grade_score'),
             ];
             return TaskSubmission::update($data);
         } else {

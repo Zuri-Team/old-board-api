@@ -97,7 +97,14 @@ Route::get('/interns', 'InternsController@get_all_interns');
 
     Route::post('profile/{user}/edit', 'ProfileController@update');
 
+    // NOTIFICATION
 
+    Route::get('notifications', 'NotificationController@index');
+    Route::delete('notifications', 'NotificationController@delete');
+    Route::get('notifications/markasread', 'NotificationController@markAsRead');
+    Route::get('notifications/read', 'NotificationController@markOneAsRead');
+    Route::get('notifications/notification_count', 'NotificationController@notification_count');
+    
 });
 
 

@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\JsonResponse;
 use App\Http\Classes\ResponseTrait;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
-use App\User;
+use App\Notifications\UserNotifications;
+use Illuminate\Support\Facades\Validator;
 
 class UserProfileController extends Controller
 {
@@ -48,6 +49,14 @@ class UserProfileController extends Controller
                 $result = $user->save();
 
                 if($result){
+
+                    // SEND NOTIFICATION HERE
+                    $message = [
+                        'message'=>'You have been promoted to stage '.$nextStage,
+                    ];
+                    
+                    $user->notify(new UserNotifications($message));
+
                     return $this->sendSuccess($user, 'Intern successfully promoted to stage '.$nextStage, 200);
                 }
 
@@ -79,6 +88,14 @@ class UserProfileController extends Controller
                 $result = $user->save();
 
                 if($result){
+
+                    // SEND NOTIFICATION HERE
+                    $message = [
+                        'message'=>'You have been demoted to stage '.$lastStage,
+                    ];
+                    
+                    $user->notify(new UserNotifications($message));
+                    
                     return $this->sendSuccess($user, 'Intern successfully demoted to stage '.$lastStage, 200);
                 }
 
@@ -214,6 +231,13 @@ class UserProfileController extends Controller
                 if($user->assignRole('admin')){
                     $user->role = 'admin';
                     $user->save();
+
+                    $message = [
+                        'message'=>'You have been promoted to admin level ',
+                    ];
+                    
+                    $user->notify(new UserNotifications($message));
+                    
                     return $this->sendSuccess($user, 'User successfully promoted to admin', 200);
                 }
 

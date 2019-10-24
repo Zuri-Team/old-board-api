@@ -96,6 +96,7 @@ Route::get('/interns', 'InternsController@get_all_interns');
     Route::get('categories/posts/{id}', 'PostsController@view_posts_in_category');
 
     Route::post('profile/{user}/edit', 'ProfileController@update');
+    Route::post('profile/{user}/upload', 'ProfileController@upload');
 
 
 });

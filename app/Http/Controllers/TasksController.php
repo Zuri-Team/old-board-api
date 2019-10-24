@@ -145,10 +145,10 @@ class TasksController extends Controller
     {
         $this->middleware(['role:superadmin', 'role:admin']);
 
-        $task = Task::findOrFail($id);
+        $task = Task::find($id);
 
         if ($task->delete()) {
-            return response(null, Response::HTTP_NO_CONTENT);
+            return response($task, 'Task successfully deleted');
         }
     }
 

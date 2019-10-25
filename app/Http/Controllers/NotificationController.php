@@ -19,11 +19,11 @@ class NotificationController extends Controller
     public function index()
     {
         $notifications = Auth::user()->notifications()->get(['id','data', 'read_at', 'created_at', 'updated_at'])->toArray();
-        if ($notifications) {
+      //  if ($notifications) {
 
             return $this->sendSuccess($notifications, 'All notifications', 200);
-        }
-        return $this->sendError('Internal server error.', 500, []);
+       // }
+    //    return $this->sendError('Internal server error.', 500, []);
 
     }
 

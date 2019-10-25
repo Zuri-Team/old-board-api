@@ -10,9 +10,15 @@ use App\TrackUser;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\JsonResponse;
+use App\Http\Classes\ResponseTrait;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class TaskSubmissionController extends Controller
 {
+
+    use ResponseTrait;
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +31,8 @@ class TaskSubmissionController extends Controller
         }
         $submissions = TaskSubmission::orderBy('created_at', 'desc')->paginate(10);
         if ($submissions) {
-            return TaskSubmissionResource::collection($submissions);
+            // return TaskSubmissionResource::collection($submissions);
+            return $this->sendSuccess($submissions, 'AllTasks submissions fetched', 200);
         }
     }
 
@@ -55,22 +62,27 @@ class TaskSubmissionController extends Controller
 
         // Check if the User is found in the trackUser
         if (!TrackUser::where('user_id', $data['user_id'])->first()) {
-            return $this->errorResponse('User does not belong to this track', 422);
+            // if (!TrackUser::where('user_id', auth()->user()->id)) {
+            // return $this->errorResponse('User does not belong to this track', 422);
+            return $this->sendError('User does not belong to this track', 422, []);
         }
 
         // Check if the Task Submission date has past => done
         if (Task::find($data['task_id'])->first()->deadline < Carbon::now()) {
-            return $this->errorResponse('Submission date elaps', 422);
+            // return $this->errorResponse('Submission date has elapsed', 422);
+            return $this->sendError('Deadline date has elapsed', 422, []);
         }
 
         // Check if Status is still open for submission.
         if (Task::find($data['task_id'])->first()->status == 'CLOSED') {
-            return $this->errorResponse('Task submission Closed', 422);
+            // return $this->errorResponse('Task submission Closed', 422);
+            return $this->sendError('Task submission Closed', 422, []);
         }
 
         $task = TaskSubmission::create($data);
         if ($task) {
-            return new TaskSubmissionResource($task);
+            // return new TaskSubmissionResource($task);
+            return $this->sendSuccess($task, 'Task submitted successfully', 200);
         }
 
     }
@@ -88,9 +100,12 @@ class TaskSubmissionController extends Controller
         }
 
         if ($submission = TaskSubmission::whereId($id)->where('user_id', auth('api')->user()->id)->first()) {
-            return new TaskSubmissionResource($submission);
+            // return new TaskSubmissionResource($submission);
+            return $this->sendSuccess($submission, 'Task submission fetched', 200);
+            
         } else {
-            return $this->errorResponse('Submission not found', 404);
+            // return $this->errorResponse('Submission not found', 404);
+            return $this->sendError('Submission not found', 404, []);
         }
     }
 
@@ -147,11 +162,20 @@ class TaskSubmissionController extends Controller
         if ($interns_task_submission) {
             return new TaskSubmissionResource($interns_task_submission);
         } else {
-            return $this->errorResponse('Task has not been graded', 404);
+            // return $this->errorResponse('Task has not been graded', 404);
+            return $this->sendError('Task has not been graded', 404, []);
         }
     }
 
     public function grade_task_for_interns(Request $request, $id){
+
+        $validator = Validator::make($request->all(), [
+            'grade_score' => 'required|array',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('', 400, $validator->errors());
+        }
 
         if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
             return $this->ERROR('You dont have the permission to perform this action');
@@ -172,13 +196,29 @@ class TaskSubmissionController extends Controller
 
     }
 
-    public function grade_intern_task(Request $request, $user_id, $id){
+    public function grade_intern_task(Request $request, $id){
 
         if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
             return $this->ERROR('You dont have the permission to perform this action');
         }
 
-        $intern_submission = TaskSubmission::where('user_id', $user_id)->where('task_id', $id)->get();
+        $validator = Validator::make($request->all(), [
+            'grade_score' => 'required',
+            'user_id' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('', 400, $validator->errors());
+        }
+
+        $user_id = $request->user_id;
+
+        $task = Task::find($id);
+        if(!$task){
+            return $this->sendError('Task doesnt exists', 404, []);
+        }
+
+        $intern_submission = TaskSubmission::where('user_id', $user_id)->where('task_id', $id)->first();
 
         if ($intern_submission) {
             $data = [
@@ -186,12 +226,18 @@ class TaskSubmissionController extends Controller
             ];
 
             // SEND NOTIFICATION HERE
-
-
             
-            return TaskSubmission::update($data);
+            $res =  $intern_submission->update($data);
+
+            if($res){
+                return $this->sendSuccess($intern_submission, 'Task submission successfully graded', 200);
+            }else{
+                return $this->sendError('Task submission wasn not graded', 422, []);
+            }
+            // return TaskSubmission::find($id)->update($data);
         } else {
-            return $this->errorResponse('Task has not been graded', 404);
+            // return $this->errorResponse('Task has not been graded', 404);
+            return $this->sendError('Intern has not submitted this task', 404, []);
         }
     }
 
@@ -204,9 +250,11 @@ class TaskSubmissionController extends Controller
         $intern_submission = TaskSubmission::where('user_id', $user_id)->where('task_id', $id)->get();
 
         if ($intern_submission) {
-            return TaskSubmissionResource($intern_submission);
+            // return TaskSubmissionResource($intern_submission);
+            return $this->sendSuccess($intern_submission, 'Task submission fetched', 200);
         } else {
-            return $this->errorResponse('Task has not been graded', 404);
+            // return $this->errorResponse('Task has not been graded', 404);
+            return $this->sendError('Task has not been graded', 404, []);
         }
     }
 
@@ -219,9 +267,11 @@ class TaskSubmissionController extends Controller
         $task_submission_grades = TaskSubmission::where('task_id', $id)->get();
 
         if ($task_submission_grades) {
-            return TaskSubmissionResource($task_submission_grades);
+            // return TaskSubmissionResource($task_submission_grades);
+            return $this->sendSuccess($task_submission_grades, 'Task submission fetched', 200);
         } else {
-            return $this->errorResponse('Task has not been graded', 404);
+            // return $this->errorResponse('Task has not been graded', 404);
+            return $this->sendError('Task has not been graded', 404, []);
         }
     }
 }

@@ -57,7 +57,7 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
 
     Route::resource('submissions', 'TaskSubmissionController');
     Route::post('task/{id}/submissions', 'TaskSubmissionController@grade_task_for_interns');
-    Route::post('user/{user}/task/{id}/', 'TaskSubmissionController@grade_intern_task');
+    Route::post('user/task/{id}/', 'TaskSubmissionController@grade_intern_task');
     Route::get('user/{user}/task/{id}/', 'TaskSubmissionController@intern_view_task_grade');
     Route::get('task/{id}/', 'TaskSubmissionController@intern_view_task_grades');
     Route::get('task/{id}/submissions', 'TaskSubmissionController@view_all_intern_grades');

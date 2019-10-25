@@ -55,7 +55,7 @@ class UserNotifications extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
+            'message' => $this->message['message'],
         ];
     }
 }

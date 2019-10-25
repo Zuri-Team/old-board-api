@@ -215,4 +215,14 @@ class TrackController extends Controller
         logger('Track retrieved' . $track);        
         return $this->SUCCESS('Track retrieved', $track);
     }
+
+    public function test(){
+
+        $user =  User::find(2);
+        //SEND NOTIFICATION HERE
+            $message = [
+                'message'=>"You have been added to a new track.",
+            ];
+            $user->notify(new TrackNotifications($message));
+    }
 }

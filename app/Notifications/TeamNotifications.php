@@ -29,7 +29,7 @@ class TeamNotifications extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -55,7 +55,7 @@ class TeamNotifications extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
+            'message' => $this->message['message'],
         ];
     }
 }

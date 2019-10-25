@@ -13,10 +13,6 @@
 
 // Route::routes();
 
-//
-
-//Route group to handle cors
-// Route::group(['middleware' => 'cors'], function () {
 
 Route::post('login', 'AuthController@login');
 Route::post('register', 'AuthController@register');
@@ -102,16 +98,9 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
     // NOTIFICATION
 
     Route::get('notifications', 'NotificationController@index');
-    Route::delete('notifications', 'NotificationController@delete');
-    Route::get('notifications/markasread', 'NotificationController@markAsRead');
-    Route::get('notifications/read', 'NotificationController@markOneAsRead');
+    Route::delete('notifications', 'NotificationController@destroy');
+    Route::post('notifications/markasread', 'NotificationController@markAsRead');
+    Route::post('notifications/read', 'NotificationController@markOneAsRead');
     Route::get('notifications/notification_count', 'NotificationController@notification_count');
     
 });
-
-
-// });
-// Route::fallback(function(){
-//     return response()->json([
-//         'message' => 'Not Found', 404);
-// });

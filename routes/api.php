@@ -13,6 +13,11 @@
 
 // Route::routes();
 
+Route::get('/fix', function(){
+    DB::table('users')->update(['gender' => 'Male']);
+
+});
+
 
 Route::post('login', 'AuthController@login');
 Route::post('register', 'AuthController@register');
@@ -40,6 +45,10 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::put('/make-admin/{user}', 'UserProfileController@make_admin');
         Route::put('/remove-admin/{user}', 'UserProfileController@remove_admin');
         Route::delete('/delete/{user}', 'UserProfileController@destroy');
+
+
+
+        
     });
 
     

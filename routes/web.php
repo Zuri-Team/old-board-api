@@ -16,3 +16,6 @@ Route::get('/', function () {
 });
 
 
+// CLOUDINARY_API_KEY=378434488797837
+// CLOUDINARY_API_SECRET=0Mky4tOuo-KggJOA2u3O8eY-VY0
+// CLOUDINARY_CLOUD_NAME=judejax

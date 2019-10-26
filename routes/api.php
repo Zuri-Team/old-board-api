@@ -76,7 +76,8 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
     Route::resource('tasks', 'TasksController'); #URL for tasks
 
     Route::get('track/{id}/tasks', 'TasksController@view_track_task');
-    Route::get('tasks/{id}', 'TuasksController@view_task');
+    Route::get('tasks/{id}', 'TasksController@view_task');
+    Route::get('user/task/', 'TaskController@intern_view_track_task');
 
 //    Route::get('track/{id}/tasks', 'TasksController@viewTracktask');
 //    Route::get('tasks/{id}', 'TasksController@viewTask');

@@ -168,6 +168,24 @@ class TasksController extends Controller
             ]);
         }
     }
+    
+     public function intern_view_track_task()
+    {
+        $this->middleware(['role: intern']);
+        
+        $user_track = auth()->user()->track;
+        
+        //Get track id
+        $track_id = Track::where('track_name', $user_track)->first();
+        $track_tasks = Task::where('track_id', $track_id)->orderBy('created_at', 'desc')->get();
+        if ($track_tasks) {
+            return TaskResource::collection($track_tasks);
+        } else {
+            return \response([
+                'message' => 'Track task not available'
+            ]);
+        }
+     } 
 
     public function viewTask($id)
     {

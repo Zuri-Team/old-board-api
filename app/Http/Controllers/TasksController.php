@@ -145,9 +145,7 @@ class TasksController extends Controller
     {
         $this->middleware(['role:superadmin', 'role:admin']);
 
-        $task = Task::find($id);
-
-        if ($task->delete()) {
+        if (Task::destroy($id)) {
             return response($task, 'Task successfully deleted');
         }
     }
@@ -190,11 +188,9 @@ class TasksController extends Controller
     public function viewTask($id)
     {
 
-        $this->middleware(['role: intern', 'role:superadmin']);
+        $this->middleware(['role:superadmin', 'role:admin']);
 
-        $user_id = auth()->user()->id;
-
-        $task = Task::where('id', $id)->where();
+        $task = Task::where('id', $id)->get();
 
         if ($task) {
             return TaskResource::collection($task);

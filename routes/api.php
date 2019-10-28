@@ -92,7 +92,7 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
 
     Route::get('track/{id}/tasks', 'TasksController@view_track_task');
     Route::get('tasks/{id}', 'TasksController@view_task');
-    Route::get('user/task/', 'TaskController@intern_view_track_task');
+    Route::get('user/task/', 'TasksController@intern_view_track_task');
 
 //    Route::get('track/{id}/tasks', 'TasksController@viewTracktask');
 //    Route::get('tasks/{id}', 'TasksController@viewTask');

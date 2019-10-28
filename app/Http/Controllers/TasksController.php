@@ -185,7 +185,7 @@ class TasksController extends Controller
         }
      } 
 
-    public function viewTask($id)
+    public function view_task($id)
     {
 
         $this->middleware(['role:superadmin', 'role:admin']);

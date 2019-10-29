@@ -45,10 +45,16 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::put('/make-admin/{user}', 'UserProfileController@make_admin');
         Route::put('/remove-admin/{user}', 'UserProfileController@remove_admin');
         Route::delete('/delete/{user}', 'UserProfileController@destroy');
+    });
 
-
-
-        
+    //Activity Routes
+    Route::group(['prefix' => 'activity'], function () {
+        Route::get('/all', 'ActivityController@get_all_activities');
+        Route::get('/interns', 'ActivityController@get_all_intern_activities');
+        Route::get('/admins', 'ActivityController@get_all_admin_activities');
+        Route::get('/search/all/{query}', 'ActivityController@search_all_logs');
+        Route::get('/search/interns/{query}', 'ActivityController@search_all_intern_logs');
+        Route::get('/search/admins/{query}', 'ActivityController@search_all_admin_logs');
     });
 
     
@@ -86,7 +92,7 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
 
     Route::get('track/{id}/tasks', 'TasksController@view_track_task');
     Route::get('tasks/{id}', 'TasksController@view_task');
-    Route::get('user/task/', 'TaskController@intern_view_track_task');
+    Route::get('user/task/', 'TasksController@intern_view_track_task');
 
 //    Route::get('track/{id}/tasks', 'TasksController@viewTracktask');
 //    Route::get('tasks/{id}', 'TasksController@viewTask');

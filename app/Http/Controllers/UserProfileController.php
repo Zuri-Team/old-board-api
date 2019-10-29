@@ -50,6 +50,11 @@ class UserProfileController extends Controller
 
                 if($result){
 
+                    // Delete from Slack Group
+                    
+
+                    // Add to new Slack group
+
                     // SEND NOTIFICATION HERE
                     $message = [
                         'message'=>'You have been promoted to stage '.$nextStage,

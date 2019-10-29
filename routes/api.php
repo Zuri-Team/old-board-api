@@ -19,6 +19,7 @@ Route::get('/fix', function(){
 });
 
 
+Route::resource('slack', 'SlackController');
 Route::post('login', 'AuthController@login');
 Route::post('register', 'AuthController@register');
 Route::get('/verify/{token}', 'AuthController@verify')->name('verify');

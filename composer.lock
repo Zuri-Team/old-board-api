@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fe2eb41c2ffd2014deda7ed117d4c6f3",
+    "content-hash": "c9f24d414d8640e297b6f27c14086989",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -171,6 +171,82 @@
                 "sdk"
             ],
             "time": "2019-10-02T15:40:37+00:00"
+        },
+        {
+            "name": "craftyx/slack-api",
+            "version": "2.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JulienTant/laravel-slack-api.git",
+                "reference": "94b47ae1f0f28ea08d2b6409ff016b1c91ebc681"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JulienTant/laravel-slack-api/zipball/94b47ae1f0f28ea08d2b6409ff016b1c91ebc681",
+                "reference": "94b47ae1f0f28ea08d2b6409ff016b1c91ebc681",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "~5.3|~6.0",
+                "illuminate/cache": "6.*",
+                "illuminate/support": "6.*",
+                "php": ">=7.2"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Craftyx\\SlackApi\\SlackApiServiceProvider"
+                    ],
+                    "aliases": {
+                        "SlackApi": "Craftyx\\SlackApi\\Facades\\SlackApi",
+                        "SlackChannel": "Craftyx\\SlackApi\\Facades\\SlackChannel",
+                        "SlackChat": "Craftyx\\SlackApi\\Facades\\SlackChat",
+                        "SlackGroup": "Craftyx\\SlackApi\\Facades\\SlackGroup",
+                        "SlackFile": "Craftyx\\SlackApi\\Facades\\SlackFile",
+                        "SlackSearch": "Craftyx\\SlackApi\\Facades\\SlackSearch",
+                        "SlackInstantMessage": "Craftyx\\SlackApi\\Facades\\SlackInstantMessage",
+                        "SlackUser": "Craftyx\\SlackApi\\Facades\\SlackUser",
+                        "SlackStar": "Craftyx\\SlackApi\\Facades\\SlackStar",
+                        "SlackUserAdmin": "Craftyx\\SlackApi\\Facades\\SlackUserAdmin",
+                        "SlackRealTimeMessage": "Craftyx\\SlackApi\\Facades\\SlackRealTimeMessage",
+                        "SlackTeam": "Craftyx\\SlackApi\\Facades\\SlackTeam"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Craftyx\\": "src/Craftyx/"
+                },
+                "files": [
+                    "src/Craftyx/SlackApi/helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "DBAD"
+            ],
+            "authors": [
+                {
+                    "name": "Julien Tant",
+                    "email": "julien@craftyx.fr"
+                },
+                {
+                    "name": "Vagner do Carmo",
+                    "email": "vluzrmos@gmail.com"
+                },
+                {
+                    "name": "Daniel Baron",
+                    "email": "daniel.baron@gmx.net"
+                }
+            ],
+            "description": "Wrapper for Slack.com WEB API. Based on Vagner do Carmo one, but compatible with GuzzleHttp6 ",
+            "keywords": [
+                "laravel",
+                "lumen",
+                "slack"
+            ],
+            "time": "2019-10-16T21:03:26+00:00"
         },
         {
             "name": "defuse/php-encryption",

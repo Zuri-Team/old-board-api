@@ -2,10 +2,12 @@
 
 namespace App;
 
+use Cache;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+
 
 class User extends Authenticatable
 {
@@ -73,5 +75,10 @@ class User extends Authenticatable
     {
         //
         return $this->hasOne('App\Profile');
+    }
+
+    public function status()
+    {
+        return Cache::has('online' . $this->id);
     }
 }

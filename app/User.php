@@ -80,5 +80,11 @@ class User extends Authenticatable
     public function status()
     {
         return Cache::has('online' . $this->id);
+
+    }
+     
+    public function activities()
+    {
+        return $this->hasMany('App\Activity');
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use Auth;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Classes\ResponseTrait;
@@ -14,15 +14,23 @@ class StatusController extends Controller
     //
     use ResponseTrait;
 
-    public function status(User $user)
+    public function status()
     {
-        if($user->status())
-        {
-            $online = true;
-            return $this->sendSuccess($online, 'User is online', 200);
-        }else{
-            $online = false;
-            return $this->sendSuccess($online, 'User is offline', 200);
+        $users = User::all();
+        $List = []; 
+        foreach ($users as $user) {
+
+            $List[] = [
+                'id'=> $user->id,
+                'username' => $user->username, 
+                'profile_img' => $user->profile->profile_img,
+                'status' => $user->status()
+                ] ;
+
+           
         }
+
+        return $this->sendSuccess( $List, 'Users Status fetched', 200);
+       
     }
 }

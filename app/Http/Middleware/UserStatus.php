@@ -2,12 +2,13 @@
 
 namespace App\Http\Middleware;
 
+
 use Auth;
 use Cache;
 use Carbon\Carbon;
 use Closure;
 
-class LastUserActivity
+class UserStatus
 {
     /**
      * Handle an incoming request.

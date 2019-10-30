@@ -32,6 +32,10 @@ Route::post('/password/reset', 'AuthController@resetPassword');
 
 Route::get('profile/{user}', 'ProfileController@index');
 
+//Status
+Route::get('status', 'StatusController@status');
+
+
 //get all tracks without signing in
 Route::get('track/all', 'TrackController@all');
 
@@ -51,14 +55,24 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::delete('/delete/{user}', 'UserProfileController@destroy');
     });
 
+        
     //Activity Routes
     Route::group(['prefix' => 'activity'], function () {
         Route::get('/all', 'ActivityController@get_all_activities');
         Route::get('/interns', 'ActivityController@get_all_intern_activities');
         Route::get('/admins', 'ActivityController@get_all_admin_activities');
-        Route::get('/search/all/{query}', 'ActivityController@search_all_logs');
-        Route::get('/search/interns/{query}', 'ActivityController@search_all_intern_logs');
-        Route::get('/search/admins/{query}', 'ActivityController@search_all_admin_logs');
+        Route::get('/search/{query}', 'ActivityController@search_all_logs');
+
+
+        // Route::get('/search/interns/{query}', 'ActivityController@search_all_intern_logs');
+        // Route::get('/search/admins/{query}', 'ActivityController@search_all_admin_logs');
+    });
+
+    Route::group(['prefix' => 'post-comment'], function() {
+        Route::get('/post/{id}/comments', 'PostCommentController@retrieve_post_comments');
+        Route::post('/post/{id}/comment', 'PostCommentController@user_post_comment');
+        Route::put('/post/comment/{id}', 'PostCommentController@update_user_comment');
+        Route::delete('/post/comment/{id}', 'PostCommentController@delete_user_comment');
     });
 
     
@@ -78,8 +92,8 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
     Route::post('task/{id}/submissions', 'TaskSubmissionController@grade_task_for_interns');
     Route::post('user/task/{id}/', 'TaskSubmissionController@grade_intern_task');
     Route::get('user/{user}/task/{id}/', 'TaskSubmissionController@intern_view_task_grade');
-    Route::get('task/{id}/', 'TaskSubmissionController@intern_view_task_grades');
-    Route::get('task/{id}/submissions', 'TaskSubmissionController@view_all_intern_grades');
+    Route::get('task/{id}/grades', 'TaskSubmissionController@intern_view_task_grades');
+    Route::get('task/{id}/submissions/grades', 'TaskSubmissionController@view_all_intern_grades');
 
     Route::post('track/create', 'TrackController@create_track');
     Route::put('track/edit', 'TrackController@edit_track');
@@ -95,7 +109,7 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
     Route::resource('tasks', 'TasksController'); #URL for tasks
 
     Route::get('track/{id}/tasks', 'TasksController@view_track_task');
-    Route::get('tasks/{id}', 'TasksController@view_task');
+    Route::get('task/{id}', 'TasksController@view_task');
     Route::get('user/task/', 'TasksController@intern_view_track_task');
 
 //    Route::get('track/{id}/tasks', 'TasksController@viewTracktask');

@@ -74,4 +74,9 @@ class User extends Authenticatable
         //
         return $this->hasOne(Profile::class);
     }
+
+    public function probation()
+    {
+        return $this->hasOne(Probation::class);
+    }
 }

@@ -97,6 +97,11 @@ Route::get('/interns', 'InternsController@get_all_interns');
 
     Route::post('profile/{user}/edit', 'ProfileController@update');
 
+    // Probation Routes
+    Route::post('user/probate', 'ProbationController@probate');
+    Route::delete('user/unprobate', 'ProbationController@unprobate_by_admin');
+    Route::get('probation/status/{user}', 'ProbationController@is_on_onprobation');
+    Route::get('probations/all', 'ProbationController@list_probations');
 
 });
 

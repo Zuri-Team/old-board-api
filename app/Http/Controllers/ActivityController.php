@@ -35,7 +35,7 @@ class ActivityController extends Controller
     }
 
     public function get_all_admin_activities(){
-        $activities = Activity::where('type', 'admin')->orderBy('created_at', 'desc')->get();
+        $activities = Activity::where('type', 'admin')->with($this->usersField)->orderBy('created_at', 'desc')->get();
         if ($activities) {
 
             return $this->sendSuccess($activities, 'All Admin Activity Logs', 200);
@@ -44,7 +44,7 @@ class ActivityController extends Controller
     }
 
     public function search_all_logs($query){
-        $activities = Activity::where('message', 'LIKE', "%{$query}%")->orderBy('created_at', 'desc');
+        $activities = Activity::where('message', 'LIKE', "%{$query}%")->with($this->usersField)->orderBy('created_at', 'desc');
         $results = $activities->get();
 
         if ($results) {
@@ -55,7 +55,7 @@ class ActivityController extends Controller
     }
 
     public function search_all_intern_logs($query){
-        $activities = Activity::where('type', 'intern')->where('message', 'LIKE', "%{$query}%")->orderBy('created_at', 'desc');
+        $activities = Activity::where('type', 'intern')->where('message', 'LIKE', "%{$query}%")->with($this->usersField)->orderBy('created_at', 'desc');
          $results = $activities->get();
 
         if ($results) {
@@ -67,7 +67,7 @@ class ActivityController extends Controller
     }
 
     public function search_all_admin_logs($query){
-        $activities = Activity::where('type', 'admin')->where('message', 'LIKE', "%{$query}%")->orderBy('created_at', 'desc');
+        $activities = Activity::where('type', 'admin')->where('message', 'LIKE', "%{$query}%")->with($this->usersField)->orderBy('created_at', 'desc');
          $results = $activities->get();
 
         if ($results) {

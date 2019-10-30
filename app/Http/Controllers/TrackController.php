@@ -45,6 +45,8 @@ class TrackController extends Controller
         try{
             if(Track::create($track)){
                 logger('Track creation successfull' . $track['track_name']);
+                $track_name = $track['track_name'];
+                $this->logAdminActivity("created " . $track_name . " track");
                 return $this->SUCCESS('Track creation successfull', $track);
             }           
         }catch(\Throwable $e){
@@ -64,6 +66,7 @@ class TrackController extends Controller
                 $track->track_description = isset($request->track_description) ? $request->track_description : $track->track_description;
                 if($track->save()){
                     logger('Track modification successfull' . $track);
+                    $this->logAdminActivity("modified " . $track->track_name . " track");
                     return $this->SUCCESS('Track modification successfull', $track);
                 }
             }else return $this->ERROR('Track not found');
@@ -82,6 +85,7 @@ class TrackController extends Controller
             if ($track){
                 $track->delete();
                 logger('Track deleted' . $track);
+                $this->logAdminActivity("deleted " . $track->track_name . " track");
                 return $this->SUCCESS('Track deleted', $track);
             } else return $this->ERROR('Track not found');
         }catch(\Throwable $e){
@@ -96,6 +100,7 @@ class TrackController extends Controller
         $track = Track::find($request['track_id']);
         try{
             $has_joined = TrackUser::where($request)->first();
+            $this->logAdminActivity("joined " . $track->track_name . " track");
             if (!$track) return $this->ERROR('Track does not exist');
             if($has_joined) return $this->ERROR('You have already joined this track');
             
@@ -138,14 +143,13 @@ class TrackController extends Controller
             if($has_joined) return $this->ERROR('User already joined this track');
             
             TrackUser::create($request);
-            logger(Auth::user()->email . ' added ' . $user->email . ' to ' . $track->track_name . ' track');
-            $this->logAdminActivity(auth()->id(), ' was added to ' . $track->track_name . ' track');
 
             //SEND NOTIFICATION HERE
             $message = [
                 'message'=>"You have been added to a new track.",
             ];
             $user->notify(new TrackNotifications($message));
+            $this->logAdminActivity('added '. $user->email . '  to ' . $track->track_name . ' track');
 
             return $this->SUCCESS('Track joined', $track);
 
@@ -167,12 +171,12 @@ class TrackController extends Controller
             if (!$track) return $this->ERROR('User not associated with selected track');
             $track->delete();
             logger(Auth::user()->email . ' removed ' . $user->email . ' from a track');
-            $this->logAdminActivity(auth()->id(), ' was removed from' . $track->track_name . ' track');
 
             $message = [
                 'message'=>`You have been removed from ${$track->track_name} track.`,
             ];
             $user->notify(new TrackNotifications($message));
+            $this->logAdminActivity('removed '. $user->email . '  from ' . $track->track_name . ' track');
             
             return $this->SUCCESS('User successfully removed from track');
         }catch(\Throwable $e){
@@ -218,15 +222,5 @@ class TrackController extends Controller
         if(!$track) return $this->ERROR('Track not found', [], 404);
         logger('Track retrieved' . $track);        
         return $this->SUCCESS('Track retrieved', $track);
-    }
-
-    public function test(){
-
-        $user =  User::find(2);
-        //SEND NOTIFICATION HERE
-            $message = [
-                'message'=>"You have been added to a new track.",
-            ];
-            $user->notify(new TrackNotifications($message));
     }
 }

@@ -59,9 +59,11 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get('/all', 'ActivityController@get_all_activities');
         Route::get('/interns', 'ActivityController@get_all_intern_activities');
         Route::get('/admins', 'ActivityController@get_all_admin_activities');
-        Route::get('/search/all/{query}', 'ActivityController@search_all_logs');
-        Route::get('/search/interns/{query}', 'ActivityController@search_all_intern_logs');
-        Route::get('/search/admins/{query}', 'ActivityController@search_all_admin_logs');
+        Route::get('/search/{query}', 'ActivityController@search_all_logs');
+
+
+        // Route::get('/search/interns/{query}', 'ActivityController@search_all_intern_logs');
+        // Route::get('/search/admins/{query}', 'ActivityController@search_all_admin_logs');
     });
 
     

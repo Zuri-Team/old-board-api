@@ -51,7 +51,7 @@ class StatsController extends Controller
         
         $id = 1;
         $stages = User::groupBy('active', 'stage')->select( DB::raw('count(id) AS value'), 'stage AS group', 'active AS series' )->get();
-        foreach($stages as $track){ $track->id = $id; $track->group = 'Stage '.$track->group; $track->serires = $track->series == 1 ? 'Active' : 'Inactive'; $id+=1;}
+        foreach($stages as $track){ $track->id = $id; $track->group = 'Stage '.$track->group; $track->series = $track->series == 1 ? 'Active' : 'Inactive'; $id+=1;}
         
 
         return $this->SUCCESS('Data Retrieved', ['stages'=>$stages, 'gender'=>$genders, 'tracks'=>$tracks]);

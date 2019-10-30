@@ -2,10 +2,12 @@
 
 namespace App;
 
+use Cache;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+
 
 class User extends Authenticatable
 {
@@ -50,7 +52,7 @@ class User extends Authenticatable
             function ($user){
                 $user->profile()->create([
                     'bio' => 'Welcome to Start.Ng.',
-                    'profile_img' => 'http://localhost:8000/storage/profile_img/avatar.png'
+                    'profile_img' => 'https://res.cloudinary.com/hngojet/image/upload/v1571920043/hngojet/profile_img/avatar-m_qufxpe.png'
                 ]);
             }
         );
@@ -72,7 +74,18 @@ class User extends Authenticatable
     public function profile()
     {
         //
-        return $this->hasOne(Profile::class);
+        return $this->hasOne('App\Profile');
+    }
+
+    public function status()
+    {
+        return Cache::has('online' . $this->id);
+
+    }
+     
+    public function activities()
+    {
+        return $this->hasMany('App\Activity');
     }
 
     public function probation()

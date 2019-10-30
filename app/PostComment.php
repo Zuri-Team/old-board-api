@@ -4,17 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Profile extends Model
+class PostComment extends Model
 {
-    //
-
-    protected $fillable = [
-        'bio', 'url', 'profile_img', 'phone'
-    ];
+    protected $fillable = ['comment'];
 
     public function user()
     {
-        //
         return $this->belongsTo('App\User');
     }
 }

@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Team;
+use App\User;
+use App\TeamUser;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\JsonResponse;
 use App\Http\Classes\ResponseTrait;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Http\JsonResponse;
-use App\Team;
-use App\TeamUser;
-use App\User;
+use App\Notifications\TeamNotifications;
+use Illuminate\Support\Facades\Validator;
 
 class TeamController extends Controller
 {
@@ -183,11 +184,20 @@ class TeamController extends Controller
             if($has_joined) return $this->sendError('Intern already among the team', 400, []);
             
             TeamUser::create($request);
+
+            //SEND NOTIFICATION HERE
+            $name = $team->team_name;
+            $message = [
+                'message'=>'You have been added to '.$name.' team.',
+            ];
+            
+            $user->notify(new TeamNotifications($message));
+
             return $this->sendSuccess($team, 'Intern added to team successfully', 200);
 
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return $this->sendError('Internal server error.', 500, []);
+            return $this->sendError('Internal server error. '.$e->getMessage(), 500, []);
         }
 
         // try {
@@ -241,6 +251,17 @@ class TeamController extends Controller
 
                 $team->delete();
                 // logger(Auth::user()->email . ' removed ' . $user->email . ' from a track');
+
+                //SEND NOTIFICATION HERE
+                // dd($team);
+                $teamName = Team::find($team->team_id)->team_name;
+                $message = [
+                    'message'=>'You have been removed from '.$teamName.' team.',
+                ];
+                
+                $user->notify(new TeamNotifications($message));
+                
+
                 return $this->sendSuccess([], 'Intern removed from team successfully', 200);
 
             } catch (\Exception $e) {

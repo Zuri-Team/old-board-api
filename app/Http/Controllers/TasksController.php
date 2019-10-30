@@ -145,10 +145,8 @@ class TasksController extends Controller
     {
         $this->middleware(['role:superadmin', 'role:admin']);
 
-        $task = Task::findOrFail($id);
-
-        if ($task->delete()) {
-            return response(null, Response::HTTP_NO_CONTENT);
+        if (Task::destroy($id)) {
+            return response($task, 'Task successfully deleted');
         }
     }
 
@@ -168,15 +166,31 @@ class TasksController extends Controller
             ]);
         }
     }
+    
+     public function intern_view_track_task()
+    {
+        $this->middleware(['role: intern']);
+        
+        $user_track = auth()->user()->track;
+        
+        //Get track id
+        $track_id = Track::where('track_name', $user_track)->first();
+        $track_tasks = Task::where('track_id', $track_id)->orderBy('created_at', 'desc')->get();
+        if ($track_tasks) {
+            return TaskResource::collection($track_tasks);
+        } else {
+            return \response([
+                'message' => 'Track task not available'
+            ]);
+        }
+     } 
 
-    public function viewTask($id)
+    public function view_task($id)
     {
 
-        $this->middleware(['role: intern', 'role:superadmin']);
+        $this->middleware(['role:superadmin', 'role:admin']);
 
-        $user_id = auth()->user()->id;
-
-        $task = Task::where('id', $id)->where();
+        $task = Task::where('id', $id)->get();
 
         if ($task) {
             return TaskResource::collection($task);

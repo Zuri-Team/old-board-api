@@ -4,17 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Profile extends Model
+class Activity extends Model
 {
-    //
-
     protected $fillable = [
-        'bio', 'url', 'profile_img', 'phone'
+        'user_id', 'type', 'message'
     ];
 
     public function user()
     {
-        //
         return $this->belongsTo('App\User');
     }
 }

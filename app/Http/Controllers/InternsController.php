@@ -23,4 +23,27 @@ class InternsController extends Controller
         }
         return $this->sendError('Internal server error.', 500, []);
     }
+	
+	public function destroy($id)
+    {
+
+        if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin', 'intern'])) {
+            return $this->ERROR('You dont have the permission to perform this action');
+        }
+
+        try {
+
+            if ($intern = User::role('intern')->find($id)) {
+                if ($intern->delete()) {
+                    return $this->sendSuccess($intern, 'Post has been deleted successfully.', 200);
+                }
+            } else {
+                return $this->sendError('Post not found', 404, []);
+            }
+
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return $this->sendError('Internal server error.', 500, []);
+        }
+    }
 }

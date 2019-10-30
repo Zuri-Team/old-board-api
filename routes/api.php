@@ -19,7 +19,10 @@ Route::get('/fix', function(){
 });
 
 
-Route::resource('slack', 'SlackController');
+Route::resource('slacks', 'SlackController');
+Route::post('slacks/verify','SlackController@verify_user');
+Route::post('slacks/profile','SlackController@slack_user_profile');
+
 Route::post('login', 'AuthController@login');
 Route::post('register', 'AuthController@register');
 Route::get('/verify/{token}', 'AuthController@verify')->name('verify');

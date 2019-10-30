@@ -3,26 +3,25 @@ namespace App\Http\Classes;
 
 use App\User;
 use App\Activity;
+use App\Jobs\LogActivityJob;
+use Carbon\Carbon;
 
 trait ActivityTrait {
 
-    protected function logInternActivity($user_id, $message){
-        return addActivity('intern', $user_id, $message);
+    protected function logInternActivity($message){
+        return $this->addActivity($message, 'intern');
     }
 
-    protected function logAdminActivity($user_id, $message){
-        return addActivity('admin', $user_id, $message);
+    protected function logAdminActivity($message){
+        return $this->addActivity($message, 'admin');
     }
 
-    private function addActivity($type, $user_id, $message = ''){
+    private function addActivity($message, $type){
 
-        $res = Activity::create([
-            'type' => $type,
-            'user_id' => $user_id,
-            'message' => $message
-        ]);
+        $job = (new LogActivityJob($message, $type))
+                ->delay(Carbon::now()->addSeconds(3));
 
-        return $res;
+        dispatch($job);
     }
 
 }

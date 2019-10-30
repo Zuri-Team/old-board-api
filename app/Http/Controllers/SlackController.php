@@ -22,10 +22,10 @@ class SlackController extends Controller
     {
         // dd(SlackGroup::kick('GPLMC3ZCK', 'UPY990HUP'));
         // dd(SlackGroup::lists(true));
-        dd(SlackChannel::lists(true));
+        // dd(SlackChannel::lists(true));
 
 
-        dd(SlackUser::lookupByEmail('solomoneseme@gmail.com'));
+        // dd(SlackUser::lookupByEmail('solomoneseme@gmail.com'));
     }
 
     /**
@@ -64,7 +64,7 @@ class SlackController extends Controller
         $prestage = Slack::removeFromGroup($slack_id, $pre_stage);
         $nextstage = Slack::addToGroup($slack_id, $next_stage);
 
-        dd($prestage, $nextstage);
+        // dd($prestage, $nextstage);
     }
 
     /**

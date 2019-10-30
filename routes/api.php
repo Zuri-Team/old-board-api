@@ -11,14 +11,6 @@
 |
  */
 
-// Route::routes();
-
-Route::get('/fix', function(){
-    DB::table('users')->update(['gender' => 'Male']);
-
-});
-
-
 // Route::resource('slacks', 'SlackController');
 Route::post('slacks/verify','SlackController@verify_user');
 Route::post('slacks/profile','SlackController@slack_user_profile');
@@ -69,10 +61,10 @@ Route::group(['middleware' => 'auth:api'], function () {
     });
 
     Route::group(['prefix' => 'post-comment'], function() {
-        Route::get('/post/{id}/comments', 'PostCommentController@retrieve_post_comments');
-        Route::post('/post/{id}/comment', 'PostCommentController@user_post_comment');
-        Route::put('/post/comment/{id}', 'PostCommentController@update_user_comment');
-        Route::delete('/post/comment/{id}', 'PostCommentController@delete_user_comment');
+        Route::get('/{id}/comments', 'PostCommentController@retrieve_post_comments');
+        Route::post('/{id}/comment', 'PostCommentController@user_post_comment');
+        Route::put('/comment/{id}', 'PostCommentController@update_user_comment');
+        Route::delete('/comment/{id}', 'PostCommentController@delete_user_comment');
     });
 
     
@@ -133,7 +125,7 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
     Route::post('user/probate', 'ProbationController@probate');
     Route::delete('user/unprobate', 'ProbationController@unprobate_by_admin');
     Route::get('probation/status/{user}', 'ProbationController@is_on_onprobation');
-    Route::get('probations/all', 'ProbationController@list_probations');
+    Route::get('probation/all', 'ProbationController@list_probations');
     
     // NOTIFICATION
     Route::get('notifications', 'NotificationController@index');

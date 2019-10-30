@@ -44,12 +44,15 @@ class ActivityController extends Controller
     }
 
     public function search_all_logs($query){
-        $activities = Activity::where('message', 'LIKE', "%{$query}%")->with($this->usersField)->orderBy('created_at', 'desc');
+        $activities = Activity::where('message', 'LIKE', "%{$query}%")->orWhere('created_at', 'LIKE', "%{$query}%")->with($this->usersField)->orderBy('created_at', 'desc');
         $results = $activities->get();
 
         if ($results) {
-            $results['result_count'] = $activities->count();
-            return $this->sendSuccess($results, 'Activity Logs seach results', 200);
+            $data['result_count'] = $activities->count();
+            $data['data'] = $results;
+
+
+            return $this->sendSuccess($data, 'Activity Logs search results', 200);
         }
         return $this->sendError('Internal server error.', 500, []);
     }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use App\Activitiy;
+use App\Activity;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Classes\ResponseTrait;
@@ -13,9 +13,11 @@ class ActivityController extends Controller
 {
     use ResponseTrait;
 
+    protected $usersField = 'user:id,firstname,lastname,email';
+
     public function get_all_activities(){
 
-        $activities = Activity::orderBy('created_at', 'desc')->get();
+        $activities = Activity::with($this->usersField)->orderBy('created_at', 'desc')->get();
         if ($activities) {
 
             return $this->sendSuccess($activities, 'All Activity Logs', 200);
@@ -24,7 +26,7 @@ class ActivityController extends Controller
     }
 
     public function get_all_intern_activities(){
-        $activities = Activity::where('type', 'intern')->orderBy('created_at', 'desc')->get();
+        $activities = Activity::where('type', 'intern')->with($this->usersField)->orderBy('created_at', 'desc')->get();
         if ($activities) {
 
             return $this->sendSuccess($activities, 'All Intern Activity Logs', 200);

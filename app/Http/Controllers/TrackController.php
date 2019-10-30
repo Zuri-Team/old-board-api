@@ -12,11 +12,13 @@ use App\Http\Classes\ResponseTrait;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\TrackNotifications;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Classes\ActivityTrait;
 
 class TrackController extends Controller
 {
 
     use ResponseTrait;
+    use ActivityTrait;
     /**
      * Apply middleware to each CRUD which checks if logged in user can perform
      * the crud roles or return a failure notice
@@ -137,6 +139,7 @@ class TrackController extends Controller
             
             TrackUser::create($request);
             logger(Auth::user()->email . ' added ' . $user->email . ' to ' . $track->track_name . ' track');
+            $this->logAdminActivity(auth()->id(), ' was added to ' . $track->track_name . ' track');
 
             //SEND NOTIFICATION HERE
             $message = [
@@ -164,6 +167,7 @@ class TrackController extends Controller
             if (!$track) return $this->ERROR('User not associated with selected track');
             $track->delete();
             logger(Auth::user()->email . ' removed ' . $user->email . ' from a track');
+            $this->logAdminActivity(auth()->id(), ' was removed from' . $track->track_name . ' track');
 
             $message = [
                 'message'=>`You have been removed from ${$track->track_name} track.`,

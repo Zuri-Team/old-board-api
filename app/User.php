@@ -20,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'firstname', 'lastname', 'username', 'email', 'gender', 'password', 'location', 'stack', 'token',
+        'firstname', 'lastname', 'username', 'email', 'gender', 'password', 'location', 'stack', 'token', 'slack_id'
     ];
 
     protected $guard_name = 'api';
@@ -87,9 +87,13 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Activity');
     }
+<<<<<<< HEAD
 
     public function probation()
     {
         return $this->hasOne(Probation::class);
     }
 }
+=======
+}
+>>>>>>> b2884ad9b1505f83cf685e328dc11ab76b9d66da

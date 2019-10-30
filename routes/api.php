@@ -19,7 +19,9 @@ Route::get('/fix', function(){
 });
 
 
-
+// Route::resource('slacks', 'SlackController');
+Route::post('slacks/verify','SlackController@verify_user');
+Route::post('slacks/profile','SlackController@slack_user_profile');
 
 Route::post('login', 'AuthController@login');
 Route::post('register', 'AuthController@register');
@@ -139,6 +141,5 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
     Route::post('notifications/markasread', 'NotificationController@markAsRead');
     Route::post('notifications/read', 'NotificationController@markOneAsRead');
     Route::get('notifications/notification_count', 'NotificationController@notification_count');
-
-   
+    
 });

@@ -87,4 +87,13 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Activity');
     }
+<<<<<<< HEAD
+
+    public function probation()
+    {
+        return $this->hasOne(Probation::class);
+    }
 }
+=======
+}
+>>>>>>> b2884ad9b1505f83cf685e328dc11ab76b9d66da

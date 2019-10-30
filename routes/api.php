@@ -129,8 +129,13 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
     Route::post('profile/{user}/edit', 'ProfileController@update');
     Route::post('profile/{user}/upload', 'ProfileController@upload');
 
+    // Probation Routes
+    Route::post('user/probate', 'ProbationController@probate');
+    Route::delete('user/unprobate', 'ProbationController@unprobate_by_admin');
+    Route::get('probation/status/{user}', 'ProbationController@is_on_onprobation');
+    Route::get('probations/all', 'ProbationController@list_probations');
+    
     // NOTIFICATION
-
     Route::get('notifications', 'NotificationController@index');
     Route::delete('notifications', 'NotificationController@destroy');
     Route::post('notifications/markasread', 'NotificationController@markAsRead');

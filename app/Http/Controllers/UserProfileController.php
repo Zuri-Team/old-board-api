@@ -314,4 +314,6 @@ class UserProfileController extends Controller
             return $this->sendError('Internal server error.', 500, []);
         }
     }
+
+ 
 }

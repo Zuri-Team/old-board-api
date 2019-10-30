@@ -19,6 +19,8 @@ Route::get('/fix', function(){
 });
 
 
+
+
 Route::post('login', 'AuthController@login');
 Route::post('register', 'AuthController@register');
 Route::get('/verify/{token}', 'AuthController@verify')->name('verify');
@@ -27,6 +29,10 @@ Route::get('/password/reset/{token}', 'AuthController@findResetToken');
 Route::post('/password/reset', 'AuthController@resetPassword');
 
 Route::get('profile/{user}', 'ProfileController@index');
+
+//Status
+Route::get('status', 'StatusController@status');
+
 
 //get all tracks without signing in
 Route::get('track/all', 'TrackController@all');
@@ -47,6 +53,7 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::delete('/delete/{user}', 'UserProfileController@destroy');
     });
 
+        
     //Activity Routes
     Route::group(['prefix' => 'activity'], function () {
         Route::get('/all', 'ActivityController@get_all_activities');
@@ -120,5 +127,6 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
     Route::post('notifications/markasread', 'NotificationController@markAsRead');
     Route::post('notifications/read', 'NotificationController@markOneAsRead');
     Route::get('notifications/notification_count', 'NotificationController@notification_count');
-    
+
+   
 });

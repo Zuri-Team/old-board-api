@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Notifications\UserNotifications;
 use Illuminate\Support\Facades\Validator;
+use Craftyx\SlackApi\Facades\SlackGroup;
 
 class UserProfileController extends Controller
 {
@@ -49,6 +50,13 @@ class UserProfileController extends Controller
                 $result = $user->save();
 
                 if($result){
+                    
+                    $slack_id =  $user->slack_id;
+                    $pre_stage = 'stage'.$user->stage;
+                    $next_stage = 'stage'.$nextStage;
+                    
+                    Slack::removeFromGroup($slack_id, $pre_stage);
+                    Slack::addToGroup($slack_id, $next_stage);
 
                     // SEND NOTIFICATION HERE
                     $message = [
@@ -314,6 +322,4 @@ class UserProfileController extends Controller
             return $this->sendError('Internal server error.', 500, []);
         }
     }
-
- 
 }

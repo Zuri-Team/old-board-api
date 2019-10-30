@@ -14,6 +14,7 @@ use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\UserRegistration;
+use Craftyx\SlackApi\Facades\SlackUser;
 
 
 class AuthController extends Controller
@@ -65,18 +66,25 @@ class AuthController extends Controller
                 'errors' => $validator->errors()
             ], 401);
         }
-
-//         $token = $this->generateOTP(8);
         $input = $request->all();
+        
+        $slackUser = SlackUser::lookupByEmail($input['email']);
+
+        if (!$slackUser->ok) {
+            return $this->ERROR('Please confirm that your email is used on slack and try again');
+        }
+
+        
+        $input['slack_id'] = $slackUser->user->id;
+        // dd($input['slack_id']);
         $input['password'] = bcrypt($input['password']);
         $input['role'] = 'intern';
-//         $input['token'] = $token;
         $input['stack'] = 'Default';
+        
 
         DB::beginTransaction();
         $user = User::create($input);
-//         $token = $user->createToken('HNGApp')->accessToken;
-
+        
         $tracks = $request->tracks;
         if ($tracks && is_array($tracks)) {
             foreach ($tracks as $track) {
@@ -94,7 +102,6 @@ class AuthController extends Controller
             'status' => true,
             'message' => 'Registration successful',
             'user' => $user,
-//             'tracks' => $tracks
         ], 200);
         
     } 

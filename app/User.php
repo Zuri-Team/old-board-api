@@ -20,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'firstname', 'lastname', 'username', 'email', 'gender', 'password', 'location', 'stack', 'token',
+        'firstname', 'lastname', 'username', 'email', 'gender', 'password', 'location', 'stack', 'token', 'slack_id'
     ];
 
     protected $guard_name = 'api';

@@ -52,8 +52,8 @@ class UserProfileController extends Controller
                 if($result){
                     
                     $slack_id =  $user->slack_id;
-                    $pre_stage = 'stage'.$user->stage;
-                    $next_stage = 'stage'.$nextStage;
+                    $pre_stage = 'test-stage'.$user->stage;
+                    $next_stage = 'test-stage'.$nextStage;
                     
                     Slack::removeFromGroup($slack_id, $pre_stage);
                     Slack::addToGroup($slack_id, $next_stage);

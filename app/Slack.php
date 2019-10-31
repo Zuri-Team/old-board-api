@@ -14,14 +14,14 @@ class Slack extends Model
 
     public static function removeFromChannel($user, $stage)
     {
-        $group_name = env('SLACK_STAGE_PREFIX').$stage;
+        $group_name = env('SLACK_STAGE_PREFIX', 'test-stage').$stage;
         $group_id = self::getGroupIDFromName($group_name);
         return SlackGroup::kick($group_id, $user);
     }
 
     public static function addToChannel($user, $stage)
     {
-        $group_name = env('SLACK_STAGE_PREFIX').$stage;
+        $group_name = env('SLACK_STAGE_PREFIX', 'test-stage').$stage;
         $group_id = self::getGroupIDFromName($group_name);
         return SlackGroup::invite($group_id, $user);
     }

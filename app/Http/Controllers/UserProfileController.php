@@ -107,7 +107,7 @@ class UserProfileController extends Controller
                         'message'=>'You have been demoted to stage '.$lastStage,
                     ];
                     
-                    $user->notify(new UserNotifications($message));
+                    //$user->notify(new UserNotifications($message));
                     
                     return $this->sendSuccess($user, 'Intern successfully demoted to stage '.$lastStage, 200);
                 }

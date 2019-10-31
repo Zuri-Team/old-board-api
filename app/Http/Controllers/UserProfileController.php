@@ -138,6 +138,7 @@ class UserProfileController extends Controller
             if($user){
 
                 $stage = $request->stage;
+                $currentStage = $user->stage;
 
                 if($stage < 1 || $stage > 10 ){
                     return $this->sendError('Stage can only be between 1 - 10', 404, []);
@@ -149,7 +150,7 @@ class UserProfileController extends Controller
                 if($result){
 
                     $slack_id =  $user->slack_id;
-                    Slack::removeFromChannel($slack_id, $user->stage);
+                    Slack::removeFromChannel($slack_id, $currentStage);
                     Slack::addToChannel($slack_id, $stage);
 
                     return $this->sendSuccess($user, 'Intern stage successfully updated ', 200);

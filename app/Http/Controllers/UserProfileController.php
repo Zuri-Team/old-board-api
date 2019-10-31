@@ -56,7 +56,7 @@ class UserProfileController extends Controller
                     $pre_stage = 'test-stage'.$user->stage;
                     $next_stage = 'test-stage'.$nextStage;
                     
-                    //Slack::removeFromGroup($slack_id, $pre_stage);
+                    Slack::removeFromGroup($slack_id, $pre_stage);
                     Slack::addToGroup($slack_id, $next_stage);
 
                     // SEND NOTIFICATION HERE
@@ -64,7 +64,7 @@ class UserProfileController extends Controller
                         'message'=>'You have been promoted to stage '.$nextStage,
                     ];
                     
-                    $user->notify(new UserNotifications($message));
+                    //$user->notify(new UserNotifications($message));
 
                     return $this->sendSuccess($user, 'Intern successfully promoted to stage '.$nextStage, 200);
                 }

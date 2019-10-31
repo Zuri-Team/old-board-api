@@ -15,6 +15,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\UserRegistration;
 use Craftyx\SlackApi\Facades\SlackUser;
+use App\Slack;
+
 
 
 class AuthController extends Controller
@@ -98,6 +100,10 @@ class AuthController extends Controller
         
         $user->assignRole('intern');
         // $user->notify(new UserRegistration($user));
+
+        //add user to first stage
+        Slack::removeFromChannel($input['slack_id'], '1');
+
         return response()->json([
             'status' => true,
             'message' => 'Registration successful',

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Classes\ResponseTrait;
+use Illuminate\Support\Facades\Validator;
 use App\Post;
 use App\PostComment;
 use Illuminate\Http\Request;
@@ -45,7 +46,7 @@ class PostCommentController extends Controller
 
         $post = Post::where('id', $id)->get();
 
-        $user_id = Auth()->user()->id;
+        $user_id = auth()->user()->id;
 
         if($post){
             $post_comment = PostComment::create([

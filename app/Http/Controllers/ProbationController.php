@@ -8,8 +8,8 @@ use App\User;
 use App\Slack;
 use App\Probation;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Validator;
+use Illuminate\Support\Facades\Request;
 
 class ProbationController extends Controller
 {
@@ -42,14 +42,14 @@ class ProbationController extends Controller
         
         
         // Remove the user from All Stages
-        $result = Slack::removeAddToGroup($is_user->slack_id, 'stage'.$user->stage, 'probation');
+        Probation::insert(['user_id'=>$request->user_id, 'probated_by'=>Auth::user()->id, 'probation_reason'=>$request->reason ?? null, 'exit_on'=>$exit_date]);
 
-        if(\is_bool($result)){
-            Probation::insert(['user_id'=>$request->user_id, 'probated_by'=>Auth::user()->id, 'probation_reason'=>$request->reason ?? null, 'exit_on'=>$exit_date]);
-            return $this->SUCCESS('Probation successful');
-        } 
-        return $this->ERROR('We cannot complete your request, problem with Slack', $result);   
-           
+            $slack_id =  $is_user->slack_id;
+            $probChannel = env('SLACK_PROBATION', 'test-underworld');
+                    
+            Slack::removeFromChannel($slack_id, $is_user->stage);
+            Slack::addToGroup($slack_id, $probChannel);
+        return $this->SUCCESS('Probation successful');   
     }
 
     public function is_on_onprobation(int $user_id){
@@ -64,15 +64,17 @@ class ProbationController extends Controller
         }
         $query = Probation::where('user_id', $request->user_id)->first();
         if($query) {
-            
-            $user = User::find($query->user_id)->first();
-            $result = Slack::removeAddToGroup($user->slack_id, 'probation', 'stage'.$user->stage);
-            
-            if (\is_bool($result)) {
-                $query->delete();
-                return $this->SUCCESS('Successfully removed user from probation');
-            }
-            return $this->ERROR('We cannot complete your request, problem with Slack', $result);  
+            $query->delete();
+
+            $user = User::find($request->user_id);
+
+            $slack_id =  $user->slack_id;
+            $probChannel = env('SLACK_PROBATION', 'test-underworld');
+                    
+            Slack::removeFromGroup($slack_id, $probChannel);
+            Slack::addToChannel($slack_id, $user->stage);
+
+            return $this->SUCCESS('Successfully removed user from probation');
         }else{
             return $this->SUCCESS('Specified user is not on probations');
         }
@@ -82,20 +84,21 @@ class ProbationController extends Controller
     public function unprobate_by_system(Request $request){
         // This action will be triggered by a schedular
         $today = Carbon::now()->startOfDay()->format('Y-m-d');
-        $query = Probation::where('exit_on', '<=', $today)->first();
-        
-        if ($query) {
-            
-            $user = User::find($query->user_id)->first();
-            $result = Slack::removeAddToGroup($user->slack_id, 'probation', 'stage'.$user->stage);
-            
-            if (\is_bool($result) ){
-                $query->delete();
-                return $this->SUCCESS('Successfully removed user from probation');
-            }
-            return $this->ERROR('We cannot complete your request, problem with Slack', $result);
-        } 
+        // Probation::where('exit_on', '<=', $today)->delete();
+        $probations = Probation::where('exit_on', '<=', $today)->get();
 
+        foreach($probations as $probation){
+            $user = User::find($probation->user_id);
+
+             $slack_id =  $user->slack_id;
+            $probChannel = env('SLACK_PROBATION', 'test-underworld');
+                    
+            Slack::removeFromGroup($slack_id, $probChannel);
+            Slack::addToChannel($slack_id, $user->stage);
+
+        }
+
+        $probations->delete();
     }
 
     public function unprobate_by_action(Request $request){

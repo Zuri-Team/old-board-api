@@ -43,9 +43,10 @@ class ProbationController extends Controller
         Probation::insert(['user_id'=>$request->user_id, 'probated_by'=>Auth::user()->id, 'probation_reason'=>$request->reason ?? null, 'exit_on'=>$exit_date]);
 
             $slack_id =  $is_user->slack_id;
+            $probChannel = env('SLACK_PROBATION', 'test-underworld');
                     
             Slack::removeFromChannel($slack_id, $is_user->stage);
-            Slack::addToGroup($slack_id, env('SLACK_PROBATION'));
+            Slack::addToGroup($slack_id, $probChannel);
         return $this->SUCCESS('Probation successful');   
     }
 
@@ -66,8 +67,9 @@ class ProbationController extends Controller
             $user = User::find($request->user_id);
 
             $slack_id =  $user->slack_id;
+            $probChannel = env('SLACK_PROBATION', 'test-underworld');
                     
-            Slack::removeFromGroup($slack_id, env('SLACK_PROBATION'));
+            Slack::removeFromGroup($slack_id, $probChannel);
             Slack::addToChannel($slack_id, $user->stage);
 
             return $this->SUCCESS('Successfully removed user from probation');
@@ -86,10 +88,12 @@ class ProbationController extends Controller
         foreach($probations as $probation){
             $user = User::find($probation->user_id);
 
-            $slack_id =  $user->slack_id;
+             $slack_id =  $user->slack_id;
+            $probChannel = env('SLACK_PROBATION', 'test-underworld');
                     
-            Slack::removeFromGroup($slack_id, env('SLACK_PROBATION'));
+            Slack::removeFromGroup($slack_id, $probChannel);
             Slack::addToChannel($slack_id, $user->stage);
+
         }
 
         $probations->delete();

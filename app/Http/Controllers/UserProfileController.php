@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Classes\ResponseTrait;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use App\Slack;
 
 use App\Notifications\UserNotifications;
 use Illuminate\Support\Facades\Validator;

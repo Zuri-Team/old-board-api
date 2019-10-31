@@ -56,8 +56,8 @@ class UserProfileController extends Controller
                     $pre_stage = $user->stage;
                     $next_stage = $nextStage;
                     
-                    Slack::removeFromChannel($slack_id, $pre_stage);
-                    Slack::addToChannel($slack_id, $next_stage);
+                    Slack::removeFromChannel($slack_id, $currentStage);
+                    Slack::addToChannel($slack_id, $nextStage);
 
                     // SEND NOTIFICATION HERE
                     $message = [

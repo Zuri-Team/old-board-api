@@ -53,11 +53,11 @@ class UserProfileController extends Controller
                 if($result){
                     
                     $slack_id =  $user->slack_id;
-                    $pre_stage = 'test-stage'.$user->stage;
-                    $next_stage = 'test-stage'.$nextStage;
+                    $pre_stage = $user->stage;
+                    $next_stage = $nextStage;
                     
-                    Slack::removeFromGroup($slack_id, $pre_stage);
-                    Slack::addToGroup($slack_id, $next_stage);
+                    Slack::removeFromChannel($slack_id, $pre_stage);
+                    Slack::addToChannel($slack_id, $next_stage);
 
                     // SEND NOTIFICATION HERE
                     $message = [
@@ -97,6 +97,10 @@ class UserProfileController extends Controller
                 $result = $user->save();
 
                 if($result){
+
+                    $slack_id =  $user->slack_id;
+                    Slack::removeFromChannel($slack_id, $currentStage);
+                    Slack::addToChannel($slack_id, $lastStage);
 
                     // SEND NOTIFICATION HERE
                     $message = [
@@ -143,6 +147,11 @@ class UserProfileController extends Controller
                 $result = $user->save();
 
                 if($result){
+
+                    $slack_id =  $user->slack_id;
+                    Slack::removeFromChannel($slack_id, $user->stage);
+                    Slack::addToChannel($slack_id, $stage);
+
                     return $this->sendSuccess($user, 'Intern stage successfully updated ', 200);
                 }
 

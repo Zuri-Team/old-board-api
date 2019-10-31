@@ -55,11 +55,11 @@ class SlackController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($prev, $next)
     {
-        $slack_id =  'UPYT556BY';//$user->slack_id; CODEBUG
-        $pre_stage = 'stage10';//.$user->stage;
-        $next_stage = 'stage11';//.$nextStage;
+        $slack_id =  'UMTJ441SP';//$user->slack_id; CODEBUG
+        $pre_stage = $prev;//.$user->stage;
+        $next_stage = $next;//.$nextStage;
 
         $prestage = Slack::removeFromGroup($slack_id, $pre_stage);
         $nextstage = Slack::addToGroup($slack_id, $next_stage);

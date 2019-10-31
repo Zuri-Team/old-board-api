@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Request;
+use DB;
+use Auth;
+use App\User;
+use App\Slack;
 use App\Probation;
 use Carbon\Carbon;
-use App\User;
-use Auth;
-use DB;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ProbationController extends Controller
 {
@@ -37,10 +38,18 @@ class ProbationController extends Controller
 
         if(!$is_user)  return $this->ERROR('Specified user does not exist');
         if($is_user->hasAnyRole(['admin', 'superadmin'])) return $this->ERROR('An admin cannot go on probation');
-        if($is_on_probation) return $this->ERROR('Specified user is already on probation');        
+        if($is_on_probation)      
         
-        Probation::insert(['user_id'=>$request->user_id, 'probated_by'=>Auth::user()->id, 'probation_reason'=>$request->reason ?? null, 'exit_on'=>$exit_date]);
-        return $this->SUCCESS('Probation successful');   
+        
+        // Remove the user from All Stages
+        $result = Slack::removeAddToGroup($is_user->slack_id, 'stage'.$user->stage, 'probation');
+
+        if(\is_bool($result)){
+            Probation::insert(['user_id'=>$request->user_id, 'probated_by'=>Auth::user()->id, 'probation_reason'=>$request->reason ?? null, 'exit_on'=>$exit_date]);
+            return $this->SUCCESS('Probation successful');
+        } 
+        return $this->ERROR('We cannot complete your request, problem with Slack', $result);   
+           
     }
 
     public function is_on_onprobation(int $user_id){
@@ -55,8 +64,15 @@ class ProbationController extends Controller
         }
         $query = Probation::where('user_id', $request->user_id)->first();
         if($query) {
-            $query->delete();
-            return $this->SUCCESS('Successfully removed user from probation');
+            
+            $user = User::find($query->user_id)->first();
+            $result = Slack::removeAddToGroup($user->slack_id, 'probation', 'stage'.$user->stage);
+            
+            if (\is_bool($result)) {
+                $query->delete();
+                return $this->SUCCESS('Successfully removed user from probation');
+            }
+            return $this->ERROR('We cannot complete your request, problem with Slack', $result);  
         }else{
             return $this->SUCCESS('Specified user is not on probations');
         }
@@ -66,7 +82,20 @@ class ProbationController extends Controller
     public function unprobate_by_system(Request $request){
         // This action will be triggered by a schedular
         $today = Carbon::now()->startOfDay()->format('Y-m-d');
-        Probation::where('exit_on', '<=', $today)->delete();
+        $query = Probation::where('exit_on', '<=', $today)->first();
+        
+        if ($query) {
+            
+            $user = User::find($query->user_id)->first();
+            $result = Slack::removeAddToGroup($user->slack_id, 'probation', 'stage'.$user->stage);
+            
+            if (\is_bool($result) ){
+                $query->delete();
+                return $this->SUCCESS('Successfully removed user from probation');
+            }
+            return $this->ERROR('We cannot complete your request, problem with Slack', $result);
+        } 
+
     }
 
     public function unprobate_by_action(Request $request){

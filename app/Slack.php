@@ -27,6 +27,7 @@ class Slack extends Model
 
     private static function getGroupIDFromName($stage_name){
         
+        $stage_name = strtolower($stage_name);
         $groups = SlackGroup::lists(true);
                     
         foreach($groups->groups as $group){
@@ -35,5 +36,20 @@ class Slack extends Model
                 break;
             }
         }
+    }
+
+    public static function removeAddToGroup($user_id, $remove_from, $add_to)
+    {
+        $data = [];
+        $remove = self::removeFromGroup($user_id, $remove_from);
+        $data['removed_group'] = $remove;
+         
+        $added_group = self::addToGroup($user_id, $add_to);
+        $data['added_group'] = $added_group;
+        
+        if($added_group->ok){
+            return true;
+        }
+        return $data;
     }
 }

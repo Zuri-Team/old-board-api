@@ -11,7 +11,7 @@
 |
  */
 
-// Route::resource('slacks', 'SlackController');
+Route::resource('slacks', 'SlackController');
 Route::post('slacks/verify','SlackController@verify_user');
 Route::post('slacks/profile','SlackController@slack_user_profile');
 

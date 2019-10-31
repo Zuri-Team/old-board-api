@@ -26,6 +26,9 @@ class SlackController extends Controller
 
 
         // dd(SlackUser::lookupByEmail('solomoneseme@gmail.com'));
+
+        $result = Slack::removeAddToGroup('UPYT556BY', 'stage11', 'Prob');
+        dd($result);
     }
 
     /**

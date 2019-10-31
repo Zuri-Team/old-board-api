@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use App\User;
 use Auth;
 use DB;
+use App\Slack;
 
 class ProbationController extends Controller
 {
@@ -40,6 +41,11 @@ class ProbationController extends Controller
         if($is_on_probation) return $this->ERROR('Specified user is already on probation');        
         
         Probation::insert(['user_id'=>$request->user_id, 'probated_by'=>Auth::user()->id, 'probation_reason'=>$request->reason ?? null, 'exit_on'=>$exit_date]);
+
+            $slack_id =  $is_user->slack_id;
+                    
+            Slack::removeFromChannel($slack_id, $is_user->stage);
+            Slack::addToGroup($slack_id, env('SLACK_PROBATION'));
         return $this->SUCCESS('Probation successful');   
     }
 
@@ -56,6 +62,14 @@ class ProbationController extends Controller
         $query = Probation::where('user_id', $request->user_id)->first();
         if($query) {
             $query->delete();
+
+            $user = User::find($request->user_id);
+
+            $slack_id =  $user->slack_id;
+                    
+            Slack::removeFromGroup($slack_id, env('SLACK_PROBATION'));
+            Slack::addToChannel($slack_id, $user->stage);
+
             return $this->SUCCESS('Successfully removed user from probation');
         }else{
             return $this->SUCCESS('Specified user is not on probations');
@@ -66,7 +80,19 @@ class ProbationController extends Controller
     public function unprobate_by_system(Request $request){
         // This action will be triggered by a schedular
         $today = Carbon::now()->startOfDay()->format('Y-m-d');
-        Probation::where('exit_on', '<=', $today)->delete();
+        // Probation::where('exit_on', '<=', $today)->delete();
+        $probations = Probation::where('exit_on', '<=', $today)->get();
+
+        foreach($probations as $probation){
+            $user = User::find($probation->user_id);
+
+            $slack_id =  $user->slack_id;
+                    
+            Slack::removeFromGroup($slack_id, env('SLACK_PROBATION'));
+            Slack::addToChannel($slack_id, $user->stage);
+        }
+
+        $probations->delete();
     }
 
     public function unprobate_by_action(Request $request){

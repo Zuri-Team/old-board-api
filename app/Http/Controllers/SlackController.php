@@ -64,7 +64,7 @@ class SlackController extends Controller
         $prestage = Slack::removeFromGroup($slack_id, $pre_stage);
         $nextstage = Slack::addToGroup($slack_id, $next_stage);
 
-        // dd($prestage, $nextstage);
+         dd($prestage, $nextstage);
     }
 
     /**

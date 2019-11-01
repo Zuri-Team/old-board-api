@@ -8,9 +8,11 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Classes\ResponseTrait;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use App\Slack;
 
 use App\Notifications\UserNotifications;
 use Illuminate\Support\Facades\Validator;
+use Craftyx\SlackApi\Facades\SlackGroup;
 
 class UserProfileController extends Controller
 {
@@ -49,13 +51,20 @@ class UserProfileController extends Controller
                 $result = $user->save();
 
                 if($result){
+                    
+                    $slack_id =  $user->slack_id;
+                    $pre_stage = $user->stage;
+                    $next_stage = $nextStage;
+                    
+                    Slack::removeFromChannel($slack_id, $currentStage);
+                    Slack::addToChannel($slack_id, $nextStage);
 
                     // SEND NOTIFICATION HERE
                     $message = [
                         'message'=>'You have been promoted to stage '.$nextStage,
                     ];
                     
-                    $user->notify(new UserNotifications($message));
+                    //$user->notify(new UserNotifications($message));
 
                     return $this->sendSuccess($user, 'Intern successfully promoted to stage '.$nextStage, 200);
                 }
@@ -89,12 +98,16 @@ class UserProfileController extends Controller
 
                 if($result){
 
+                    $slack_id =  $user->slack_id;
+                    Slack::removeFromChannel($slack_id, $currentStage);
+                    Slack::addToChannel($slack_id, $lastStage);
+
                     // SEND NOTIFICATION HERE
                     $message = [
                         'message'=>'You have been demoted to stage '.$lastStage,
                     ];
                     
-                    $user->notify(new UserNotifications($message));
+                    //$user->notify(new UserNotifications($message));
                     
                     return $this->sendSuccess($user, 'Intern successfully demoted to stage '.$lastStage, 200);
                 }
@@ -125,6 +138,7 @@ class UserProfileController extends Controller
             if($user){
 
                 $stage = $request->stage;
+                $currentStage = $user->stage;
 
                 if($stage < 1 || $stage > 10 ){
                     return $this->sendError('Stage can only be between 1 - 10', 404, []);
@@ -134,6 +148,11 @@ class UserProfileController extends Controller
                 $result = $user->save();
 
                 if($result){
+
+                    $slack_id =  $user->slack_id;
+                    Slack::removeFromChannel($slack_id, $currentStage);
+                    Slack::addToChannel($slack_id, $stage);
+
                     return $this->sendSuccess($user, 'Intern stage successfully updated ', 200);
                 }
 
@@ -314,6 +333,4 @@ class UserProfileController extends Controller
             return $this->sendError('Internal server error.', 500, []);
         }
     }
-
- 
 }

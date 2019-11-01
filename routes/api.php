@@ -11,15 +11,9 @@
 |
  */
 
-// Route::routes();
-
-Route::get('/fix', function(){
-    DB::table('users')->update(['gender' => 'Male']);
-
-});
-
-
-
+ Route::get('slacks/test/{prev}/{next}', 'SlackController@show');
+Route::post('slacks/verify','SlackController@verify_user');
+Route::post('slacks/profile','SlackController@slack_user_profile');
 
 Route::post('login', 'AuthController@login');
 Route::post('register', 'AuthController@register');
@@ -66,6 +60,13 @@ Route::group(['middleware' => 'auth:api'], function () {
         // Route::get('/search/admins/{query}', 'ActivityController@search_all_admin_logs');
     });
 
+    Route::group(['prefix' => 'post-comment'], function() {
+        Route::get('/{id}/comments', 'PostCommentController@retrieve_post_comments');
+        Route::post('/{id}/comment', 'PostCommentController@user_post_comment');
+        Route::put('/comment/{id}', 'PostCommentController@update_user_comment');
+        Route::delete('/comment/{id}', 'PostCommentController@delete_user_comment');
+    });
+
     
 //stat
 Route::get('/stats/dashboard', 'StatsController@dashboard');
@@ -80,11 +81,12 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
     Route::post('categories/update/{id}', 'CategoriesController@updateCategory');
 
     Route::resource('submissions', 'TaskSubmissionController');
-    Route::post('task/{id}/submissions', 'TaskSubmissionController@grade_task_for_interns');
+    Route::post('task/{id}/submissions/grade', 'TaskSubmissionController@grade_task_for_interns');
     Route::post('user/task/{id}/', 'TaskSubmissionController@grade_intern_task');
     Route::get('user/{user}/task/{id}/', 'TaskSubmissionController@intern_view_task_grade');
-    Route::get('task/{id}/', 'TaskSubmissionController@intern_view_task_grades');
-    Route::get('task/{id}/submissions', 'TaskSubmissionController@view_all_intern_grades');
+    Route::get('task/{id}/intern/grades', 'TaskSubmissionController@intern_view_task_grades');
+    Route::get('task/{id}/grades', 'TaskSubmissionController@view_all_intern_grades');
+    Route::get('task/{id}/submissions', 'TaskSubmissionController@admin_retrieve_interns_submission');
 
     Route::post('track/create', 'TrackController@create_track');
     Route::put('track/edit', 'TrackController@edit_track');
@@ -100,7 +102,7 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
     Route::resource('tasks', 'TasksController'); #URL for tasks
 
     Route::get('track/{id}/tasks', 'TasksController@view_track_task');
-    Route::get('tasks/{id}', 'TasksController@view_task');
+    Route::get('task/{id}', 'TasksController@view_task');
     Route::get('user/task/', 'TasksController@intern_view_track_task');
 
 //    Route::get('track/{id}/tasks', 'TasksController@viewTracktask');
@@ -115,18 +117,23 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
 
 
     Route::resource('posts', 'PostsController');
+    Route::get('posts/view/{post}', 'PostsController@view_a_post');
     Route::get('categories/posts/{id}', 'PostsController@view_posts_in_category');
 
     Route::post('profile/{user}/edit', 'ProfileController@update');
     Route::post('profile/{user}/upload', 'ProfileController@upload');
 
+    // Probation Routes
+    Route::post('user/probate', 'ProbationController@probate');
+    Route::delete('user/unprobate', 'ProbationController@unprobate_by_admin');
+    Route::get('probation/status/{user}', 'ProbationController@is_on_onprobation');
+    Route::get('probation/all', 'ProbationController@list_probations');
+    
     // NOTIFICATION
-
     Route::get('notifications', 'NotificationController@index');
     Route::delete('notifications', 'NotificationController@destroy');
     Route::post('notifications/markasread', 'NotificationController@markAsRead');
     Route::post('notifications/read', 'NotificationController@markOneAsRead');
     Route::get('notifications/notification_count', 'NotificationController@notification_count');
-
-   
+    
 });

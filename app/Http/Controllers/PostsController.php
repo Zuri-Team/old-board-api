@@ -121,6 +121,22 @@ class PostsController extends Controller
         }
     }
 
+    public function view_a_post(Post $post)
+    {
+
+        // $post = Post::find($id)->with('user')->with('category')->first();
+
+        if ($post) {
+             $post['category'] = $post->category;
+             $post['user'] = $post->user;
+        // $post = $post->with('user')->with('category');
+
+                return $this->sendSuccess($post, 'View a Post', 200);
+        } else {
+            return $this->sendError('Post not found', 404, []);
+        }
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

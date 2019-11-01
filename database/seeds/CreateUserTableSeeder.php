@@ -27,6 +27,8 @@ class CreateUserTableSeeder extends Seeder
             'email' => 'xyluz@hng.tech',
             'stack' => '',
             'location' => '',
+	'slack_id' => '',
+	'gender' => 'Male',
             'password' => bcrypt('secret'),
             'role' => 'superadmin',
             'email_verified_at' => now(),

@@ -93,4 +93,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Probation::class);
     }
+    
+    public function submissions()
+    {
+        return $this->hasMany('App\TaskSubmission');
+    }
 }

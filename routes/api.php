@@ -116,6 +116,7 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
 
 
     Route::resource('posts', 'PostsController');
+    Route::get('posts/view/{post}', 'PostsController@view_a_post');
     Route::get('categories/posts/{id}', 'PostsController@view_posts_in_category');
 
     Route::post('profile/{user}/edit', 'ProfileController@update');

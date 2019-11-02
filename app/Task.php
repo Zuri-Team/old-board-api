@@ -14,6 +14,6 @@ class Task extends Model
     }
 
     public function tracks(){
-        return $this->hasMany('App\Tracks');
+        return $this->belongsTo('App\Tracks');
     }
 }

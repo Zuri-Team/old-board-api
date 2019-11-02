@@ -29,7 +29,7 @@ class ProbationController extends Controller
 
         $exit_date = Carbon::now()->addDays(1);
         if($request->exit_on){
-            if(Carbon::make($request->exit_on)->isPast()) return $this->ERROR('Exit date must be in the future', $validator->errors());
+            if(Carbon::make($request->exit_on)->isPast()) return $this->ERROR('Exit date must be in the future', $validation->errors());
             $exit_date = $request->exit_on;
         } 
         
@@ -51,8 +51,16 @@ class ProbationController extends Controller
     }
 
     public function is_on_onprobation(int $user_id){
-        $data = Probation::where('user_id', $user_id)->first();
-        return $this->SUCCESS($data ? 'true' : 'false', $data ? true : false);
+        $data = Probation::where('user_id', $user_id)->with('user:id,firstname,lastname,email')->with('probator:id,firstname,lastname,email')->first();
+        
+        if($data){
+            // $data = $probation;
+            $data['status'] = true;
+        }else{
+            $data['status'] = false;
+        }
+        
+        return $this->SUCCESS($data["status"], $data);
     }
 
     public function unprobate_by_admin(Request $request){

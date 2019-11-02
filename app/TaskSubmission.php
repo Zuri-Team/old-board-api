@@ -10,11 +10,11 @@ class TaskSubmission extends Model
 
     public function tasks()
     {
-        $this->belongsTo('App/Task');
+        return $this->belongsTo('App/Task');
     }
     
     public function users()
     {
-        $this->hasMany('App/User');
+        returns $this->hasMany('App/User');
     }
 }

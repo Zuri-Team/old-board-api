@@ -86,7 +86,7 @@ class TasksController extends Controller
 
         $this->middleware(['role:superadmin', 'role:admin']);
 
-        $task = Task::find($id);
+        $task = Task::find($id)->with('tracks');
 
         if ($task) {
             return TaskResource::collection($task);

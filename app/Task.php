@@ -14,6 +14,6 @@ class Task extends Model
     }
 
     public function track(){
-        return $this->belongsTo('App\Tracks, 'track_id');
+        return $this->belongsTo('App\Track, 'track_id');
     }
 }

@@ -7,10 +7,12 @@ use App\Http\Requests\StoreCategory;
 use App\Http\Resources\CategoryResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use App\Http\Classes\ActivityTrait;
 
 class CategoriesController extends Controller
 {
+    use ActivityTrait;
+
     public function __construct()
     {
     }
@@ -59,6 +61,8 @@ class CategoriesController extends Controller
         $category = Category::create($data);
 
         if ($category) {
+            $this->logAdminActivity("created " . $category->title . " category");
+
             $categories = Category::orderBy('created_at', 'desc')->paginate(10);
             return CategoryResource::collection($categories);
         }
@@ -114,6 +118,7 @@ class CategoriesController extends Controller
 
         if ($category = Category::find($id)) {
             if ($category->update($data)) {
+                $this->logAdminActivity("updated " . $category->title . " category");
                 return new CategoryResource($category);
             }
         } else {
@@ -138,6 +143,7 @@ class CategoriesController extends Controller
 
         if ($category = Category::find($id)) {
             if ($category->update($data)) {
+                $this->logAdminActivity("created " . $category->title . " category");
                 return new CategoryResource($category);
             }
         } else {
@@ -159,8 +165,10 @@ class CategoriesController extends Controller
         if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
             return $this->ERROR('You dont have the permission to perform this action');
         }
+        $category = Category::find($id);
 
         if (Category::find($id)->delete()) {
+            $this->logAdminActivity("deleted " . $category->title . " category");
             return response()->json([
                 'message' => 'Category deleted successfully',
             ], 200);

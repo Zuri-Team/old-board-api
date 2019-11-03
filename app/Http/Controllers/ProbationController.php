@@ -10,9 +10,13 @@ use App\User;
 use Auth;
 use DB;
 use App\Slack;
+use App\Http\Classes\ActivityTrait;
 
 class ProbationController extends Controller
 {
+
+    use ActivityTrait;
+
     public function probate(Request $request){
         // Only admin can do this
         if(!Auth::user()->hasAnyRole(['admin', 'superadmin'])){
@@ -41,6 +45,8 @@ class ProbationController extends Controller
         if($is_on_probation) return $this->ERROR('Specified user is already on probation');        
         
         Probation::insert(['user_id'=>$request->user_id, 'probated_by'=>Auth::user()->id, 'probation_reason'=>$request->reason ?? null, 'exit_on'=>$exit_date]);
+
+        $this->logAdminActivity("probated " . $is_user->firstname . " " . $is_user->lastname . " (". $is_user->email .")");
 
             $slack_id =  $is_user->slack_id;
             $probChannel = env('SLACK_PROBATION', 'test-underworld');
@@ -74,6 +80,8 @@ class ProbationController extends Controller
 
             $user = User::find($request->user_id);
 
+            $this->logAdminActivity("remove " . $user->firstname . " " . $user->lastname . " (". $user->email .") from probation");
+
             $slack_id =  $user->slack_id;
             $probChannel = env('SLACK_PROBATION', 'test-underworld');
                     
@@ -95,6 +103,8 @@ class ProbationController extends Controller
 
         foreach($probations as $probation){
             $user = User::find($probation->user_id);
+
+            $this->logAdminActivity("" . $user->firstname . " " . $user->lastname . " (". $user->email .") was automatically removed from probation");
 
              $slack_id =  $user->slack_id;
             $probChannel = env('SLACK_PROBATION', 'test-underworld');

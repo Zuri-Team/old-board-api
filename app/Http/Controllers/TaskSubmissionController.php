@@ -14,11 +14,13 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Classes\ResponseTrait;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Classes\ActivityTrait;
 
 class TaskSubmissionController extends Controller
 {
 
     use ResponseTrait;
+    use ActivityTrait;
     /**
      * Display a listing of the resource.
      *

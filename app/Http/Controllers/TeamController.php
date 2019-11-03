@@ -11,11 +11,13 @@ use App\Http\Classes\ResponseTrait;
 use Illuminate\Support\Facades\Log;
 use App\Notifications\TeamNotifications;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Classes\ActivityTrait;
 
 class TeamController extends Controller
 {
 
     use ResponseTrait;
+    use ActivityTrait;
 
     public function __construct()
     {
@@ -67,6 +69,9 @@ class TeamController extends Controller
             $request['team_lead'] = 1; //to remove
             $teamCollection = new Team($request->all());
             $teamCollection->generateInvitationToken();
+
+            $this->logAdminActivity("created " . $teamCollection->team_name . " Team");
+
             $teamCollection->save();
 
         }catch (\Exception $e){
@@ -131,6 +136,7 @@ class TeamController extends Controller
 
             if ($team = Team::findOrFail($id)) {
                 if ($team->update($request->all())) {
+                    $this->logAdminActivity("updated " . $team->team_name . " Team");
                     return $this->sendSuccess($team, 'Team has been updated successfully.', 200);
                 }
             } else {
@@ -156,6 +162,7 @@ class TeamController extends Controller
 
             if ($team = Team::findOrFail($id)) {
                 if ($team->delete()) {
+                    $this->logAdminActivity("deleted " . $team->team_name . " Team");
                     return $this->sendSuccess($team, 'Team has been deleted successfully.', 200);
                 }
             } else {
@@ -198,6 +205,8 @@ class TeamController extends Controller
             ];
             
             $user->notify(new TeamNotifications($message));
+
+            $this->logAdminActivity("added ". $user->firstname. " " .$user->firstname. " (" .$user->email . ") to ". $name . " Team");
 
             return $this->sendSuccess($team, 'Intern added to team successfully', 200);
 
@@ -258,6 +267,7 @@ class TeamController extends Controller
                 $team->delete();
                 // logger(Auth::user()->email . ' removed ' . $user->email . ' from a track');
 
+
                 //SEND NOTIFICATION HERE
                 // dd($team);
                 $teamName = Team::find($team->team_id)->team_name;
@@ -266,7 +276,8 @@ class TeamController extends Controller
                 ];
                 
                 $user->notify(new TeamNotifications($message));
-                
+
+                $this->logAdminActivity("removed ". $user->firstname. " " .$user->firstname. " (" .$user->email . ") from ". $teamName . " Team");
 
                 return $this->sendSuccess([], 'Intern removed from team successfully', 200);
 
@@ -285,7 +296,7 @@ class TeamController extends Controller
             $team['members'] = $team->members;
             $team['team_leader'] = $team->team_leader;
 
-                return $this->sendSuccess($team, 'Successfull fetched members', 200);
+                return $this->sendSuccess($team, 'Successfully fetched members', 200);
         } else {
             return $this->sendError('Team not found', 404, []);
         }

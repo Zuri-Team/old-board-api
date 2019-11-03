@@ -7,6 +7,7 @@ use App\Http\Requests\StoreTask;
 use App\Http\Resources\TaskResource;
 use App\TrackUser;
 use Symfony\Component\HttpFoundation\Response;
+use App\Http\Classes\ActivityTrait;
 
 //use App\Http\Resources\Task\TaskCollection;
 //use App\Http\Resources\Task\TaskResource;
@@ -18,6 +19,8 @@ use Illuminate\Validation\Rule;
 
 class TasksController extends Controller
 {
+
+    use ActivityTrait;
     /**
      * Display a listing of the resource.
      *
@@ -64,6 +67,8 @@ class TasksController extends Controller
         $data = $request->validated();
 
         $task = Task::create($data);
+
+        $this->logAdminActivity("created " . $task->title . " Task");
 
 //        if ($task) {
         //            return TaskResource::collection(Task::all()->paginate(20));
@@ -124,6 +129,8 @@ class TasksController extends Controller
 
         if ($task) {
             if ($task->update($request->all())) {
+
+                $this->logAdminActivity("updated " . $task->title . " Task");
                 return response([
                     'data' => new TaskResource($task),
                 ]);
@@ -146,6 +153,8 @@ class TasksController extends Controller
         $this->middleware(['role:superadmin', 'role:admin']);
 
         if (Task::destroy($id)) {
+
+            $this->logAdminActivity("deleted a Task");
             return response($task, 'Task successfully deleted');
         }
     }
@@ -262,6 +271,8 @@ class TasksController extends Controller
         $task = Task::find($id)->first();
         $task->status = $request->status;
         if ($task->save()) {
+
+            $this->logAdminActivity("changed " . $task->title . " Task status");
             return self::SUCCESS('Task ' . $request->status . ' successfully', $task);
         }
     }

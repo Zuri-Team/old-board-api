@@ -86,7 +86,7 @@ class TasksController extends Controller
 
         $this->middleware(['role:superadmin', 'role:admin']);
 
-        $task = Task::find($id);
+        $task = Task::find($id)->with('tracks');
 
         if ($task) {
             return TaskResource::collection($task);
@@ -154,7 +154,7 @@ class TasksController extends Controller
     public function view_track_task($track_id)
     {
 
-        $this->middleware(['role: intern', 'role:superadmin']);
+        $this->middleware(['role: intern', 'role:superadmin', 'role:admin']);
 
         $track_tasks = Task::where('track_id', $track_id)->orderBy('created_at', 'desc')->get();
 
@@ -167,22 +167,30 @@ class TasksController extends Controller
         }
     }
     
+    #Get tasks based on Interns track(s)
      public function intern_view_track_task()
     {
         $this->middleware(['role: intern']);
         
-        $user_track = auth()->user()->track;
+        $user_tracks = auth()->user()->track;
+                         
+         foreach($user_tracks as $user_track){
+             
+             //Get track id
+             $track_id = Track::where('track_name', $user_track)->first();
+             
+             //Get all task for the task
+             $track_tasks = Task::where('track_id', $track_id)->orderBy('created_at', 'desc')->get();
+             
+             if ($track_tasks) {
+                return TaskResource::collection($track_tasks);
+             } else {
+                return \response([
+                    'message' => 'Track task not available'
+                ]);
+             }
+         }
         
-        //Get track id
-        $track_id = Track::where('track_name', $user_track)->first();
-        $track_tasks = Task::where('track_id', $track_id)->orderBy('created_at', 'desc')->get();
-        if ($track_tasks) {
-            return TaskResource::collection($track_tasks);
-        } else {
-            return \response([
-                'message' => 'Track task not available'
-            ]);
-        }
      } 
 
     public function view_task($id)

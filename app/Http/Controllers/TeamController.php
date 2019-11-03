@@ -52,16 +52,22 @@ class TeamController extends Controller
             'max_team_mates' => 'required|integer',
             // 'team_lead' => 'required|integer',
             'team_description' => 'nullable|string|max:100',
+            'invite_link' => 'unique'|'required',
         ]);
 
         if ($validator->fails()) {
             return $this->sendError('', 400, $validator->errors());
         }
 
+        //$invite_link = $team->ge
+
         $teamCollection = [];
         try{
+
             $request['team_lead'] = 1; //to remove
-            $teamCollection = Team::create($request->all());
+            $teamCollection = new Team($request->all());
+            $teamCollection->generateInvitationToken();
+            $teamCollection->save();
 
         }catch (\Exception $e){
             Log::error($e->getMessage());

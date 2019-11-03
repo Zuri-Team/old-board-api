@@ -13,7 +13,7 @@ class TaskSubmission extends Model
         return $this->belongsTo('App\Task');
     }
     
-    public function user()
+    public function users()
     {
         return $this->belongsTo('App\User');
     }

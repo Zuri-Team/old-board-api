@@ -26,8 +26,8 @@ class StoreTaskSubmission extends FormRequest
         return [
 
             'task_id' => ['bail', 'required', 'integer'],
-            'user_id' => 'bail|integer|unique:task_submissions',
-            'submission_link' => 'url',
+            'user_id' => 'bail|required|integer|unique:task_submissions',
+            'submission_link' => 'required|url',
 
         ];
     }
@@ -36,6 +36,9 @@ class StoreTaskSubmission extends FormRequest
     {
         return [
             'user_id.unique' => "You have already submitted",
+            'submission_link.required' => "Provide a submission link",
+            'submission_link.url' => "Submission link must be a URL",
+            'task_id.required' => "No task selected",
         ];
     }
 }

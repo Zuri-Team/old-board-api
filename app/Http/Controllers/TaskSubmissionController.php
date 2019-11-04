@@ -224,12 +224,14 @@ class TaskSubmissionController extends Controller
 
         if ($intern_submission) {
             $data = [
-                'grade_score' => $request->input('grade_score'),
+                'grade_score' => (int)$request->input('grade_score'),
             ];
 
             // SEND NOTIFICATION HERE
+            $intern_submission->grade_score = $request->input('grade_score');
+            $res = $intern_submission->save();
             
-            $res =  $intern_submission->update($data);
+            // $res =  $intern_submission->update($data);
 
             if($res){
                 return $this->sendSuccess($intern_submission, 'Task submission successfully graded', 200);

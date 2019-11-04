@@ -24,9 +24,21 @@ class UserProfileController extends Controller
     }
 
     public function index($user) {
-//         $getUser = $user->with('teams')->with('tracks')->get();
+//         $getUser = $user->with('teams')->with('tracks')->with('profile')->get();
         $getUser = User::where('id', $user)->with('teams')->with('tracks')->first();
+	$getUser['profile_img'] = $getUser->profile->profile_img;
 
+        if ($getUser) {
+            return $this->sendSuccess($getUser, 'User profile info fetched', 200);
+        }
+        return $this->sendError('Internal server error.', 500, []);
+    }
+    
+    //Get or retieve all users tracks
+    public function user_tracks($user) {
+        
+        $getUser = User::where('id', $user)->with('tracks')->get();
+        
         if ($getUser) {
             return $this->sendSuccess($getUser, 'User profile info fetched', 200);
         }

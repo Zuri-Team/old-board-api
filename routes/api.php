@@ -37,6 +37,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     //User Profile Routes
     Route::group(['prefix' => 'user-profile'], function () {
         Route::get('/{user}', 'UserProfileController@index');
+        Route::get('/{user}/track', 'UserProfileController@user_tracks');
         Route::put('/promote/{user}', 'UserProfileController@promote');
         Route::put('/demote/{user}', 'UserProfileController@demote');
         Route::put('/update-stage/{user}', 'UserProfileController@update_stage');

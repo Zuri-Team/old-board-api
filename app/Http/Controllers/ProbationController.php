@@ -58,6 +58,8 @@ class ProbationController extends Controller
 
     public function is_on_onprobation(int $user_id){
         $data = Probation::where('user_id', $user_id)->with('user:id,firstname,lastname,email')->with('probator:id,firstname,lastname,email')->first();
+
+        $data['user']['profile_img'] = User::find($user_id)->profile->profile_img;
         
         if($data){
             // $data = $probation;
@@ -65,6 +67,8 @@ class ProbationController extends Controller
         }else{
             $data['status'] = false;
         }
+
+        // dd($data);
         
         return $this->SUCCESS($data["status"], $data);
     }

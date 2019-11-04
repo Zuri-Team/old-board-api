@@ -71,6 +71,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 //stat
 Route::get('/stats/dashboard', 'StatsController@dashboard');
 Route::get('/interns', 'InternsController@get_all_interns');
+Route::get('/admins', 'InternsController@get_all_admins');
 Route::delete('intern/delete/{id}', 'InternsController@destroy');
 
     Route::post('/password/update', 'AuthController@updatePassword');

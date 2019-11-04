@@ -293,7 +293,15 @@ class TeamController extends Controller
     {
         if ($team = Team::find($id)) {
 
-            $team['members'] = $team->members;
+            // $team['members'] = $team->members->with('profile');
+            $interns = [];
+            foreach($team->members as $member){
+                $member['profile_img'] = $member->profile->profile_img;
+                array_push($interns, $member);
+            }
+
+            // dd($interns);
+            $team['members'] = $interns;
             $team['team_leader'] = $team->team_leader;
 
                 return $this->sendSuccess($team, 'Successfully fetched members', 200);

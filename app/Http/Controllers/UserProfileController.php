@@ -33,6 +33,17 @@ class UserProfileController extends Controller
         }
         return $this->sendError('Internal server error.', 500, []);
     }
+    
+    //Get or retieve all users tracks
+    public function user_tracks($user) {
+        
+        $getUser = User::where('id', $user)->with('tracks')->get();
+        
+        if ($getUser) {
+            return $this->sendSuccess($getUser, 'User profile info fetched', 200);
+        }
+        return $this->sendError('Internal server error.', 500, []);
+    }
 
     public function promote(User $user){
 

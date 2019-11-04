@@ -68,6 +68,17 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::delete('/comment/{id}', 'PostCommentController@delete_user_comment');
     });
 
+    //Exports Routes
+    Route::group(['prefix' => 'exports'], function() {
+        Route::get('/interns', 'ExportController@interns');
+        Route::get('/admins', 'ExportController@admins');
+        Route::get('/active', 'ExportController@admins');
+        Route::get('/stage/{stage}', 'ExportController@stage');
+        Route::get('/track/{id}', 'ExportController@track');
+        Route::get('/team/{id}', 'ExportController@team');
+        Route::get('/submission/{id}', 'ExportController@team');
+    });
+
     
 //stat
 Route::get('/stats/dashboard', 'StatsController@dashboard');

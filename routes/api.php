@@ -79,11 +79,21 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get('/submissions/{id}', 'ExportController@task_submission');
     });
 
+    //Track Request routes
+    Route::group(['prefix' => 'track-requests'], function() {
+    Route::get('/all', 'TrackRequestController@all');
+    Route::get('/request-count', 'TrackRequestController@get_request_count');
+    Route::post('/send-request', 'TrackRequestController@request');
+    Route::put('/accept/{id}', 'TrackRequestController@accept');
+    Route::delete('/reject/{id}', 'TrackRequestController@reject');
+    });
+
     
 //stat
 Route::get('/stats/dashboard', 'StatsController@dashboard');
 Route::get('/interns', 'InternsController@get_all_interns');
 Route::get('/admins', 'InternsController@get_all_admins');
+Route::get('/user/search/{query}', 'InternsController@search_users');
 Route::delete('intern/delete/{id}', 'InternsController@destroy');
 
     Route::post('/password/update', 'AuthController@updatePassword');

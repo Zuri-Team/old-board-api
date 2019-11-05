@@ -31,7 +31,7 @@ class TasksController extends Controller
         $this->middleware(['role:superadmin', 'role:admin']);
 
 
-            $tasks = Task::with('track')->orderBy('id', 'desc')->paginate(20);
+            $tasks = Task::with('tracks')->orderBy('id', 'desc')->paginate(20);
 
             if($tasks){
                 return TaskResource::collection($tasks);

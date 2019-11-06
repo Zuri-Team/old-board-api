@@ -87,7 +87,7 @@ class TrackRequestController extends Controller
             if(!$track) return $this->sendError('Track does not exist', 400, []);
 
             if($trackRequest->action == 'add'){
-                if(!$has_joined) return $this->sendError('User already joined this track', 400, []);
+                if($has_joined) return $this->sendError('User already joined this track', 400, []);
                 TrackUser::create([
                     'user_id' => $trackRequest->user_id,
                     'track_id' => $trackRequest->track_id

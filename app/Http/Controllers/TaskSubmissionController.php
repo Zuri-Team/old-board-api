@@ -142,9 +142,17 @@ class TaskSubmissionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
+            return $this->ERROR('You dont have the permission to perform this action');
+        }
+        
+        $intern_submission = TaskSubmission::destroy($id);
+        if ($intern_submission) {
+            return $this->sendSuccess($intern_submission, 'Task Submitted deleted', 200);
+        }
+        return $this->sendError('Internal server error.', 500, []);
     }
-
+    
     /**
      * View all interns score for a task resource from storage.
      *
@@ -289,5 +297,19 @@ class TaskSubmissionController extends Controller
             // return TaskSubmissionResource::collection($submissions);
             return $this->sendSuccess($submissions, 'AllTasks submissions fetched', 200);
         }
+    }
+    
+    public function delete_interns_submissions($taskId)
+    {
+        if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
+            return $this->ERROR('You dont have the permission to perform this action');
+        }
+        
+        $interns_submissions = TaskSubmission::where('task_id', $taskId)->delete();
+        
+        if ($interns_submissions) {
+            return $this->sendSuccess($interns_submissions, 'All Submissions deleted', 200);
+        }
+        return $this->sendError('Internal server error.', 500, []);
     }
 }

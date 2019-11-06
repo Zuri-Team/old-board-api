@@ -111,6 +111,7 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
     Route::get('task/{id}/intern/grades', 'TaskSubmissionController@intern_view_task_grades');
     Route::get('task/{id}/grades', 'TaskSubmissionController@view_all_intern_grades');
     Route::get('task/{id}/submissions', 'TaskSubmissionController@admin_retrieve_interns_submission');
+    Route::get('submissions/task/{taskId}', 'TaskSubmissionController@delete_interns_submissions');
 
     Route::post('track/create', 'TrackController@create_track');
     Route::put('track/edit', 'TrackController@edit_track');

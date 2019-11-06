@@ -11,13 +11,14 @@
 |
  */
 
- Route::get('slacks/test/{prev}/{next}', 'SlackController@show');
+Route::get('slacks/test/{prev}/{next}', 'SlackController@show');
 Route::post('slacks/verify','SlackController@verify_user');
 Route::post('slacks/profile','SlackController@slack_user_profile');
 
 Route::post('login', 'AuthController@login');
 Route::post('register', 'AuthController@register');
 Route::get('/verify/{token}', 'AuthController@verify')->name('verify');
+
 Route::post('/password/forgot', 'AuthController@requestReset');
 Route::get('/password/reset/{token}', 'AuthController@findResetToken');
 Route::post('/password/reset', 'AuthController@resetPassword');

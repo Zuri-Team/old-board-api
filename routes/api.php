@@ -38,6 +38,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     //User Profile Routes
     Route::group(['prefix' => 'user-profile'], function () {
         Route::get('/{user}', 'UserProfileController@index');
+        Route::get('/{user}/track', 'UserProfileController@user_tracks');
         Route::put('/promote/{user}', 'UserProfileController@promote');
         Route::put('/demote/{user}', 'UserProfileController@demote');
         Route::put('/update-stage/{user}', 'UserProfileController@update_stage');
@@ -68,10 +69,32 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::delete('/comment/{id}', 'PostCommentController@delete_user_comment');
     });
 
+    //Exports Routes
+    Route::group(['prefix' => 'exports'], function() {
+        Route::get('/interns', 'ExportController@interns');
+        Route::get('/admins', 'ExportController@admins');
+        Route::get('/active', 'ExportController@active_interns');
+        Route::get('/stage/{stage}', 'ExportController@stage');
+        Route::get('/track/{id}', 'ExportController@track');
+        Route::get('/team/{id}', 'ExportController@team');
+        Route::get('/submissions/{id}', 'ExportController@task_submission');
+    });
+
+    //Track Request routes
+    Route::group(['prefix' => 'track-requests'], function() {
+    Route::get('/all', 'TrackRequestController@all');
+    Route::get('/request-count', 'TrackRequestController@get_request_count');
+    Route::post('/send-request', 'TrackRequestController@request');
+    Route::put('/accept/{id}', 'TrackRequestController@accept');
+    Route::delete('/reject/{id}', 'TrackRequestController@reject');
+    });
+
     
 //stat
 Route::get('/stats/dashboard', 'StatsController@dashboard');
 Route::get('/interns', 'InternsController@get_all_interns');
+Route::get('/admins', 'InternsController@get_all_admins');
+Route::get('/user/search/{query}', 'InternsController@search_users');
 Route::delete('intern/delete/{id}', 'InternsController@destroy');
 
     Route::post('/password/update', 'AuthController@updatePassword');
@@ -82,11 +105,13 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
     Route::post('categories/update/{id}', 'CategoriesController@updateCategory');
 
     Route::resource('submissions', 'TaskSubmissionController');
-    Route::post('task/{id}/submissions', 'TaskSubmissionController@grade_task_for_interns');
+    Route::post('task/{id}/submissions/grade', 'TaskSubmissionController@grade_task_for_interns');
     Route::post('user/task/{id}/', 'TaskSubmissionController@grade_intern_task');
     Route::get('user/{user}/task/{id}/', 'TaskSubmissionController@intern_view_task_grade');
-    Route::get('task/{id}/grades', 'TaskSubmissionController@intern_view_task_grades');
-    Route::get('task/{id}/submissions/grades', 'TaskSubmissionController@view_all_intern_grades');
+    Route::get('task/{id}/intern/grades', 'TaskSubmissionController@intern_view_task_grades');
+    Route::get('task/{id}/grades', 'TaskSubmissionController@view_all_intern_grades');
+    Route::get('task/{id}/submissions', 'TaskSubmissionController@admin_retrieve_interns_submission');
+    Route::get('submissions/task/{taskId}', 'TaskSubmissionController@delete_interns_submissions');
 
     Route::post('track/create', 'TrackController@create_track');
     Route::put('track/edit', 'TrackController@edit_track');
@@ -117,6 +142,7 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
 
 
     Route::resource('posts', 'PostsController');
+    Route::get('posts/view/{post}', 'PostsController@view_a_post');
     Route::get('categories/posts/{id}', 'PostsController@view_posts_in_category');
 
     Route::post('profile/{user}/edit', 'ProfileController@update');

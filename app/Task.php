@@ -13,7 +13,7 @@ class Task extends Model
         return $this->belongsToMany('App\User');
     }
 
-    public function tracks(){
-        return $this->hasMany('App\Tracks');
+    public function track(){
+        return $this->hasOne('App\Track', 'track_id');
     }
 }

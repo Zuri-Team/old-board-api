@@ -14,11 +14,13 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Classes\ResponseTrait;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Classes\ActivityTrait;
 
 class TaskSubmissionController extends Controller
 {
 
     use ResponseTrait;
+    use ActivityTrait;
     /**
      * Display a listing of the resource.
      *
@@ -140,9 +142,17 @@ class TaskSubmissionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
+            return $this->ERROR('You dont have the permission to perform this action');
+        }
+        
+        $intern_submission = TaskSubmission::destroy($id);
+        if ($intern_submission) {
+            return $this->sendSuccess($intern_submission, 'Task Submitted deleted', 200);
+        }
+        return $this->sendError('Internal server error.', 500, []);
     }
-
+    
     /**
      * View all interns score for a task resource from storage.
      *
@@ -203,8 +213,8 @@ class TaskSubmissionController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'grade_score' => 'required',
-            'user_id' => 'required|integer',
+            'grade_score' => 'bail|required|integer',
+            'user_id' => 'bail|required|integer',
         ]);
 
         if ($validator->fails()) {
@@ -222,12 +232,14 @@ class TaskSubmissionController extends Controller
 
         if ($intern_submission) {
             $data = [
-                'grade_score' => $request->input('grade_score'),
+                'grade_score' => (int)$request->input('grade_score'),
             ];
 
             // SEND NOTIFICATION HERE
+            $intern_submission->grade_score = $request->input('grade_score');
+            $res = $intern_submission->save();
             
-            $res =  $intern_submission->update($data);
+            // $res =  $intern_submission->update($data);
 
             if($res){
                 return $this->sendSuccess($intern_submission, 'Task submission successfully graded', 200);
@@ -273,5 +285,31 @@ class TaskSubmissionController extends Controller
             // return $this->errorResponse('Task has not been graded', 404);
             return $this->sendError('Task has not been graded', 404, []);
         }
+    }
+    
+    public function admin_retrieve_interns_submission($id)
+    {
+        if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
+            return $this->ERROR('You dont have the permission to perform this action');
+        }
+        $submissions = TaskSubmission::where('task_id', $id)->with('user')->get();
+        if ($submissions) {
+            // return TaskSubmissionResource::collection($submissions);
+            return $this->sendSuccess($submissions, 'AllTasks submissions fetched', 200);
+        }
+    }
+    
+    public function delete_interns_submissions($taskId)
+    {
+        if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
+            return $this->ERROR('You dont have the permission to perform this action');
+        }
+        
+        $interns_submissions = TaskSubmission::where('task_id', $taskId)->delete();
+        
+        if ($interns_submissions) {
+            return $this->sendSuccess($interns_submissions, 'All Submissions deleted', 200);
+        }
+        return $this->sendError('Internal server error.', 500, []);
     }
 }

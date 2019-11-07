@@ -19,10 +19,10 @@ class PostCommentController extends Controller
      */
     public function retrieve_post_comments($id)
     {
-        $post_comments = PostComment::where('post_id', $id)->orderBy('created_at', 'asc')->get();
+        $post_comments = PostComment::where('post_id', $id)->orderBy('created_at', 'asc')->with('user:id,firstname,lastname,email')->get();
 
         if($post_comments){
-            return $this->sendSuccess($post_comments, 'Commented', 200);
+            return $this->sendSuccess($post_comments, 'All comments for Post', 200);
         }
         return $this->sendError('Internal server error.', 500, []);
     }
@@ -70,10 +70,10 @@ class PostCommentController extends Controller
      */
     public function show_all_post_comments($id)
     {
-        $post_comments = PostComment::where('post_id', $id)->get();
+        $post_comments = PostComment::where('post_id', $id)->with('user:id,firstname,lastname,email')->get();
 
         if($post_comments){
-            return $this->sendSuccess($post_comments, 'Commented', 200);
+            return $this->sendSuccess($post_comments, 'All comments for Post', 200);
         }
         return $this->sendError('Internal server error.', 500, []);
     }
@@ -91,7 +91,6 @@ class PostCommentController extends Controller
         $user_id = Auth::user()->id;
 
         $post_comment = PostComment::find($id)->where('user_id', $user_id);
-
 
         $data = ['comment' => $request->input('comment')];
 

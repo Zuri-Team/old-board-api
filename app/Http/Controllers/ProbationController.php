@@ -10,9 +10,13 @@ use App\Probation;
 use Carbon\Carbon;
 use Illuminate\Validation\Validator;
 use Illuminate\Support\Facades\Request;
+use App\Http\Classes\ActivityTrait;
 
 class ProbationController extends Controller
 {
+
+    use ActivityTrait;
+
     public function probate(Request $request){
         // Only admin can do this
         if(!Auth::user()->hasAnyRole(['admin', 'superadmin'])){
@@ -29,7 +33,7 @@ class ProbationController extends Controller
 
         $exit_date = Carbon::now()->addDays(1);
         if($request->exit_on){
-            if(Carbon::make($request->exit_on)->isPast()) return $this->ERROR('Exit date must be in the future', $validator->errors());
+            if(Carbon::make($request->exit_on)->isPast()) return $this->ERROR('Exit date must be in the future', $validation->errors());
             $exit_date = $request->exit_on;
         } 
         
@@ -44,6 +48,8 @@ class ProbationController extends Controller
         // Remove the user from All Stages
         Probation::insert(['user_id'=>$request->user_id, 'probated_by'=>Auth::user()->id, 'probation_reason'=>$request->reason ?? null, 'exit_on'=>$exit_date]);
 
+        $this->logAdminActivity("probated " . $is_user->firstname . " " . $is_user->lastname . " (". $is_user->email .")");
+
             $slack_id =  $is_user->slack_id;
             $probChannel = env('SLACK_PROBATION', 'test-underworld');
                     
@@ -53,8 +59,21 @@ class ProbationController extends Controller
     }
 
     public function is_on_onprobation(int $user_id){
-        $data = Probation::where('user_id', $user_id)->first();
-        return $this->SUCCESS($data ? 'true' : 'false', $data ? true : false);
+        $data = Probation::where('user_id', $user_id)->with('user:id,firstname,lastname,email')->with('probator:id,firstname,lastname,email')->first();
+
+        
+        
+        if($data){
+            $data['user']['profile_img'] = User::find($user_id)->profile->profile_img;
+            // $data = $probation;
+            $data['status'] = true;
+        }else{
+            $data['status'] = false;
+        }
+
+        // dd($data);
+        
+        return $this->SUCCESS($data["status"], $data);
     }
 
     public function unprobate_by_admin(Request $request){
@@ -67,6 +86,8 @@ class ProbationController extends Controller
             $query->delete();
 
             $user = User::find($request->user_id);
+
+            $this->logAdminActivity("remove " . $user->firstname . " " . $user->lastname . " (". $user->email .") from probation");
 
             $slack_id =  $user->slack_id;
             $probChannel = env('SLACK_PROBATION', 'test-underworld');
@@ -89,6 +110,8 @@ class ProbationController extends Controller
 
         foreach($probations as $probation){
             $user = User::find($probation->user_id);
+
+            $this->logAdminActivity("" . $user->firstname . " " . $user->lastname . " (". $user->email .") was automatically removed from probation");
 
              $slack_id =  $user->slack_id;
             $probChannel = env('SLACK_PROBATION', 'test-underworld');

@@ -24,6 +24,7 @@ class StatusController extends Controller
                 'id'=> $user->id,
                 'username' => $user->username, 
                 'profile_img' => $user->profile->profile_img,
+                'role' => $user->role,
                 'status' => $user->status()
                 ] ;
 

@@ -9,7 +9,7 @@ use App\Slack;
 use App\Probation;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use App\Http\Classes\ActivityTrait;
 
 class ProbationController extends Controller

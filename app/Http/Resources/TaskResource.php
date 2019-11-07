@@ -23,6 +23,8 @@ class TaskResource extends JsonResource
             'body' => $this->body,
             'deadline' => $this->deadline,
             'is_active' => $this->is_active,
+            'total_submissions' => $this->tasks->count(),
+            'submissions' => TaskSubmissionResource::collection($this->tasks),
         ];
     }
 }

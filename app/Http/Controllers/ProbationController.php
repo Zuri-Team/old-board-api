@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Request;
+use DB;
+use Auth;
+use App\User;
+use App\Slack;
 use App\Probation;
 use Carbon\Carbon;
-use App\User;
-use Auth;
-use DB;
-use App\Slack;
+use Illuminate\Validation\Validator;
+use Illuminate\Support\Facades\Request;
 use App\Http\Classes\ActivityTrait;
 
 class ProbationController extends Controller
@@ -42,8 +42,10 @@ class ProbationController extends Controller
 
         if(!$is_user)  return $this->ERROR('Specified user does not exist');
         if($is_user->hasAnyRole(['admin', 'superadmin'])) return $this->ERROR('An admin cannot go on probation');
-        if($is_on_probation) return $this->ERROR('Specified user is already on probation');        
+        if($is_on_probation)      
         
+        
+        // Remove the user from All Stages
         Probation::insert(['user_id'=>$request->user_id, 'probated_by'=>Auth::user()->id, 'probation_reason'=>$request->reason ?? null, 'exit_on'=>$exit_date]);
 
         $this->logAdminActivity("probated " . $is_user->firstname . " " . $is_user->lastname . " (". $is_user->email .")");

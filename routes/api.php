@@ -125,6 +125,7 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
     Route::get('track/{track}', 'TrackController@get_track_by_id');
     Route::get('users/track/{id}/list', 'TrackController@get_all_users_in_track');
 
+    Route::get('tasks/active/', 'TasksController@getActiveTasks');
     Route::resource('tasks', 'TasksController'); #URL for tasks
 
     Route::get('track/{id}/tasks', 'TasksController@view_track_task');

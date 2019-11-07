@@ -27,7 +27,7 @@ class ProbationController extends Controller
             'user_id' => 'required',
             'reason' => 'nullable',
             'exit_on' => 'date_format:Y-m-d'
-        ])->validate();
+        ]);
 
         if($validation->fails()) return $this->ERROR( $validation->errors());
 

@@ -31,7 +31,7 @@ class TaskSubmissionController extends Controller
         if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
             return $this->ERROR('You dont have the permission to perform this action');
         }
-        $submissions = TaskSubmission::orderBy('created_at', 'desc')->paginate(10);
+        $submissions = TaskSubmission::orderBy('created_at', 'desc')->with(['user', 'task'])->get();
         if ($submissions) {
             // return TaskSubmissionResource::collection($submissions);
             return $this->sendSuccess($submissions, 'AllTasks submissions fetched', 200);

@@ -31,7 +31,7 @@ class TasksController extends Controller
         $this->middleware(['role:superadmin', 'role:admin']);
 
 
-            $tasks = Task::with('track')->orderBy('id', 'desc')->paginate(20);
+            $tasks = Task::orderBy('id', 'desc')->with('track')->get();
 
             if($tasks){
                 return TaskResource::collection($tasks);
@@ -152,10 +152,12 @@ class TasksController extends Controller
     {
         $this->middleware(['role:superadmin', 'role:admin']);
 
+        $task = Task::find($id);
+
         if (Task::destroy($id)) {
 
             $this->logAdminActivity("deleted a Task");
-            return response($task, 'Task successfully deleted');
+            return response('', 'Task successfully deleted');
         }
     }
 

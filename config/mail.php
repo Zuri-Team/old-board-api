@@ -1,24 +1,39 @@
 <?php
 
+
 return [
-  "driver" => "smtp",
-  "host" => "smtp.mailtrap.io",
-  "port" => 2525,
-  "from" => array(
-      "address" => "noreply@hng.tech",
-      "name" => "HNG_Tech"
-  ),
-  'encryption' => 'tls',
-  "username" => "21a377920a4517",
-  "password" => "3d3041b803999c",
-  "sendmail" => "/usr/sbin/sendmail -bs",
-  'markdown' => [
-        'theme' => 'default',
-        'paths' => [
-            resource_path('views/vendor/mail'),
-        ],
-    ],
-];
+    "driver" => "smtp",
+    "host" => "smtp.gmail.com",
+    "port" => 587,
+    "from" => array(
+        "address" => "noreply@example.com",
+        "name" => "HNG Tech"
+    ),
+    'encryption' => 'tls',
+    "username" => "mannie.mybiz@gmail.com",
+    "password" => "mybiz2019",
+    "sendmail" => "/usr/sbin/sendmail -bs"
+  ];
+
+// return [
+//   "driver" => "smtp",
+//   "host" => "smtp.mailtrap.io",
+//   "port" => 2525,
+//   "from" => array(
+//       "address" => "noreply@hng.tech",
+//       "name" => "HNG_Tech"
+//   ),
+//   'encryption' => 'tls',
+//   "username" => "21a377920a4517",
+//   "password" => "3d3041b803999c",
+//   "sendmail" => "/usr/sbin/sendmail -bs",
+//   'markdown' => [
+//         'theme' => 'default',
+//         'paths' => [
+//             resource_path('views/vendor/mail'),
+//         ],
+//     ],
+// ];
 
 
 // return [

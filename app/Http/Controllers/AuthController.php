@@ -10,6 +10,8 @@ use Carbon\Carbon;
 use App\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PasswordResetMail;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -112,28 +114,33 @@ class AuthController extends Controller
         
     } 
 
-    public function request_reset(Request $request){
+    public function requestReset(Request $request){
+
+        
         try{
             $request->validate([ 'email' => 'required|string|email' ]);
-            $user = User::findOrFail($request->email);
+            $user = User::where('email', $request->email)->first();
             if (!$user) return $this->ERROR("We can't find a user with the e-mail address " . $request->email);
 
             $passwordReset = PasswordReset::updateOrCreate(
                 ['email' => $user->email],
                 [
                     'email' => $user->email,
-                    'token' => $this->GENERATE_TOKEN(6)
+                    'token' => $this->GENERATE_TOKEN(60)
                 ]
             );
+            $email = PasswordReset::where('email', $user->email)->first();
+
             if ($user && $passwordReset){
                 //Send email
+                Mail::to($user->email)->send(new PasswordResetMail($email->token));
             } 
-            logger("Password reset link sent to " . Auth::user()->email);
-            return $this->SUCCESS("Password reset link sent");
+            // logger("Password reset link sent to " . Auth::user()->email);
+            return $this->SUCCESS("Password reset link sent: " . $user->email);
         }
         catch(\Throwable $e){
-            logger("Password reset failed for " . Auth::user()->email);
-            return $this->ERROR('Password rest failed. Please try again');
+            // logger("Password reset failed for " . Auth::user()->email);
+            return $this->ERROR('Password rest failed. Please try again', );
         }
     }
 

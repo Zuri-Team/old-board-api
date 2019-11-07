@@ -33,7 +33,7 @@ Route::get('status', 'StatusController@status');
 Route::get('track/all', 'TrackController@all');
 
 Route::get('/stats/summary', 'StatsController@summary');
-Route::group(['middleware' => 'auth:api'], function () {
+Route::group(['middleware' => 'auth:api', 'throttle:5,10'], function () {
 
     //User Profile Routes
     Route::group(['prefix' => 'user-profile'], function () {

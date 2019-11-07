@@ -8,7 +8,7 @@ use App\User;
 use App\Slack;
 use App\Probation;
 use Carbon\Carbon;
-use Illuminate\Validation\Validator;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Request;
 use App\Http\Classes\ActivityTrait;
 

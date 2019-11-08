@@ -32,7 +32,7 @@ Route::get('status', 'StatusController@status');
 Route::get('track/all', 'TrackController@all');
 
 Route::get('/stats/summary', 'StatsController@summary');
-Route::group(['middleware' => 'auth:api'], function () {
+Route::group(['middleware' => 'auth:api', 'throttle:5,10'], function () {
 
     //User Profile Routes
     Route::group(['prefix' => 'user-profile'], function () {
@@ -110,7 +110,8 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
     Route::get('task/{id}/intern/grades', 'TaskSubmissionController@intern_view_task_grades');
     Route::get('task/{id}/grades', 'TaskSubmissionController@view_all_intern_grades');
     Route::get('task/{id}/submissions', 'TaskSubmissionController@admin_retrieve_interns_submission');
-    Route::get('submissions/task/{taskId}', 'TaskSubmissionController@delete_interns_submissions');
+    Route::delete('submissions/task/{taskId}', 'TaskSubmissionController@delete_interns_submissions');
+    Route::delete('task/{taskId}', 'TaskSubmissionController@delete_interns_submissions');
 
     Route::post('track/create', 'TrackController@create_track');
     Route::put('track/edit', 'TrackController@edit_track');
@@ -123,6 +124,7 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
     Route::get('track/{track}', 'TrackController@get_track_by_id');
     Route::get('users/track/{id}/list', 'TrackController@get_all_users_in_track');
 
+    Route::get('tasks/active/', 'TasksController@getActiveTasks');
     Route::resource('tasks', 'TasksController'); #URL for tasks
 
     Route::get('track/{id}/tasks', 'TasksController@view_track_task');

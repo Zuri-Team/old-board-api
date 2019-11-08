@@ -31,8 +31,8 @@ class TasksController extends Controller
         $this->middleware(['role:superadmin', 'role:admin']);
 
 
-            $tasks = Task::with('track')->orderBy('id', 'desc')->paginate(20);
-
+            $tasks = Task::orderBy('id', 'desc')->with(['track', 'tasks'])->get();
+            
             if($tasks){
                 return TaskResource::collection($tasks);
             }else{
@@ -152,10 +152,12 @@ class TasksController extends Controller
     {
         $this->middleware(['role:superadmin', 'role:admin']);
 
+        $task = Task::find($id);
+
         if (Task::destroy($id)) {
 
             $this->logAdminActivity("deleted a Task");
-            return response($task, 'Task successfully deleted');
+            return response('', 'Task successfully deleted');
         }
     }
 
@@ -274,6 +276,19 @@ class TasksController extends Controller
 
             $this->logAdminActivity("changed " . $task->title . " Task status");
             return self::SUCCESS('Task ' . $request->status . ' successfully', $task);
+        }
+    }
+
+    public function getActiveTasks()
+    {
+        $tasks = Task::with(['track', 'tasks'])->where('is_active', '1')->orderBy('id', 'desc')->get();
+            
+        if($tasks){
+            return TaskResource::collection($tasks);
+        }else{
+            return response([
+                'message' => Response::HTTP_NOT_FOUND
+            ], 404);
         }
     }
 

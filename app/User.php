@@ -52,7 +52,6 @@ class User extends Authenticatable
             function ($user){
                 $user->profile()->create([
                     'bio' => 'Welcome to Start.Ng.',
-                    'profile_img' => 'https://res.cloudinary.com/hngojet/image/upload/v1571920043/hngojet/profile_img/avatar-m_qufxpe.png'
                 ]);
             }
         );

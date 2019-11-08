@@ -14,7 +14,7 @@ class UpdateTeamsTable extends Migration
     public function up()
     {
         Schema::table('teams', function (Blueprint $table) {
-            $table->string('invite_link');
+            $table->string('invite_link')->nullable();
         });
     }
 

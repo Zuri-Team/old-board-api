@@ -20,7 +20,6 @@ Route::post('register', 'AuthController@register');
 Route::get('/verify/{token}', 'AuthController@verify')->name('verify');
 
 Route::post('/password/forgot', 'AuthController@requestReset');
-Route::get('/password/reset/{token}', 'AuthController@findResetToken');
 Route::post('/password/reset', 'AuthController@resetPassword');
 
 Route::get('profile/{user}', 'ProfileController@index');

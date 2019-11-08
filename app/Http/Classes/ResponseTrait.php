@@ -6,7 +6,7 @@ trait ResponseTrait
 {
     protected function sendSuccess($data, $message = '', $code = 200)
     {
-        return $this->send(true, $data, $message, $code, true);
+        return $this->send(true, $data, $message, $code);
     }
     protected function sendError($message, $code, $data = [])
     {

@@ -8,6 +8,8 @@ use App\RoleUser;
 use App\TrackUser;
 use Carbon\Carbon;
 use App\PasswordReset;
+use App\Http\Classes\ResponseTrait;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -24,6 +26,7 @@ use App\Slack;
 class AuthController extends Controller
 {
 
+    use ResponseTrait;
     public function login(Request $request){ 
 
         //logic for logging in with username or email, and password.
@@ -144,49 +147,43 @@ class AuthController extends Controller
         }
     }
 
-    public function findResetToken($token){
-        $passwordReset = PasswordReset::where('token', $token)->first();
-        if (!$passwordReset)
-            return $this->ERROR("This password reset token is invalid.");
-        if (Carbon::parse($passwordReset->updated_at)->addMinutes(720)->isPast()) {
-            $passwordReset->delete();
-            return $this->ERROR("This link has expired!");
-        }
-        return $this->SUCCESS('Enter a new password', $passwordReset->token);
-    }
+
 
     public function resetPassword(Request $request){
-        DB::beginTransaction();
-        try{
+       
+       
             $validation = Validator::make($request->all(), [
                 'email' => 'required|string|email',
-                'password' => 'required|string|confirmed',
+                'password' => 'required',
+                'confirm_password' => 'required|same:password',
                 'token' => 'required|string'
             ]);
             
-            if ($validation->fails())  return $this->ERROR($validation->errors());
+            if ($validation->fails())  return $this->sendError($validation->errors(), 400);
 
             $passwordReset = PasswordReset::where([
-                ['token', $request->token],
-                ['email', $request->email]
+                'email' => $request->email,
+                'token' => $request->token
+                
             ])->first();
-            if (!$passwordReset) return $this->ERROR("This password reset token is invalid.", $request->token);
-            
-            $user = User::findOrFail($request->email);
-            if (!$user) return $this->ERROR("We can't find a user with the e-mail address " . $request->email);
 
+            if (!$passwordReset) return $this->sendError('This password reset email does not exist.', 404);
+
+            if (Carbon::parse($passwordReset->updated_at)->addMinutes(10)->isPast()) {
+                $passwordReset->delete();
+                return $this->sendError('This password reset token is invalid.', 404);
+            }
+
+            $user = User::whereEmail($request->email)->first();
+            if (!$user) return $this->sendError("We can't find a user with the e-mail address " . $request->email, 404); 
+            
             $user->password = bcrypt($request->password);
             $user->save();
             $passwordReset->delete();
 
-            DB::commit();
-        }
-        catch(\Throwable $e){
-            return $this->ERROR('Password reset failed', $e);
-        }
-        //Send Email
-        return $this->SUCCESS("Password reset successful!");
+            return $this->sendSuccess('Password successfully changed', 201);
     }
+
 
     public function updatePassword(Request $request){
         try{

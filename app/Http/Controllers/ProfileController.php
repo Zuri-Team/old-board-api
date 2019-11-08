@@ -25,8 +25,10 @@ class ProfileController extends Controller
 
     public function index(User $user){
 
+        $user->profile['profile_img'] = $user->profile->profileImg();
+
         if($user){
-            return $this->sendSuccess([$user ], 'User Profile ', 200);
+            return $this->sendSuccess([$user, $user->profile], 'User Profile ', 200);
 
             }else{
                 return $this->sendError('User not found', 500, []);

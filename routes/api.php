@@ -112,6 +112,7 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
     Route::get('task/{id}/submissions', 'TaskSubmissionController@admin_retrieve_interns_submission');
     Route::delete('submissions/task/{taskId}', 'TaskSubmissionController@delete_interns_submissions');
     Route::delete('task/{taskId}', 'TaskSubmissionController@delete_interns_submissions');
+    Route::delete('submission', 'TaskSubmissionController@delete_all_submission');
 
     Route::post('track/create', 'TrackController@create_track');
     Route::put('track/edit', 'TrackController@edit_track');

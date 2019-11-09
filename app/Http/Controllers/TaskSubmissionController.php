@@ -319,7 +319,7 @@ class TaskSubmissionController extends Controller
             return $this->ERROR('You dont have the permission to perform this action');
         }
         
-        if (TaskSubmission::destroy()) {
+        if (TaskSubmission::delete()) {
             return $this->sendSuccess($interns_submissions, 'All Submissions deleted', 200);
         }
         return $this->sendError('Internal server error.', 500, []);

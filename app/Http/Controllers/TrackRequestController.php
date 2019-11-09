@@ -58,7 +58,9 @@ class TrackRequestController extends Controller
             $trackRequest = TrackRequest::create([
                 'user_id' => $user_id,
                 'track_id' => $request->track_id,
-                'reason' => $request->reason
+                'reason' => $request->reason,
+		'action' => $request->action
+
             ]);
 
             if ($trackRequest) {

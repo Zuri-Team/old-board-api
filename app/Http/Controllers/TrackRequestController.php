@@ -129,9 +129,9 @@ class TrackRequestController extends Controller
 
         try{
         $trackReq = TrackRequest::find($id);
-        $res = $trackReq->delete();
+        //$res = $trackReq->delete();
 
-        if($res){
+        if($trackReq->delete()){
             return $this->sendSuccess($trackReq, 'Request rejected successfully successfully.', 200);
         }else{
             return $this->sendError('Rejecting request failed: ', 500, []);

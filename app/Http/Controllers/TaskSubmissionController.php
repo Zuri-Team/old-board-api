@@ -312,4 +312,16 @@ class TaskSubmissionController extends Controller
         }
         return $this->sendError('Internal server error.', 500, []);
     }
+    
+    public function delete_all_submission(){
+        
+        if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
+            return $this->ERROR('You dont have the permission to perform this action');
+        }
+        
+        if (TaskSubmission::destroy()) {
+            return $this->sendSuccess($interns_submissions, 'All Submissions deleted', 200);
+        }
+        return $this->sendError('Internal server error.', 500, []);
+    }
 }

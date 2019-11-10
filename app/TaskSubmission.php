@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class TaskSubmission extends Model
 {
-    protected $fillable = ['user_id', 'task_id', 'submission_link', 'comment'];
+    protected $fillable = ['user_id', 'task_id', 'submission_link', 'comment', 'grade_score', 'is_submitted', 'is_graded'];
 
     public function task()
     {

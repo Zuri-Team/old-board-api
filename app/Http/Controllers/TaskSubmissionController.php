@@ -235,8 +235,8 @@ class TaskSubmissionController extends Controller
         if ($intern_submission) {
             $data = [
                 'grade_score' => (int)$request->input('grade_score'),
-                'is_submitted' => $request->input('is_submitted'),
-                'is_graded' => $request->input('is_graded'),
+                //'is_submitted' => $request->input('is_submitted'),
+                'is_graded' => 1,
             ];
 
             // SEND NOTIFICATION HERE

@@ -14,8 +14,8 @@ class UpdateTasksTable extends Migration
     public function up()
     {
         Schema::table('tasks', function (Blueprint $table) {
-            \DB::statement("ALTER TABLE tasks CHANGE status status ENUM('OPEN', 'CLOSED') DEFAULT OPEN");
-            //$table->enum('status', ['OPEN', 'CLOSED'])->default('OPEN')->change();
+            //\DB::statement("ALTER TABLE tasks CHANGE status status ENUM('OPEN', 'CLOSED') DEFAULT OPEN");
+            $table->enum('status', ['OPEN', 'CLOSED'])->default('OPEN');
         });
     }
 

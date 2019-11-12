@@ -215,6 +215,8 @@ class TaskSubmissionController extends Controller
         $validator = Validator::make($request->all(), [
             'grade_score' => 'bail|required|integer',
             'user_id' => 'bail|required|integer',
+            'is_graded' => 'bail|required|integer',
+            'is_submitted' => 'bail|required|integer',
         ]);
 
         if ($validator->fails()) {
@@ -233,6 +235,8 @@ class TaskSubmissionController extends Controller
         if ($intern_submission) {
             $data = [
                 'grade_score' => (int)$request->input('grade_score'),
+                'is_submitted' => $request->input('is_submitted'),
+                'is_graded' => $request->input('is_graded'),
             ];
 
             // SEND NOTIFICATION HERE

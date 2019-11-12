@@ -4,7 +4,7 @@ use App\User;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use App\RoleUser;
-class CreateUserTableSeeder extends Seeder
+class DummyUsersSeeder extends Seeder
 {
     /**
      * Run the database seeds.

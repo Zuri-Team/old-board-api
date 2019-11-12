@@ -216,7 +216,7 @@ class TaskSubmissionController extends Controller
             'grade_score' => 'bail|required|integer',
             'user_id' => 'bail|required|integer',
             'is_graded' => 'bail|required|integer',
-            'is_submitted' => 'bail|required|integer',
+           // 'is_submitted' => 'bail|required|integer',
         ]);
 
         if ($validator->fails()) {

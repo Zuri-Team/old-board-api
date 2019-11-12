@@ -14,7 +14,7 @@ class UpdateTaskSubmissionsTable extends Migration
     public function up()
     {
         Schema::table('task_submissions', function (Blueprint $table) {
-            $table->integer('grade_score')->change();
+            //$table->integer('grade_score')->change();
             $table->integer('is_submitted')->default(0);
             $table->integer('is_graded')->default(0);
         });

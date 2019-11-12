@@ -216,7 +216,6 @@ class TaskSubmissionController extends Controller
             'grade_score' => 'bail|required|integer',
             'user_id' => 'bail|required|integer',
             'is_graded' => 'bail|required|integer',
-           // 'is_submitted' => 'bail|required|integer',
         ]);
 
         if ($validator->fails()) {
@@ -235,12 +234,11 @@ class TaskSubmissionController extends Controller
         if ($intern_submission) {
             $data = [
                 'grade_score' => (int)$request->input('grade_score'),
-                //'is_submitted' => $request->input('is_submitted'),
-                'is_graded' => 1,
             ];
 
             // SEND NOTIFICATION HERE
             $intern_submission->grade_score = $request->input('grade_score');
+            $intern_submission->is_graded = 1;
             $res = $intern_submission->save();
             
             // $res =  $intern_submission->update($data);

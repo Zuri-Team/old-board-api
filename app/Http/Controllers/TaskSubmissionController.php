@@ -359,28 +359,26 @@ class TaskSubmissionController extends Controller
             return $this->ERROR('You dont have the permission to perform this action');
         }
 
-        $data = $request->validated();
-
         // Check if the User is found in the trackUser
-        if (!TrackUser::where('user_id', $data['user_id'])->first()) {
+        if (!TrackUser::where('user_id', $request['user_id'])->first()) {
             // if (!TrackUser::where('user_id', auth()->user()->id)) {
             // return $this->errorResponse('User does not belong to this track', 422);
             return $this->sendError('User does not belong to this track', 422, []);
         }
 
         // Check if the Task Submission date has past => done
-        if (Task::find($data['task_id'])->first()->deadline < Carbon::now()) {
+        if (Task::find($request['task_id'])->first()->deadline < Carbon::now()) {
             // return $this->errorResponse('Submission date has elapsed', 422);
             return $this->sendError('Deadline date has elapsed', 422, []);
         }
 
         // Check if Status is still open for submission.
-        if (Task::find($data['task_id'])->first()->status == 'CLOSED') {
+        if (Task::find($$request['task_id'])->first()->status == 'CLOSED') {
             // return $this->errorResponse('Task submission Closed', 422);
             return $this->sendError('Task submission Closed', 422, []);
         }
 
-        $task = TaskSubmission::create($data);
+        $task = TaskSubmission::create($request->all());
         if ($task) {
             // return new TaskSubmissionResource($task);
             return $this->sendSuccess($task, 'Task submitted successfully', 200);

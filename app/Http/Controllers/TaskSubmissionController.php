@@ -56,10 +56,15 @@ class TaskSubmissionController extends Controller
      */
     public function store(StoreTaskSubmission $request)
     {
+        $u = auth()->user();
+        return $u;
+
+        dd('ddi');
+
         if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin', 'intern'])) {
             return $this->ERROR('You dont have the permission to perform this action');
         }
-        
+
         $data = $request->validated();
 
         // Check if the User is found in the trackUser
@@ -326,4 +331,61 @@ class TaskSubmissionController extends Controller
         }
         return $this->sendError('Internal server error.', 500, []);
     }
+
+    public function submit(Request $request)
+    {
+
+        $messages = [
+            'user_id.unique' => "You have already submitted",
+            'submission_link.required' => "Provide a submission link",
+            'submission_link.url' => "Submission link must be a URL",
+            'task_id.required' => "No task selected",
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'task_id' => ['bail', 'required', 'integer'],
+            'user_id' => 'bail|required|integer|unique:task_submissions',
+            'submission_link' => 'required|url',
+            // 'comment' => 'required|string',
+            // 'is_submitted' => 'integer',
+            // 'is_graded' => 'integer'
+        ], $messages);
+
+        if ($validator->fails()) {
+            return $this->sendError('', 400, $validator->errors());
+        }
+
+        if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin', 'intern'])) {
+            return $this->ERROR('You dont have the permission to perform this action');
+        }
+
+        $data = $request->validated();
+
+        // Check if the User is found in the trackUser
+        if (!TrackUser::where('user_id', $data['user_id'])->first()) {
+            // if (!TrackUser::where('user_id', auth()->user()->id)) {
+            // return $this->errorResponse('User does not belong to this track', 422);
+            return $this->sendError('User does not belong to this track', 422, []);
+        }
+
+        // Check if the Task Submission date has past => done
+        if (Task::find($data['task_id'])->first()->deadline < Carbon::now()) {
+            // return $this->errorResponse('Submission date has elapsed', 422);
+            return $this->sendError('Deadline date has elapsed', 422, []);
+        }
+
+        // Check if Status is still open for submission.
+        if (Task::find($data['task_id'])->first()->status == 'CLOSED') {
+            // return $this->errorResponse('Task submission Closed', 422);
+            return $this->sendError('Task submission Closed', 422, []);
+        }
+
+        $task = TaskSubmission::create($data);
+        if ($task) {
+            // return new TaskSubmissionResource($task);
+            return $this->sendSuccess($task, 'Task submitted successfully', 200);
+        }
+
+    }
+
 }

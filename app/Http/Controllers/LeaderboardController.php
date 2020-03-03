@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class LeaderboardController extends Controller
 {
-    public function viewAll(){
+    public function viewAll($week = 0){
         $users = User::where('role', '=', 'intern')->with('tracks')->get();
         $res = [];
 

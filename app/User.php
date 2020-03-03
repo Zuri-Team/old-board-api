@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use DB;
+use Carbon\Carbon;
 
 
 class User extends Authenticatable
@@ -100,6 +101,17 @@ class User extends Authenticatable
     }
 
     public function totalScore(){
+        $db = DB::table('task_submissions')->where('user_id', $this->id)->select('grade_score')->get();
+        $score = 0;
+        foreach($db as $s){
+            $score += $s->grade_score;
+        }
+        return $score;
+    }
+
+    public function totalScoreForWeek(){
+        $next_week = Carbon::now()->addDay(7);
+        
         $db = DB::table('task_submissions')->where('user_id', $this->id)->select('grade_score')->get();
         $score = 0;
         foreach($db as $s){

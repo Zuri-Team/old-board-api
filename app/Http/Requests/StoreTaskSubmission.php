@@ -13,6 +13,7 @@ class StoreTaskSubmission extends FormRequest
      */
     public function authorize()
     {
+
         return true;
     }
 
@@ -24,14 +25,12 @@ class StoreTaskSubmission extends FormRequest
     public function rules()
     {
         return [
-
             'task_id' => ['bail', 'required', 'integer'],
             'user_id' => 'bail|required|integer|unique:task_submissions',
             'submission_link' => 'required|url',
-            'comment' => 'required|string',
-            'is_submitted' => 'integer',
-            'is_graded' => 'integer'
-
+            // 'comment' => 'required|string',
+            // 'is_submitted' => 'integer',
+            // 'is_graded' => 'integer'
         ];
     }
 

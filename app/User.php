@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use DB;
 
 
 class User extends Authenticatable
@@ -96,5 +97,14 @@ class User extends Authenticatable
     public function submissions()
     {
         return $this->hasMany('App\TaskSubmission');
+    }
+
+    public function totalScore(){
+        $db = DB::table('task_submissions')->where('user_id', $this->id)->select('grade_score')->get();
+        $score = 0;
+        foreach($db as $s){
+            $score += $s->grade_score;
+        }
+        return $score;
     }
 }

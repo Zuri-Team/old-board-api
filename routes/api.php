@@ -164,3 +164,6 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
     Route::get('notifications/notification_count', 'NotificationController@notification_count');
     
 });
+
+
+Route::get('leaderboard', 'LeaderboardController@viewAll');

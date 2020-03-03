@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Task extends Model
 {
     protected $fillable = ['track_id', 'title', 'body', 'deadline', 'is_active', 'status'];
+    // protected $with = ['track'];
 
 
     public function users(){

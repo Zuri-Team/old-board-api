@@ -344,9 +344,9 @@ class TaskSubmissionController extends Controller
 
         $validator = Validator::make($request->all(), [
             'task_id' => ['bail', 'required', 'integer'],
-            'user_id' => 'bail|required|integer|unique:task_submissions',
+            'user_id' => 'bail|required|integer',
             'submission_link' => 'required|url',
-            // 'comment' => 'required|string',
+            'comment' => 'required|string',
             // 'is_submitted' => 'integer',
             // 'is_graded' => 'integer'
         ], $messages);
@@ -373,7 +373,7 @@ class TaskSubmissionController extends Controller
         }
 
         // Check if Status is still open for submission.
-        if (Task::find($$request['task_id'])->first()->status == 'CLOSED') {
+        if (Task::find($request['task_id'])->first()->status == 'CLOSED') {
             // return $this->errorResponse('Task submission Closed', 422);
             return $this->sendError('Task submission Closed', 422, []);
         }

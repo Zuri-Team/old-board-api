@@ -104,7 +104,7 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
     Route::post('categories/update/{id}', 'CategoriesController@updateCategory');
 
     Route::resource('submissions', 'TaskSubmissionController');
-    Route::post('submissions', 'TaskSubmissionController@submit');
+    Route::post('submit', 'TaskSubmissionController@submit');
     Route::post('task/{id}/submissions/grade', 'TaskSubmissionController@grade_task_for_interns');
     Route::post('user/task/{id}/', 'TaskSubmissionController@grade_intern_task');
     Route::get('user/{user}/task/{id}/', 'TaskSubmissionController@intern_view_task_grade');

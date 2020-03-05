@@ -31,7 +31,7 @@ return [
     ],
 
     'slack' => [
-        'token' => env('SLACK_TOKEN', 'xxoxp-981212895606-979002785408-973206885217-c0d89f2d9919c53aab9316ad95718d9c')
+        'token' => env('SLACK_TOKEN', 'xoxb-981212895606-984802308309-3hvfgPKvnMv3BdiULPBHD7tT')
     ]
 
 ];

@@ -81,6 +81,13 @@ class AuthController extends Controller
             return $this->ERROR('Please confirm that your email is used on slack and try again');
         }
 
+        if($validator->fails()){
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ], 401);
+        }
+
         
         $input['slack_id'] = $slackUser->user->id;
         // dd($input['slack_id']);

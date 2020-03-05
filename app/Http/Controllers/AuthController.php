@@ -3,21 +3,21 @@
 
 namespace App\Http\Controllers;
 use App\User;
+use App\Slack;
 use Validator;
 use App\RoleUser;
 use App\TrackUser;
 use Carbon\Carbon;
 use App\PasswordReset;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use App\Mail\PasswordResetMail;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Notifications\UserRegistration;
 use Craftyx\SlackApi\Facades\SlackUser;
-use App\Slack;
 
 
 
@@ -140,7 +140,7 @@ class AuthController extends Controller
         }
         catch(\Throwable $e){
             // logger("Password reset failed for " . Auth::user()->email);
-            return $this->ERROR('Password rest failed. Please try again', );
+            return $this->ERROR('Password rest failed. Please try again');
         }
     }
 

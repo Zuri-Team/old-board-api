@@ -2,19 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreTaskSubmission;
-use App\Http\Resources\TaskSubmissionResource;
 use App\Task;
-use App\TaskSubmission;
 use App\TrackUser;
 use Carbon\Carbon;
+use App\TaskSubmission;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\JsonResponse;
-use App\Http\Classes\ResponseTrait;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Classes\ActivityTrait;
+use App\Http\Classes\ResponseTrait;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\StoreTaskSubmission;
+use App\Http\Resources\TaskSubmissionResource;
 
 class TaskSubmissionController extends Controller
 {
@@ -59,7 +57,7 @@ class TaskSubmissionController extends Controller
         if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin', 'intern'])) {
             return $this->ERROR('You dont have the permission to perform this action');
         }
-        
+
         $data = $request->validated();
 
         // Check if the User is found in the trackUser
@@ -104,7 +102,7 @@ class TaskSubmissionController extends Controller
         if ($submission = TaskSubmission::whereId($id)->where('user_id', auth('api')->user()->id)->first()) {
             // return new TaskSubmissionResource($submission);
             return $this->sendSuccess($submission, 'Task submission fetched', 200);
-            
+
         } else {
             // return $this->errorResponse('Submission not found', 404);
             return $this->sendError('Submission not found', 404, []);
@@ -145,28 +143,29 @@ class TaskSubmissionController extends Controller
         if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
             return $this->ERROR('You dont have the permission to perform this action');
         }
-        
+
         $intern_submission = TaskSubmission::destroy($id);
         if ($intern_submission) {
             return $this->sendSuccess($intern_submission, 'Task Submitted deleted', 200);
         }
         return $this->sendError('Internal server error.', 500, []);
     }
-    
+
     /**
      * View all interns score for a task resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function view_all_intern_grades(Request $request, $id){
+    public function view_all_intern_grades(Request $request, $id)
+    {
 
         if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
             return $this->ERROR('You dont have the permission to perform this action');
         }
 
         $interns_task_submission = TaskSubmission::
-        with(['task', 'user'])
+            with(['task', 'user'])
             ->where('task_id', $id)->get();
 
         if ($interns_task_submission) {
@@ -177,7 +176,8 @@ class TaskSubmissionController extends Controller
         }
     }
 
-    public function grade_task_for_interns(Request $request, $id){
+    public function grade_task_for_interns(Request $request, $id)
+    {
 
         $validator = Validator::make($request->all(), [
             'grade_score' => 'required|array',
@@ -198,7 +198,7 @@ class TaskSubmissionController extends Controller
         foreach ($scores as $score) {
             //dd($value);
             $data = [
-                'grade_score' => $score['grade_score']
+                'grade_score' => $score['grade_score'],
             ];
 
             TaskSubmission::where('task_id', $id)->update($data);
@@ -206,7 +206,8 @@ class TaskSubmissionController extends Controller
 
     }
 
-    public function grade_intern_task(Request $request, $id){
+    public function grade_intern_task(Request $request, $id)
+    {
 
         if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
             return $this->ERROR('You dont have the permission to perform this action');
@@ -224,7 +225,7 @@ class TaskSubmissionController extends Controller
         $user_id = $request->user_id;
 
         $task = Task::find($id);
-        if(!$task){
+        if (!$task) {
             return $this->sendError('Task doesnt exists', 404, []);
         }
 
@@ -232,18 +233,18 @@ class TaskSubmissionController extends Controller
 
         if ($intern_submission) {
             $data = [
-                'grade_score' => (int)$request->input('grade_score'),
+                'grade_score' => (int) $request->input('grade_score'),
             ];
 
             // SEND NOTIFICATION HERE
             $intern_submission->grade_score = $request->input('grade_score');
             $res = $intern_submission->save();
-            
+
             // $res =  $intern_submission->update($data);
 
-            if($res){
+            if ($res) {
                 return $this->sendSuccess($intern_submission, 'Task submission successfully graded', 200);
-            }else{
+            } else {
                 return $this->sendError('Task submission wasn not graded', 422, []);
             }
             // return TaskSubmission::find($id)->update($data);
@@ -253,7 +254,8 @@ class TaskSubmissionController extends Controller
         }
     }
 
-    public function intern_view_task_grade(Request $request, $user_id, $id){
+    public function intern_view_task_grade(Request $request, $user_id, $id)
+    {
 
         if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin', 'intern'])) {
             return $this->ERROR('You dont have the permission to perform this action');
@@ -270,7 +272,8 @@ class TaskSubmissionController extends Controller
         }
     }
 
-    public function intern_view_task_grades($id){
+    public function intern_view_task_grades($id)
+    {
 
         if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin', 'intern'])) {
             return $this->ERROR('You dont have the permission to perform this action');
@@ -286,7 +289,7 @@ class TaskSubmissionController extends Controller
             return $this->sendError('Task has not been graded', 404, []);
         }
     }
-    
+
     public function admin_retrieve_interns_submission($id)
     {
         if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
@@ -298,15 +301,15 @@ class TaskSubmissionController extends Controller
             return $this->sendSuccess($submissions, 'AllTasks submissions fetched', 200);
         }
     }
-    
+
     public function delete_interns_submissions($taskId)
     {
         if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
             return $this->ERROR('You dont have the permission to perform this action');
         }
-        
+
         $interns_submissions = TaskSubmission::where('task_id', $taskId)->delete();
-        
+
         if ($interns_submissions) {
             return $this->sendSuccess($interns_submissions, 'All Submissions deleted', 200);
         }

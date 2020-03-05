@@ -109,14 +109,22 @@ class User extends Authenticatable
         return $score;
     }
 
-    public function totalScoreForWeek(){
-        $next_week = Carbon::now()->addDay(7);
-        
-        $db = DB::table('task_submissions')->where('user_id', $this->id)->select('grade_score')->get();
+    public function totalScoreForWeek($week = 0){
+        $internship_start_date = env('PROGRAMME_START_DATE', '2020-03-01 12:00:00');
+        $days = $week * 7; 
+        $formattedDate = $days == 0 ? $internship_start_date : Carbon::now()->addDay($days);
+
+        $db = DB::table('task_submissions')
+            ->where('user_id', $this->id)
+            ->whereDate('created_at', '>=', $formattedDate)
+            ->select('grade_score')
+            ->get();
+            
         $score = 0;
         foreach($db as $s){
             $score += $s->grade_score;
         }
         return $score;
     }
+
 }

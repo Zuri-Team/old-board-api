@@ -67,18 +67,20 @@ class AuthController extends Controller
             'gender' => 'nullable'
         ]);
 
-        if($validator->fails()){
-            return response()->json([
-                'status' => false,
-                'errors' => $validator->errors()
-            ], 401);
-        }
+        
         $input = $request->all();
         
         $slackUser = SlackUser::lookupByEmail($input['email']);
 
         if (!$slackUser->ok) {
             return $this->ERROR('Please confirm that your email is used on slack and try again');
+        }
+
+        if($validator->fails()){
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ], 401);
         }
 
         

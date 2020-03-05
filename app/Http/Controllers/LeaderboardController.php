@@ -14,7 +14,7 @@ class LeaderboardController extends Controller
         $res = [];
 
         foreach($users as $user){
-            $user['total_score'] = $user->totalScore();
+            $user['total_score'] = $user->totalScoreForWeek($week);
             $track_name = '';
             foreach($user->tracks as $sub){
                 $track_name  = $track_name . "". $sub->track_name. ", ";

@@ -89,7 +89,6 @@ class AuthController extends Controller
         $input['password'] = bcrypt($input['password']);
         $input['role'] = 'intern';
         $input['stack'] = 'Default';
-        
 
         DB::beginTransaction();
         $user = User::create($input);

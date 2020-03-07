@@ -345,7 +345,7 @@ class TaskSubmissionController extends Controller
         $validator = Validator::make($request->all(), [
             'task_id' => ['bail', 'required', 'integer'],
             'user_id' => 'bail|required|integer',
-            'submission_link' => 'required|url',
+            'submission_link' => 'required',
             'comment' => 'required|string',
             // 'is_submitted' => 'integer',
             // 'is_graded' => 'integer'

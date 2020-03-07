@@ -72,8 +72,6 @@ class AuthController extends Controller
         
         $slackUser = SlackUser::lookupByEmail($input['email']);
 
-        // dd($slackUser);
-
         if (!$slackUser->ok) {
             return $this->ERROR('Please confirm that your email is used on slack and try again');
         }

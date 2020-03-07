@@ -359,6 +359,12 @@ class TaskSubmissionController extends Controller
             return $this->ERROR('You dont have the permission to perform this action');
         }
 
+        $check = TaskSubmission::where('task_id', $request->task_id)->where('user_id', $request->user_id)->first();
+
+        if($check){
+            return $this->sendError('You have already submitted this task', 422, []);
+        }
+
         // Check if the User is found in the trackUser
         if (!TrackUser::where('user_id', $request['user_id'])->first()) {
             // if (!TrackUser::where('user_id', auth()->user()->id)) {

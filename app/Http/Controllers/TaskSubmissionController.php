@@ -380,13 +380,13 @@ class TaskSubmissionController extends Controller
         }
 
         // Check if the Task Submission date has past => done
-        if (Task::where('id', $request['task_id'])->first()->deadline < Carbon::now()) {
+        if ($checkTask->deadline < Carbon::now()) {
             // return $this->errorResponse('Submission date has elapsed', 422);
             return $this->sendError('Deadline date has elapsed', 422, []);
         }
 
         // Check if Status is still open for submission.
-        if ($chechTask->status == 'CLOSED') {
+        if ($checkTask->status == 'CLOSED') {
             // return $this->errorResponse('Task submission Closed', 422);
             return $this->sendError('Task submission Closed', 422, []);
         }

@@ -360,9 +360,9 @@ class TaskSubmissionController extends Controller
         // }
 
         // check task
-        $checkTask = Task::where('id', $request->task_id)->first();
+        $checkTask = Task::find($request->task_id)->first();
 
-        if($checkTask){
+        if(!$checkTask){
             return $this->sendError('task does not exists', 404, []);
         }
 
@@ -380,7 +380,7 @@ class TaskSubmissionController extends Controller
         }
 
         // Check if the Task Submission date has past => done
-        if (Task::find($request['task_id'])->first()->deadline < Carbon::now()) {
+        if (Task::where('id', $request['task_id'])->first()->deadline < Carbon::now()) {
             // return $this->errorResponse('Submission date has elapsed', 422);
             return $this->sendError('Deadline date has elapsed', 422, []);
         }

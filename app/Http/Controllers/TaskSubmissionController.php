@@ -355,9 +355,9 @@ class TaskSubmissionController extends Controller
         //     return $this->sendError('', 400, $validator->errors());
         // }
 
-        // if (!auth('api')->user()->hasAnyRole(['intern'])) {
-        //     return $this->ERROR('You dont have the permission to perform this action');
-        // }
+        if (!auth('api')->user()->hasAnyRole(['intern'])) {
+            return $this->ERROR('You dont have the permission to perform this action');
+        }
 
         // check task
         $checktask = Task::where('id', $request->task_id)->first();

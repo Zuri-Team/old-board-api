@@ -345,18 +345,25 @@ class TaskSubmissionController extends Controller
         $validator = Validator::make($request->all(), [
             'task_id' => ['bail', 'required', 'integer'],
             'user_id' => 'bail|required|integer',
-            'submission_link' => 'required',
-            'comment' => 'required|string',
+            'submission_link' => 'bail|required',
+            'comment' => 'bail|required|string',
             // 'is_submitted' => 'integer',
             // 'is_graded' => 'integer'
         ], $messages);
 
-        if ($validator->fails()) {
-            return $this->sendError('', 400, $validator->errors());
+        // if ($validator->fails()) {
+        //     return $this->sendError('', 400, $validator->errors());
+        // }
+
+        if (!auth('api')->user()->hasAnyRole(['intern'])) {
+            return $this->ERROR('You dont have the permission to perform this action');
         }
 
-        if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin', 'intern'])) {
-            return $this->ERROR('You dont have the permission to perform this action');
+        // check task
+        $checktask = Task::where('id', $request->task_id)->first();
+
+        if($checkTask){
+            return $this->sendError('task does not exists', 404, []);
         }
 
         $check = TaskSubmission::where('task_id', $request->task_id)->where('user_id', $request->user_id)->first();

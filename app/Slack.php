@@ -8,6 +8,10 @@ use Craftyx\SlackApi\Facades\SlackUser;
 use Craftyx\SlackApi\Facades\SlackGroup;
 use Craftyx\SlackApi\Facades\SlackTeam;
 use Craftyx\SlackApi\Facades\SlackChannel;
+use SlackWebApi;
+
+
+use \Lisennk\Laravel\SlackWebApi\Exceptions\SlackApiException;
 
 class Slack extends Model
 {
@@ -16,6 +20,8 @@ class Slack extends Model
     {
         $group_name = env('SLACK_STAGE_PREFIX', 'test-stage').$stage;
         $group_id = self::getGroupIDFromName($group_name);
+
+
         return SlackGroup::kick($group_id, $user);
     }
 
@@ -23,12 +29,14 @@ class Slack extends Model
     {
         $group_name = env('SLACK_STAGE_PREFIX', 'test-stage').$stage;
         $group_id = self::getGroupIDFromName($group_name);
+
         return SlackGroup::invite($group_id, $user);
     }
     
     public static function removeFromGroup($user, $group_name)
     {
         $group_id = self::getGroupIDFromName($group_name);
+
         return SlackGroup::kick($group_id, $user);
     }
 
@@ -41,7 +49,10 @@ class Slack extends Model
     private static function getGroupIDFromName($stage_name){
         
         $stage_name = strtolower($stage_name);
+
         $groups = SlackGroup::lists(true);
+
+        // dd($groups);
                     
         foreach($groups->groups as $group){
             if($group->name == $stage_name){

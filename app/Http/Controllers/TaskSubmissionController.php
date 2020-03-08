@@ -355,7 +355,7 @@ class TaskSubmissionController extends Controller
         //     return $this->sendError('', 400, $validator->errors());
         // }
 
-        if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin', 'intern'])) {
+        if (!auth('api')->user()->hasAnyRole(['intern'])) {
             return $this->ERROR('You dont have the permission to perform this action');
         }
 

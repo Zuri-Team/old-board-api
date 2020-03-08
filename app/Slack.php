@@ -18,16 +18,15 @@ class Slack extends Model
 
     public static function removeFromChannel($user, $stage)
     {
-        $group_name = env('SLACK_STAGE_PREFIX', 'test-stage').$stage;
+        $group_name = env('SLACK_STAGE_PREFIX', 'stage').$stage;
         $group_id = self::getGroupIDFromName($group_name);
-
 
         return SlackGroup::kick($group_id, $user);
     }
 
     public static function addToChannel($user, $stage)
     {
-        $group_name = env('SLACK_STAGE_PREFIX', 'test-stage').$stage;
+        $group_name = env('SLACK_STAGE_PREFIX', 'stage').$stage;
         $group_id = self::getGroupIDFromName($group_name);
 
         return SlackGroup::invite($group_id, $user);
@@ -50,16 +49,21 @@ class Slack extends Model
         
         $stage_name = strtolower($stage_name);
 
-        $groups = SlackGroup::lists(true);
+        $groups = SlackGroup::lists(false);
 
         // dd($groups);
+        $res = array();
                     
         foreach($groups->groups as $group){
+            // array_push($res, $group->name);
             if($group->name == $stage_name){
                 return $group->id;
                 break;
             }
         }
+
+        // dd($res);
+
     }
 
     public static function removeAddToGroup($user_id, $remove_from, $add_to)

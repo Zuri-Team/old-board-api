@@ -90,7 +90,7 @@ class ProbationController extends Controller
             $this->logAdminActivity("remove " . $user->firstname . " " . $user->lastname . " (". $user->email .") from probation");
 
             $slack_id =  $user->slack_id;
-            $probChannel = env('SLACK_PROBATION', 'test-underworld');
+            $probChannel = env('SLACK_PROBATION', 'probation');
                     
             Slack::removeFromGroup($slack_id, $probChannel);
             Slack::addToChannel($slack_id, $user->stage);

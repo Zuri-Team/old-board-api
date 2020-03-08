@@ -345,7 +345,7 @@ class TaskSubmissionController extends Controller
         $validator = Validator::make($request->all(), [
             'task_id' => ['bail', 'required', 'integer'],
             'user_id' => 'bail|required|integer',
-            'submission_link' => 'required|url',
+            'submission_link' => 'required',
             'comment' => 'required|string',
             // 'is_submitted' => 'integer',
             // 'is_graded' => 'integer'
@@ -357,6 +357,12 @@ class TaskSubmissionController extends Controller
 
         if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin', 'intern'])) {
             return $this->ERROR('You dont have the permission to perform this action');
+        }
+
+        $check = TaskSubmission::where('task_id', $request->task_id)->where('user_id', $request->user_id)->first();
+
+        if($check){
+            return $this->sendError('You have already submitted this task', 422, []);
         }
 
         // Check if the User is found in the trackUser

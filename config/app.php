@@ -171,6 +171,7 @@ return [
         JD\Cloudder\CloudderServiceProvider::class,
         Craftyx\SlackApi\SlackApiServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        \Lisennk\Laravel\SlackWebApi\Providers\SlackApiServiceProvider::class,
 
 
         /*
@@ -247,6 +248,8 @@ return [
         'SlackUserAdmin'        => Craftyx\SlackApi\Facades\SlackUserAdmin::class,
         'SlackRealTimeMessage'  => Craftyx\SlackApi\Facades\SlackRealTimeMessage::class,
         'SlackTeam'             => Craftyx\SlackApi\Facades\SlackTeam::class,
+
+        'SlackWebApi' => \Lisennk\Laravel\SlackWebApi\Facades\SlackApi::class
 
     ],
 

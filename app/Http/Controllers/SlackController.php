@@ -60,12 +60,15 @@ class SlackController extends Controller
      */
     public function show($prev, $next)
     {
-        $slack_id =  'UMTJ441SP';//$user->slack_id; CODEBUG
+        $slack_id =  'UUGV02WD7';//$user->slack_id; CODEBUG
         $pre_stage = $prev;//.$user->stage;
         $next_stage = $next;//.$nextStage;
 
-        $prestage = Slack::removeFromGroup($slack_id, $pre_stage);
-        $nextstage = Slack::addToGroup($slack_id, $next_stage);
+        // $prestage = Slack::removeFromGroup($slack_id, $pre_stage);
+        // $nextstage = Slack::addToGroup($slack_id, $next_stage);
+
+        $prestage = Slack::removeFromChannel($slack_id, $pre_stage);
+        $nextstage = Slack::addToChannel($slack_id, $next_stage);
 
          dd($prestage, $nextstage);
     }

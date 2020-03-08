@@ -8,7 +8,7 @@ class Task extends Model
 {
     protected $fillable = ['track_id', 'title', 'body', 'deadline', 'is_active', 'status'];
     // protected $with = ['track'];
-    protected $dates = ['deadline'];
+    // protected $dates = ['deadline'];
 
 
     public function users(){

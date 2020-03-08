@@ -380,7 +380,8 @@ class TaskSubmissionController extends Controller
         }
 
         // Check if the Task Submission date has past => done
-        if ($checkTask->deadline->lte(Carbon::now())) {
+        // if ($checkTask->deadline->lte(Carbon::now())) {
+            if ($checkTask->deadline < Carbon::now()) {
             // return $this->errorResponse('Submission date has elapsed', 422);
             return $this->sendError('Deadline date has elapsed', 422, []);
         }

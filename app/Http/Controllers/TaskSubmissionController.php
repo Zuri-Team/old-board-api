@@ -360,7 +360,7 @@ class TaskSubmissionController extends Controller
         // }
 
         // check task
-        $checkTask = Task::find($request->task_id)->first();
+        $checkTask = Task::where('id', $request->task_id)->first();
 
         if(!$checkTask){
             return $this->sendError('task does not exists', 404, []);
@@ -386,7 +386,7 @@ class TaskSubmissionController extends Controller
         }
 
         // Check if Status is still open for submission.
-        if (Task::find($request['task_id'])->first()->status == 'CLOSED') {
+        if ($chechTask->status == 'CLOSED') {
             // return $this->errorResponse('Task submission Closed', 422);
             return $this->sendError('Task submission Closed', 422, []);
         }

@@ -59,13 +59,20 @@ class TasksController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreTask $request)
+    public function store(Request $request)
     {
 
         $this->middleware(['role:superadmin', 'role:admin']);
 
-        $data = $request->validated();
-
+        $data = $this->validate($request->all(), [
+            'track_id' => 'required',
+            'title' => 'required|max:255',
+            'body' => 'required',
+            'deadline' => 'required',
+            'is_active' => 'required',
+        ]
+        );
+        
         $task = Task::create($data);
 
         $this->logAdminActivity("created " . $task->title . " Task");

@@ -184,6 +184,8 @@ class TasksController extends Controller
         $this->middleware(['role: intern']);
         
         $user_tracks = auth()->user()->track;
+
+        dd($user_tracks);
                          
          foreach($user_tracks as $user_track){
              

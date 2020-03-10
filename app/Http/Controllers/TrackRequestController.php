@@ -103,7 +103,7 @@ class TrackRequestController extends Controller
                 $this->logAdminActivity('added '. $user->email . '  to ' . $track->track_name . ' track');
             }else if($trackRequest->action == 'remove'){
                 if(!$has_joined) return $this->sendError('User is not on this track', 400, []);
-                $has_joined-delete();
+                $has_joined->delete();
 
                 //SEND NOTIFICATION HERE
                 $message = [

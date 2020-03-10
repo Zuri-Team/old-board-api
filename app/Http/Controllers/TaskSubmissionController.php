@@ -359,7 +359,7 @@ class TaskSubmissionController extends Controller
         //     return $this->ERROR('You dont have the permission to perform this action');
         // }
 
-        // check task
+        // check if task exist
         $checkTask = Task::where('id', $request->task_id)->get();
 
         if(!$checkTask){

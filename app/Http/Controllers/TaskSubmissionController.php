@@ -360,8 +360,8 @@ class TaskSubmissionController extends Controller
         // }
 
         // check if task exist
-        $checkTask = Task::where('id', $request->task_id)->get();
-
+        $checkTask = Task::where('id', $request->task_id)->first();
+dd($checkTask);
         if(!$checkTask){
             return $this->sendError('task does not exists', 404, []);
         }
@@ -381,17 +381,18 @@ class TaskSubmissionController extends Controller
 
         // Check if the Task Submission date has past => done
         // if ($checkTask->deadline->lte(Carbon::now())) {
-            if ($checkTask->pluck('deadline') < Carbon::now()) {
+            if ($checkTask->deadline < Carbon::now()) {
+            //if ($checkTask->pluck('deadline') < Carbon::now()) {
             // return $this->errorResponse('Submission date has elapsed', 422);
             return $this->sendError('Deadline date has elapsed', 422, []);
         }
 
         // Check if Status is still open for submission.
-        if ($checkTask->pluck('status') == 'CLOSED') {
+        if ($checkTask->status == 'CLOSED') {
             // return $this->errorResponse('Task submission Closed', 422);
             return $this->sendError('Task submission Closed', 422, []);
         }
-dd($request);
+
         $task = TaskSubmission::create($request->all());
         if ($task) {
             // return new TaskSubmissionResource($task);

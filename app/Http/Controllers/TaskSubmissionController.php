@@ -66,7 +66,7 @@ class TaskSubmissionController extends Controller
 //             return $this->ERROR('You dont have the permission to perform this action');
 //         }
 
-        $data = $request->validated();
+        //$data = $request->validated();
 
         // Check if the User is found in the trackUser
         if (!TrackUser::where('user_id', $data['user_id'])->first()) {
@@ -87,7 +87,7 @@ class TaskSubmissionController extends Controller
             return $this->sendError('Task submission Closed', 422, []);
         }
 
-        $task = TaskSubmission::create($data);
+        $task = TaskSubmission::create($request->all());
         if ($task) {
             // return new TaskSubmissionResource($task);
             return $this->sendSuccess($task, 'Task submitted successfully', 200);

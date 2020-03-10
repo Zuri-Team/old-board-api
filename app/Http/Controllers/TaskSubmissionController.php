@@ -351,9 +351,9 @@ class TaskSubmissionController extends Controller
             // 'is_graded' => 'integer'
         ], $messages);
 
-        // if ($validator->fails()) {
-        //     return $this->sendError('', 400, $validator->errors());
-        // }
+        if ($validator->fails()) {
+            return $this->sendError('', 400, $validator->errors());
+        }
 
         // if (!auth('api')->user()->hasAnyRole(['intern'])) {
         //     return $this->ERROR('You dont have the permission to perform this action');

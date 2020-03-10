@@ -366,14 +366,14 @@ class TaskSubmissionController extends Controller
             return $this->sendError('task does not exists', 404, []);
         }
 
-        $check = TaskSubmission::where('task_id', $request->task_id)->where('user_id', $request->user_id)->first();
+        $check = TaskSubmission::where('task_id', $request->task_id)->where('user_id', $request->user_id)->get();
 
         if($check){
             return $this->sendError('You have already submitted this task', 422, []);
         }
 
         // Check if the User is found in the trackUser
-        if (!TrackUser::where('user_id', $request['user_id'])->first()) {
+        if (!TrackUser::where('user_id', $request['user_id'])->get()) {
             // if (!TrackUser::where('user_id', auth()->user()->id)) {
             // return $this->errorResponse('User does not belong to this track', 422);
             return $this->sendError('User does not belong to this track', 422, []);

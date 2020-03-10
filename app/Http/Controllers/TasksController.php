@@ -9,6 +9,8 @@ use App\TrackUser;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Classes\ActivityTrait;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\JsonResponse;
+use App\Http\Classes\ResponseTrait;
 
 //use App\Http\Resources\Task\TaskCollection;
 //use App\Http\Resources\Task\TaskResource;
@@ -22,6 +24,7 @@ class TasksController extends Controller
 {
 
     use ActivityTrait;
+    use ResponseTrait;
     /**
      * Display a listing of the resource.
      *

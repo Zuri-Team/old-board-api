@@ -360,7 +360,7 @@ class TaskSubmissionController extends Controller
         // }
 
         // check task
-        $checkTask = Task::where('id', $request->task_id)->first();
+        $checkTask = Task::where('id', $request->task_id)->get();
 
         if(!$checkTask){
             return $this->sendError('task does not exists', 404, []);

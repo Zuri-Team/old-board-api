@@ -61,10 +61,10 @@ class TaskSubmissionController extends Controller
 
         //dd('ddi');
 
-        if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin', 'intern'])) {
-        //if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin', 'intern'])) {    
-            return $this->ERROR('You dont have the permission to perform this action');
-        }
+//         if (!auth('api')->user()->hasRole(['intern'])) {
+//         //if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin', 'intern'])) {    
+//             return $this->ERROR('You dont have the permission to perform this action');
+//         }
 
         $data = $request->validated();
 

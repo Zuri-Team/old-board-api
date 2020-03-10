@@ -56,12 +56,13 @@ class TaskSubmissionController extends Controller
      */
     public function store(StoreTaskSubmission $request)
     {
-        $u = auth()->user();
-        return $u;
+        //$u = auth()->user();
+        //return $u;
 
-        dd('ddi');
+        //dd('ddi');
 
         if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin', 'intern'])) {
+        //if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin', 'intern'])) {    
             return $this->ERROR('You dont have the permission to perform this action');
         }
 

@@ -345,7 +345,7 @@ class TaskSubmissionController extends Controller
         $validator = Validator::make($request->all(), [
             'task_id' => ['bail', 'required', 'integer'],
             'user_id' => 'bail|required|integer',
-            'submission_link' => 'bail|required',
+            'submission_link' => 'bail|required|string',
             'comment' => 'bail|required|string',
             // 'is_submitted' => 'integer',
             // 'is_graded' => 'integer'
@@ -361,7 +361,7 @@ class TaskSubmissionController extends Controller
 
         // check if task exist
         $checkTask = Task::where('id', $request->task_id)->get();
-//dd($checkTask);
+
         if(!$checkTask){
             return $this->sendError('task does not exists', 404, []);
         }

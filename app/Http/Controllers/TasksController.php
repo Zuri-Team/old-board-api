@@ -75,9 +75,9 @@ class TasksController extends Controller
             'is_active' => 'required',
         ]);
 
-        if ($validator->fails()) {
-            return $this->sendError('', 400, $validator->errors());
-        }
+        // if ($validator->fails()) {
+        //     return $this->sendError('', 400, $validator->errors());
+        // }
 
         $data = $request->all();
 

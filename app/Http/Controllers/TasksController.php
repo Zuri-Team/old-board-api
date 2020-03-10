@@ -8,6 +8,7 @@ use App\Http\Resources\TaskResource;
 use App\TrackUser;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Classes\ActivityTrait;
+use Illuminate\Support\Facades\Validator;
 
 //use App\Http\Resources\Task\TaskCollection;
 //use App\Http\Resources\Task\TaskResource;
@@ -59,26 +60,52 @@ class TasksController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreTask $request)
+    public function store(Request $request)
     {
-
         $this->middleware(['role:superadmin', 'role:admin']);
 
-        $data = $request->validated();
+         $validator = Validator::make($request->all(), [
+            'track_id' => 'required',
+            'title' => 'required|max:255',
+            'body' => 'required',
+            'deadline' => 'required',
+            'is_active' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('', 400, $validator->errors());
+        }
+
+        $data = $request->all();
 
         $task = Task::create($data);
 
         $this->logAdminActivity("created " . $task->title . " Task");
-
-//        if ($task) {
-        //            return TaskResource::collection(Task::all()->paginate(20));
-        //        }
 
         return response([
             'data' => TaskResource::collection($task->paginate(20)),
         ], Response::HTTP_CREATED);
 
     }
+
+    
+
+
+    // $messages = [
+    //     'user_id.unique' => "You have already submitted",
+    //     'submission_link.required' => "Provide a submission link",
+    //     'submission_link.url' => "Submission link must be a URL",
+    //     'task_id.required' => "No task selected",
+    // ];
+
+    // $validator = Validator::make($request->all(), [
+    //     'task_id' => ['bail', 'required', 'integer'],
+    //     'user_id' => 'bail|required|integer',
+    //     'submission_link' => 'bail|required',
+    //     'comment' => 'bail|required|string',
+    //     // 'is_submitted' => 'integer',
+    //     // 'is_graded' => 'integer'
+    // ], $messages);
 
     /**
      * Display the specified resource.

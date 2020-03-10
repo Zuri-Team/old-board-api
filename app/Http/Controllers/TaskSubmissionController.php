@@ -392,9 +392,8 @@ dd($checkTask);
             // return $this->errorResponse('Task submission Closed', 422);
             return $this->sendError('Task submission Closed', 422, []);
         }
-//dd($request);
-        $task = TaskSubmission::create();
-        //$task = TaskSubmission::create($request->all());
+
+        $task = TaskSubmission::create($request->all());
         if ($task) {
             // return new TaskSubmissionResource($task);
             return $this->sendSuccess($task, 'Task submitted successfully', 200);

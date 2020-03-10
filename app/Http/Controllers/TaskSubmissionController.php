@@ -351,12 +351,12 @@ class TaskSubmissionController extends Controller
 //             // 'is_graded' => 'integer'
 //         ], $messages);
 
-        $this->validate($request, [
-            'task_id' => ['bail', 'required', 'integer'],
-            'user_id' => 'bail|required|integer',
-            'submission_link' => 'bail|required',
-            'comment' => 'bail|required|string',
-        ]);
+        // $this->validate($request, [
+        //     'task_id' => ['bail', 'required', 'integer'],
+        //     'user_id' => 'bail|required|integer',
+        //     'submission_link' => 'bail|required',
+        //     'comment' => 'bail|required|string',
+        // ]);
         
 //         if ($validator->fails()) {
 //             return $this->sendError('', 400, $validator->errors());

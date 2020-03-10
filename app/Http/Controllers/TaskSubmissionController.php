@@ -366,7 +366,7 @@ class TaskSubmissionController extends Controller
             return $this->sendError('task does not exists', 404, []);
         }
 
-        $check = TaskSubmission::where('task_id', $request->task_id)->where('user_id', $request->user_id)->get();
+        $check = TaskSubmission::where('task_id', $request->task_id)->where('user_id', $request->user_id)->first();
 
         if($check){
             return $this->sendError('You have already submitted this task', 422, []);

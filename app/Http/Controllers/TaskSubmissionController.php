@@ -335,25 +335,25 @@ class TaskSubmissionController extends Controller
     public function submit(Request $request)
     {
 
-        $messages = [
-            'user_id.unique' => "You have already submitted",
-            'submission_link.required' => "Provide a submission link",
-            'submission_link.url' => "Submission link must be a URL",
-            'task_id.required' => "No task selected",
-        ];
+//         $messages = [
+//             'user_id.unique' => "You have already submitted",
+//             'submission_link.required' => "Provide a submission link",
+//             'submission_link.url' => "Submission link must be a URL",
+//             'task_id.required' => "No task selected",
+//         ];
 
-        $validator = Validator::make($request->all(), [
-            'task_id' => ['bail', 'required', 'integer'],
-            'user_id' => 'bail|required|integer',
-            'submission_link' => 'bail|required|string',
-            'comment' => 'bail|required|string',
-            // 'is_submitted' => 'integer',
-            // 'is_graded' => 'integer'
-        ], $messages);
+//         $validator = Validator::make($request->all(), [
+//             'task_id' => ['bail', 'required', 'integer'],
+//             'user_id' => 'bail|required|integer',
+//             'submission_link' => 'bail|required|string',
+//             'comment' => 'bail|required|string',
+//             // 'is_submitted' => 'integer',
+//             // 'is_graded' => 'integer'
+//         ], $messages);
 
-        if ($validator->fails()) {
-            return $this->sendError('', 400, $validator->errors());
-        }
+//         if ($validator->fails()) {
+//             return $this->sendError('', 400, $validator->errors());
+//         }
 
         // if (!auth('api')->user()->hasAnyRole(['intern'])) {
         //     return $this->ERROR('You dont have the permission to perform this action');

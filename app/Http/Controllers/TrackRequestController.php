@@ -103,7 +103,7 @@ class TrackRequestController extends Controller
                 $this->logAdminActivity('added '. $user->email . '  to ' . $track->track_name . ' track');
             }else if($trackRequest->action == 'remove'){
                 if(!$has_joined) return $this->sendError('User is not on this track', 400, []);
-                $has_joined-delete();
+                $has_joined->delete();
 
                 //SEND NOTIFICATION HERE
                 $message = [
@@ -112,9 +112,9 @@ class TrackRequestController extends Controller
                 $user->notify(new TrackNotifications($message));
                 $this->logAdminActivity('removed '. $user->email . '  from ' . $track->track_name . ' track');
 
-            }
+            } 
 
-            $trackRequest->approved = true;
+            $trackRequest->approved = 1;
             $trackRequest->save();
 
                 return $this->sendSuccess($track, 'Request accepted successfully successfully.', 200);

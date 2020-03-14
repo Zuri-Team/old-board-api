@@ -95,6 +95,10 @@ class TrackRequestController extends Controller
                     'track_id' => $trackRequest->track_id
                 ]);
 
+                $trackRequest->update([
+                    'approved' => true
+                ]);
+
                 //SEND NOTIFICATION HERE
                 $message = [
                     'message'=>"You have been added to a new track.",
@@ -104,6 +108,10 @@ class TrackRequestController extends Controller
             }else if($trackRequest->action == 'remove'){
                 if(!$has_joined) return $this->sendError('User is not on this track', 400, []);
                 $has_joined->delete();
+
+                $trackRequest->update([
+                    'approved' => true
+                ]);
 
                 //SEND NOTIFICATION HERE
                 $message = [

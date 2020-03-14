@@ -21,6 +21,8 @@ Route::get('/verify/{token}', 'AuthController@verify')->name('verify');
 
 Route::post('/password/forgot', 'AuthController@requestReset');
 Route::post('/password/reset', 'AuthController@resetPassword');
+Route::get('/test_mail', 'AuthController@testMail');
+//testMail
 
 Route::get('profile/{user}', 'ProfileController@index');
 

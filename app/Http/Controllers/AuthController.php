@@ -118,6 +118,13 @@ class AuthController extends Controller
         
     } 
 
+    public function testMail(){
+        $email = "jonathanjude27@gmail.com";
+        $token = "ftdchdcdccgytdby";
+
+        return Mail::to($email)->send(new PasswordResetMail($token));
+    }
+
     public function requestReset(Request $request){
 
         

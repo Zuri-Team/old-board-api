@@ -118,8 +118,14 @@ class AuthController extends Controller
         
     } 
 
-    public function requestReset(Request $request){
+    public function testMail(){
+        $email = "jonathanjude27@gmail.com";
+        $token = "ftdchdcdccgytdby";
 
+        return Mail::to($email)->send(new PasswordResetMail($token));
+    }
+
+    public function requestReset(Request $request){
         
         try{
             $request->validate([ 'email' => 'required|string|email' ]);
@@ -127,13 +133,13 @@ class AuthController extends Controller
             if (!$user) return $this->ERROR("We can't find a user with the e-mail address " . $request->email);
 
             $passwordReset = PasswordReset::updateOrCreate(
-                ['email' => $user->email],
+                ['email' => $request->email],
                 [
-                    'email' => $user->email,
+                    'email' => $request->email,
                     'token' => $this->GENERATE_TOKEN(60)
                 ]
             );
-            $email = PasswordReset::where('email', $user->email)->first();
+            $email = PasswordReset::where('email', $request->email)->first();
 
             if ($user && $passwordReset){
                 //Send email
@@ -151,7 +157,6 @@ class AuthController extends Controller
 
 
     public function resetPassword(Request $request){
-       
        
             $validation = Validator::make($request->all(), [
                 'email' => 'required|string|email',

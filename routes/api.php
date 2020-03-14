@@ -21,6 +21,8 @@ Route::get('/verify/{token}', 'AuthController@verify')->name('verify');
 
 Route::post('/password/forgot', 'AuthController@requestReset');
 Route::post('/password/reset', 'AuthController@resetPassword');
+Route::get('/test_mail', 'AuthController@testMail');
+//testMail
 
 Route::get('profile/{user}', 'ProfileController@index');
 
@@ -32,7 +34,7 @@ Route::get('status', 'StatusController@status');
 Route::get('track/all', 'TrackController@all');
 
 Route::get('/stats/summary', 'StatsController@summary');
-Route::group(['middleware' => 'auth:api', 'throttle:5,10'], function () {
+Route::group(['middleware' => 'auth:api', 'throttle:60,1'], function () {
 
     //User Profile Routes
     Route::group(['prefix' => 'user-profile'], function () {

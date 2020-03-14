@@ -20,7 +20,7 @@ class TrackRequestController extends Controller
     use ActivityTrait;
 
     public function all(){
-        $allRequests = TrackRequest::where('approved', false)->with('user')->with('track')->get();
+        $allRequests = TrackRequest::where('approved', false)->orderBy('created_at', 'desc')->with('user')->with('track')->get();
         
         if ($allRequests) {
 
@@ -95,6 +95,10 @@ class TrackRequestController extends Controller
                     'track_id' => $trackRequest->track_id
                 ]);
 
+                $trackRequest->update([
+                    'approved' => true
+                ]);
+
                 //SEND NOTIFICATION HERE
                 $message = [
                     'message'=>"You have been added to a new track.",
@@ -105,6 +109,10 @@ class TrackRequestController extends Controller
                 if(!$has_joined) return $this->sendError('User is not on this track', 400, []);
                 $has_joined->delete();
 
+                $trackRequest->update([
+                    'approved' => true
+                ]);
+
                 //SEND NOTIFICATION HERE
                 $message = [
                     'message'=>"You have been removed ". $track->track_name ." track.",
@@ -112,9 +120,9 @@ class TrackRequestController extends Controller
                 $user->notify(new TrackNotifications($message));
                 $this->logAdminActivity('removed '. $user->email . '  from ' . $track->track_name . ' track');
 
-            }
+            } 
 
-            $trackRequest->approved = true;
+            $trackRequest->approved = 1;
             $trackRequest->save();
 
                 return $this->sendSuccess($track, 'Request accepted successfully successfully.', 200);

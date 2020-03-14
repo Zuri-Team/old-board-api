@@ -56,16 +56,17 @@ class TaskSubmissionController extends Controller
      */
     public function store(StoreTaskSubmission $request)
     {
-        $u = auth()->user();
-        return $u;
+        //$u = auth()->user();
+        //return $u;
 
-        dd('ddi');
+        //dd('ddi');
 
-        if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin', 'intern'])) {
-            return $this->ERROR('You dont have the permission to perform this action');
-        }
+//         if (!auth('api')->user()->hasRole(['intern'])) {
+//         //if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin', 'intern'])) {    
+//             return $this->ERROR('You dont have the permission to perform this action');
+//         }
 
-        $data = $request->validated();
+        //$data = $request->validated();
 
         // Check if the User is found in the trackUser
         if (!TrackUser::where('user_id', $data['user_id'])->first()) {
@@ -86,7 +87,7 @@ class TaskSubmissionController extends Controller
             return $this->sendError('Task submission Closed', 422, []);
         }
 
-        $task = TaskSubmission::create($data);
+        $task = TaskSubmission::create($request->all());
         if ($task) {
             // return new TaskSubmissionResource($task);
             return $this->sendSuccess($task, 'Task submitted successfully', 200);
@@ -335,32 +336,39 @@ class TaskSubmissionController extends Controller
     public function submit(Request $request)
     {
 
-        $messages = [
-            'user_id.unique' => "You have already submitted",
-            'submission_link.required' => "Provide a submission link",
-            'submission_link.url' => "Submission link must be a URL",
-            'task_id.required' => "No task selected",
-        ];
+//         $messages = [
+//             'user_id.unique' => "You have already submitted",
+//             'submission_link.required' => "Provide a submission link",
+//             'submission_link.url' => "Submission link must be a URL",
+//             'task_id.required' => "No task selected",
+//         ];
 
-        $validator = Validator::make($request->all(), [
-            'task_id' => ['bail', 'required', 'integer'],
-            'user_id' => 'bail|required|integer',
-            'submission_link' => 'bail|required',
-            'comment' => 'bail|required|string',
-            // 'is_submitted' => 'integer',
-            // 'is_graded' => 'integer'
-        ], $messages);
+//         $validator = Validator::make($request->all(), [
+//             'task_id' => ['bail', 'required', 'integer'],
+//             'user_id' => 'bail|required|integer',
+//             'submission_link' => 'bail|required|string',
+//             'comment' => 'bail|required|string',
+//             // 'is_submitted' => 'integer',
+//             // 'is_graded' => 'integer'
+//         ], $messages);
 
-        // if ($validator->fails()) {
-        //     return $this->sendError('', 400, $validator->errors());
-        // }
+        // $this->validate($request, [
+        //     'task_id' => ['bail', 'required', 'integer'],
+        //     'user_id' => 'bail|required|integer',
+        //     'submission_link' => 'bail|required',
+        //     'comment' => 'bail|required|string',
+        // ]);
+        
+//         if ($validator->fails()) {
+//             return $this->sendError('', 400, $validator->errors());
+//         }
 
         // if (!auth('api')->user()->hasAnyRole(['intern'])) {
         //     return $this->ERROR('You dont have the permission to perform this action');
         // }
 
-        // check task
-        $checkTask = Task::where('id', $request->task_id)->first();
+        // check if task exist
+        $checkTask = Task::where('id', $request->task_id)->get();
 
         if(!$checkTask){
             return $this->sendError('task does not exists', 404, []);
@@ -373,7 +381,7 @@ class TaskSubmissionController extends Controller
         }
 
         // Check if the User is found in the trackUser
-        if (!TrackUser::where('user_id', $request['user_id'])->first()) {
+        if (!TrackUser::where('user_id', $request['user_id'])->get()) {
             // if (!TrackUser::where('user_id', auth()->user()->id)) {
             // return $this->errorResponse('User does not belong to this track', 422);
             return $this->sendError('User does not belong to this track', 422, []);
@@ -381,13 +389,14 @@ class TaskSubmissionController extends Controller
 
         // Check if the Task Submission date has past => done
         // if ($checkTask->deadline->lte(Carbon::now())) {
-            if ($checkTask->deadline < Carbon::now()) {
+            //if ($checkTask->deadline < Carbon::now()) {
+            if ($checkTask->pluck('deadline') < Carbon::now()) {
             // return $this->errorResponse('Submission date has elapsed', 422);
             return $this->sendError('Deadline date has elapsed', 422, []);
         }
 
         // Check if Status is still open for submission.
-        if ($checkTask->status == 'CLOSED') {
+        if ($checkTask->pluck('status') == 'CLOSED') {
             // return $this->errorResponse('Task submission Closed', 422);
             return $this->sendError('Task submission Closed', 422, []);
         }

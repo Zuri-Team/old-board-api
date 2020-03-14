@@ -20,7 +20,7 @@ class TrackRequestController extends Controller
     use ActivityTrait;
 
     public function all(){
-        $allRequests = TrackRequest::where('approved', false)->with('user')->with('track')->get();
+        $allRequests = TrackRequest::where('approved', false)->orderBy('created_at', 'desc')->with('user')->with('track')->get();
         
         if ($allRequests) {
 

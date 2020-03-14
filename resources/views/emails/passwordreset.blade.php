@@ -8,5 +8,5 @@ Reset Password
 @endcomponent
 
 Thanks,<br>
-{{ config('app.name') }}
+  HNG
 @endcomponent

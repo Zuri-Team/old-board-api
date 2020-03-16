@@ -29,7 +29,7 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = Post::with('user')->with('category')->orderBy('created_at', 'desc')->paginate(10);
+        $posts = Post::with('user')->with('category')->orderBy('created_at', 'desc')->get();
         if ($posts) {
 
             return $this->sendSuccess($posts, 'All Posts', 200);
@@ -39,7 +39,7 @@ class PostsController extends Controller
 
     public function view_posts_in_category($id)
     {
-        $posts = Post::where('category_id', $id)->with('user')->orderBy('created_at', 'desc')->paginate(10);
+        $posts = Post::where('category_id', $id)->with('user')->orderBy('created_at', 'desc')->get();
         if ($posts) {
             return $this->sendSuccess($posts, 'All Posts in a Category fetched', 200);
         }

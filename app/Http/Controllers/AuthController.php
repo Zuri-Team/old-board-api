@@ -73,7 +73,7 @@ class AuthController extends Controller
         $slackUser = SlackUser::lookupByEmail($input['email']);
 
         if (!$slackUser->ok) {
-            //return $this->ERROR('Please confirm that your email is used on slack and try again');
+            return $this->ERROR('Please confirm that your email is used on slack and try again');
         }
 
         if($validator->fails()){
@@ -84,7 +84,7 @@ class AuthController extends Controller
         }
 
         
-        // $input['slack_id'] = $slackUser->user->id;
+        $input['slack_id'] = $slackUser->user->id;
         // dd($input['slack_id']);
         $input['password'] = bcrypt($input['password']);
         $input['role'] = 'intern';

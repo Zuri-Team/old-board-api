@@ -216,21 +216,30 @@ class TasksController extends Controller
         
         $user_tracks = auth()->user()->tracks;
 
-                         
+        $res = array();
+
          foreach($user_tracks as $user_track){
+
              
              //Get all task for the task
              $track_tasks = Task::where('track_id', $user_track->id)->orderBy('created_at', 'desc')->get();
+             $collection = TaskResource::collection($track_tasks);
 
-             if ($track_tasks) {
-                return TaskResource::collection($track_tasks);
-             } else {
-                return \response([
-                    'message' => 'Track task not available'
-                ]);
-             }
+             array_push($res, $collection);
+
+            //  if ($track_tasks) {
+            //     return TaskResource::collection($track_tasks);
+            //  } else {
+            //     return \response([
+            //         'message' => 'Track task not available'
+            //     ]);
+            //  }
          }
-        
+
+         return response([
+             'message' => 'User tasks fetched successfully',
+            'data' => $res,
+        ]);
      } 
 
     public function view_task($id)

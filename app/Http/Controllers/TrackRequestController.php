@@ -48,9 +48,17 @@ class TrackRequestController extends Controller
         }
 
         $user_id = auth()->id();
+        $user = auth()->user();
 
         $checkTrack = Track::find($request->track_id);
-        if(!$checkTrack) return $this->sendError('Track not dound', 400, []);
+        if(!$checkTrack) return $this->sendError('Track not found', 400, []);
+
+        $userTracks = $user->tracks;
+        foreach($user->tracks as $userTrack){
+            if($userTrack->id == $request->track_id && $request->action == 'add'){
+                return $this->sendError('You are already on this Track!', 400, []);
+            }
+        }
 
         $timeAfter = Carbon::now()->addDays(1);
         

@@ -73,7 +73,11 @@ class TrackRequestController extends Controller
 		        'action' => $request->action
             ]);
 
+
             if ($trackRequest) {
+                $act = $request->action == 'add' ? 'ADDED to' : 'REMOVED from';
+                $this->logInternActivity($user->firstname .' '. $user->lastname . ' requested to be '. $act . ' '. $checkTrack->track_name. ' Track');
+
                     return $this->sendSuccess($trackRequest, 'Request sent successfully.', 200);
             } else {
                 return $this->sendError('Request could not be sent', 404, []);

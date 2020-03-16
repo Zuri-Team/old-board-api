@@ -338,7 +338,7 @@ class UserProfileController extends Controller
                 
                 if ($user->delete()) {
                     Slack::removeFromChannel($slack_id, $currentStage);
-                    return $this->sendSuccess($post, 'User has been deleted successfully.', 200);
+                    return $this->sendSuccess([], 'User has been deleted successfully.', 200);
                 }
             } else {
                 return $this->sendError('User not found', 404, []);

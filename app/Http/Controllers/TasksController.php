@@ -6,6 +6,7 @@ use App\Http\Requests\StoreTask;
 
 use App\Http\Resources\TaskResource;
 use App\TrackUser;
+use App\Track;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Classes\ActivityTrait;
 use Illuminate\Support\Facades\Validator;
@@ -213,27 +214,32 @@ class TasksController extends Controller
     {
         $this->middleware(['role: intern']);
         
-        $user_tracks = auth()->user()->track;
+        $user_tracks = auth()->user()->tracks;
 
-        dd($user_tracks);
-                         
+        $res = array();
+
          foreach($user_tracks as $user_track){
-             
-             //Get track id
-             $track_id = Track::where('track_name', $user_track)->first();
+
              
              //Get all task for the task
-             $track_tasks = Task::where('track_id', $track_id)->orderBy('created_at', 'desc')->get();
-             
-             if ($track_tasks) {
-                return TaskResource::collection($track_tasks);
-             } else {
-                return \response([
-                    'message' => 'Track task not available'
-                ]);
-             }
+             $track_tasks = Task::where('track_id', $user_track->id)->orderBy('created_at', 'desc')->get();
+             $collection = TaskResource::collection($track_tasks);
+
+             array_push($res, $collection);
+
+            //  if ($track_tasks) {
+            //     return TaskResource::collection($track_tasks);
+            //  } else {
+            //     return \response([
+            //         'message' => 'Track task not available'
+            //     ]);
+            //  }
          }
-        
+
+         return response([
+             'message' => 'User tasks fetched successfully',
+            'data' => $res,
+        ]);
      } 
 
     public function view_task($id)

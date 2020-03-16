@@ -11,6 +11,7 @@ use App\User;
 use App\TrackRequest;
 use App\Track;
 use App\TrackUser;
+use Carbon\Carbon;
 use App\Notifications\TrackNotifications;
 use App\Http\Classes\ActivityTrait;
 
@@ -47,23 +48,36 @@ class TrackRequestController extends Controller
         }
 
         $user_id = auth()->id();
+        $user = auth()->user();
 
         $checkTrack = Track::find($request->track_id);
-        if(!$checkTrack) return $this->sendError('Track not dound', 400, []);
+        if(!$checkTrack) return $this->sendError('Track not found', 400, []);
+
+        $userTracks = $user->tracks;
+        foreach($user->tracks as $userTrack){
+            if($userTrack->id == $request->track_id && $request->action == 'add'){
+                return $this->sendError('You are already on this Track!', 400, []);
+            }
+        }
+
+        $timeAfter = Carbon::now()->addDays(1);
         
-        $check = TrackRequest::where('user_id', $user_id)->where('track_id', $request->track_id)->first();
-        if($check) return $this->sendError('You already requested for Modification on this Track', 400, []);
+        $check = TrackRequest::where('user_id', $user_id)->where('track_id', $request->track_id)->where('created_at', '<', $timeAfter)->first();
+        if($check) return $this->sendError('You already requested for Modification on this Track. Plaese wait in 24Hours to make another change', 400, []);
 
         try {
             $trackRequest = TrackRequest::create([
                 'user_id' => $user_id,
                 'track_id' => $request->track_id,
                 'reason' => $request->reason,
-		'action' => $request->action
-
+		        'action' => $request->action
             ]);
 
+
             if ($trackRequest) {
+                $act = $request->action == 'add' ? 'ADDED to' : 'REMOVED from';
+                $this->logInternActivity($user->firstname .' '. $user->lastname . ' requested to be '. $act . ' '. $checkTrack->track_name. ' Track');
+
                     return $this->sendSuccess($trackRequest, 'Request sent successfully.', 200);
             } else {
                 return $this->sendError('Request could not be sent', 404, []);

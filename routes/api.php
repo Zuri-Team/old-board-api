@@ -113,6 +113,8 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
     Route::get('task/{id}/intern/grades', 'TaskSubmissionController@intern_view_task_grades');
     Route::get('task/{id}/grades', 'TaskSubmissionController@view_all_intern_grades');
     Route::get('task/{id}/submissions', 'TaskSubmissionController@admin_retrieve_interns_submission');
+
+    Route::get('task/{id}/intern_submissions', 'TaskSubmissionController@retrieve_interns_submission');
     Route::delete('submissions/task/{taskId}', 'TaskSubmissionController@delete_interns_submissions');
     Route::delete('task/{taskId}', 'TaskSubmissionController@delete_interns_submissions');
     Route::delete('submission', 'TaskSubmissionController@delete_all_submission');

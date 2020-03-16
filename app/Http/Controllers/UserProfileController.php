@@ -333,7 +333,11 @@ class UserProfileController extends Controller
                     return $this->sendError('Cannot delete an Admin', 404, []);
                 }
 
+                $slack_id =  $user->slack_id;
+                $stage = $user->stage;
+                
                 if ($user->delete()) {
+                    Slack::removeFromChannel($slack_id, $currentStage);
                     return $this->sendSuccess($post, 'User has been deleted successfully.', 200);
                 }
             } else {

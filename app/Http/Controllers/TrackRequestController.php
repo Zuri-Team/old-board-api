@@ -70,8 +70,7 @@ class TrackRequestController extends Controller
                 'user_id' => $user_id,
                 'track_id' => $request->track_id,
                 'reason' => $request->reason,
-		'action' => $request->action
-
+		        'action' => $request->action
             ]);
 
             if ($trackRequest) {

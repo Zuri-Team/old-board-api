@@ -297,9 +297,9 @@ class TaskSubmissionController extends Controller
     
     public function admin_retrieve_interns_submission($id)
     {
-        if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
-            return $this->ERROR('You dont have the permission to perform this action');
-        }
+        // if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
+        //     return $this->ERROR('You dont have the permission to perform this action');
+        // }
         $submissions = TaskSubmission::where('task_id', $id)->with('user')->get();
         if ($submissions) {
             // return TaskSubmissionResource::collection($submissions);

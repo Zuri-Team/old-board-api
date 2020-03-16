@@ -294,12 +294,29 @@ class TaskSubmissionController extends Controller
             return $this->sendError('Task has not been graded', 404, []);
         }
     }
+
+    //retrieve_interns_submission
+    public function retrieve_interns_submission($id)
+    {
+
+        $user = auth()->user();
+
+        if (!auth('api')->user()->hasAnyRole(['intern'])) {
+            return $this->ERROR('You dont have the permission to perform this action');
+        }
+
+        $submissions = TaskSubmission::where('task_id', $id)->where('user_id', $user->id)->with('user')->get();
+        if ($submissions) {
+            // return TaskSubmissionResource::collection($submissions);
+            return $this->sendSuccess($submissions, 'AllTasks submissions fetched', 200);
+        }
+    }
     
     public function admin_retrieve_interns_submission($id)
     {
-        // if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
-        //     return $this->ERROR('You dont have the permission to perform this action');
-        // }
+        if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
+            return $this->ERROR('You dont have the permission to perform this action');
+        }
         $submissions = TaskSubmission::where('task_id', $id)->with('user')->get();
         if ($submissions) {
             // return TaskSubmissionResource::collection($submissions);

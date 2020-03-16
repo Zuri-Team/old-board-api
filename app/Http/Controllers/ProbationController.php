@@ -42,7 +42,7 @@ class ProbationController extends Controller
 
         if(!$is_user)  return $this->ERROR('Specified user does not exist');
         if($is_user->hasAnyRole(['admin', 'superadmin'])) return $this->ERROR('An admin cannot go on probation');
-        if($is_on_probation)      
+        if($is_on_probation) return $this->ERROR('User is already on probation');
         
         // Remove the user from All Stages
         Probation::insert(['user_id'=>$request->user_id, 'probated_by'=>Auth::user()->id, 'probation_reason'=>$request->reason ?? null, 'exit_on'=>$exit_date]);

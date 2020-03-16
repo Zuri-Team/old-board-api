@@ -44,14 +44,13 @@ class ProbationController extends Controller
         if($is_user->hasAnyRole(['admin', 'superadmin'])) return $this->ERROR('An admin cannot go on probation');
         if($is_on_probation)      
         
-        
         // Remove the user from All Stages
         Probation::insert(['user_id'=>$request->user_id, 'probated_by'=>Auth::user()->id, 'probation_reason'=>$request->reason ?? null, 'exit_on'=>$exit_date]);
 
         $this->logAdminActivity("probated " . $is_user->firstname . " " . $is_user->lastname . " (". $is_user->email .")");
 
             $slack_id =  $is_user->slack_id;
-            $probChannel = env('SLACK_PROBATION', 'test-underworld');
+            $probChannel = env('SLACK_PROBATION', 'probation');
                     
             Slack::removeFromChannel($slack_id, $is_user->stage);
             Slack::addToGroup($slack_id, $probChannel);

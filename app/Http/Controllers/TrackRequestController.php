@@ -11,6 +11,7 @@ use App\User;
 use App\TrackRequest;
 use App\Track;
 use App\TrackUser;
+use Carbon\Carbon;
 use App\Notifications\TrackNotifications;
 use App\Http\Classes\ActivityTrait;
 
@@ -50,9 +51,11 @@ class TrackRequestController extends Controller
 
         $checkTrack = Track::find($request->track_id);
         if(!$checkTrack) return $this->sendError('Track not dound', 400, []);
+
+        $timeAfter = Carbon::now()->addDays(1);
         
-        $check = TrackRequest::where('user_id', $user_id)->where('track_id', $request->track_id)->first();
-        if($check) return $this->sendError('You already requested for Modification on this Track', 400, []);
+        $check = TrackRequest::where('user_id', $user_id)->where('track_id', $request->track_id)->where('created_at', '<', $timeAfter)->first();
+        if($check) return $this->sendError('You already requested for Modification on this Track. Plaese wait in 24Hours to make another change', 400, []);
 
         try {
             $trackRequest = TrackRequest::create([

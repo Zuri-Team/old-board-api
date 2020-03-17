@@ -52,6 +52,7 @@ return [
     |
     */
 
+
     'url' => env('APP_URL', 'https://dev.start.ng'),
 
     'asset_url' => env('ASSET_URL', null),
@@ -249,7 +250,8 @@ return [
         'SlackRealTimeMessage'  => Craftyx\SlackApi\Facades\SlackRealTimeMessage::class,
         'SlackTeam'             => Craftyx\SlackApi\Facades\SlackTeam::class,
 
-        'SlackWebApi' => \Lisennk\Laravel\SlackWebApi\Facades\SlackApi::class
+        
+        'SlackWebApi'           => \Lisennk\Laravel\SlackWebApi\Facades\SlackApi::class,
 
     ],
 

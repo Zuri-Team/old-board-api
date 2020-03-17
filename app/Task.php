@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
-    protected $fillable = ['track_id', 'title', 'body', 'deadline', 'is_active', 'status'];
+    protected $fillable = ['track_id', 'title', 'body', 'deadline', 'is_active', 'status', 'course_id'];
     // protected $with = ['track'];
     // protected $dates = ['deadline'];
 
@@ -21,5 +21,9 @@ class Task extends Model
 
     public function track(){
         return $this->belongsTo('App\Track', 'track_id');
+    }
+
+    public function course(){
+        return $this->belongsTo('App\Course', 'course_id');
     }
 }

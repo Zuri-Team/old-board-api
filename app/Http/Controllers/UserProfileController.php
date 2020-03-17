@@ -349,4 +349,45 @@ class UserProfileController extends Controller
             return $this->sendError('Internal server error.', 500, []);
         }
     }
+
+    public function resetUserPass(User $user){
+        try{
+            //$user = User::find($id)->first();
+
+            if($user){
+
+                $user->password = bcrypt('12345678');
+                $result = $user->save();
+
+                if($result){
+                    return $this->sendSuccess($user, 'Successfully reset Password', 200);
+                }
+
+            } else {
+                return $this->sendError('User not found', 404, []);
+            }
+
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return $this->sendError('Internal server error.', 500, []);
+        }
+    }
+
+    public function getUserDetails(User $user){
+        try{
+            //$user = User::find($id)->first();
+
+            if($user){
+
+                    return $this->sendSuccess($user, 'Successfully reset Password', 200);
+
+            } else {
+                return $this->sendError('User not found', 404, []);
+            }
+
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return $this->sendError('Internal server error.', 500, []);
+        }
+    }
 }

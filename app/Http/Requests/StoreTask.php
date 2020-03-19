@@ -24,7 +24,7 @@ class StoreTask extends FormRequest
     public function rules()
     {
         return [
-            #'track_id' => 'required',
+            'track_id' => 'required',
             'title' => 'required|max:255',
             'body' => 'required',
             'deadline' => 'required',

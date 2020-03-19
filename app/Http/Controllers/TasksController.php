@@ -6,6 +6,7 @@ use App\Http\Requests\StoreTask;
 
 use App\Http\Resources\TaskResource;
 use App\TrackUser;
+use App\TrackTask;
 use App\Track;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Classes\ActivityTrait;
@@ -69,7 +70,7 @@ class TasksController extends Controller
         $this->middleware(['role:superadmin', 'role:admin']);
 
          $validator = Validator::make($request->all(), [
-            #'track_id' => 'required',
+            'track_id' => 'required',
             'title' => 'required|max:255',
             'body' => 'required',
             'deadline' => 'required',

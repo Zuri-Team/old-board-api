@@ -69,11 +69,12 @@ class TasksController extends Controller
         $this->middleware(['role:superadmin', 'role:admin']);
 
          $validator = Validator::make($request->all(), [
-            'track_id' => 'required',
+            #'track_id' => 'required',
             'title' => 'required|max:255',
             'body' => 'required',
             'deadline' => 'required',
             'is_active' => 'required',
+            'course_id' => 'required',
         ]);
 
         // if ($validator->fails()) {
@@ -83,6 +84,20 @@ class TasksController extends Controller
         $data = $request->all();
 
         $task = Task::create($data);
+
+        if($task) {
+            $get_tracks = $request('track_id');
+
+            //Loops through tracks selected for a particular task
+            foreach ($get_tracks as $get_track) {
+                $task_id = $task->id;
+
+                TrackTask::create([
+                    'task_id' => $task_id,
+                    'track_id' => $get_track->id
+                ]);
+            }
+        }
 
         $this->logAdminActivity("created " . $task->title . " Task");
 

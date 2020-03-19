@@ -50,7 +50,7 @@ Route::group(['middleware' => 'auth:api', 'throttle:60,1'], function () {
         Route::delete('/delete/{user}', 'UserProfileController@destroy');
     });
 
-    Route::resources('/courses', 'CoursesController');
+    #Route::resources('/courses', 'CoursesController');
     Route::group(['prefix' => 'course-registration'], function(){
         Route::post('/{user}/{track}', 'CourseregistrationsController@store');
         Route::put('/{user}/{track}/{id}', 'CourseregistrationsController@update');

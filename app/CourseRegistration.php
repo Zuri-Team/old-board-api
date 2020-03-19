@@ -3,10 +3,16 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\softDeletes;
 
 class CourseRegistration extends Model
 {
-    protected $fillable = ['user_id', 'course_id', 'approved_by', 'updated_by'];
+
+    use softDeletes;
+
+    protected $fillable = ['user_id', 'course_id', 'approved_by', 'updated_by', 'deleted_by'];
+
+    protected $dates = ['deleted_at'];
 
 
     public function track(){

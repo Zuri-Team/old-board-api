@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Notifications\TrackNotifications;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Classes\ActivityTrait;
+use DB;
 
 class TrackController extends Controller
 {
@@ -223,4 +224,22 @@ class TrackController extends Controller
         logger('Track retrieved' . $track);        
         return $this->SUCCESS('Track retrieved', $track);
     }
+
+    public function addToCodingTrack(){
+        $interns = User::where('role', 'intern')->get();
+
+        $codingTrackId = 5;
+        $designTrackId = 3;
+
+        foreach($interns as $intern){
+            if($intern->tracks->contains(Track::find($designTrackId))){
+                continue;
+            }
+            TrackUser::updateOrCreate([
+                'track_id' => $codingTrackId,
+                'user_id' => $intern->id
+            ]);
+        }
+    }
+
 }

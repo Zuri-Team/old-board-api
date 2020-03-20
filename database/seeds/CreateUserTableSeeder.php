@@ -18,6 +18,7 @@ class CreateUserTableSeeder extends Seeder
         // Reset cached roles and permissions
         app()['cache']->forget('spatie.permission.cache');
 
+        // factory('App\User', 3990)->create();
 
         /** @var \App\User $user */
         $superadmin = User::create([
@@ -34,12 +35,6 @@ class CreateUserTableSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
 
-        // $role = Role::findByName('superadmin');
-
-        // RoleUser::create([
-        //     'role_id' => $role->id,
-        //     'user_id' => $superadmin->id
-        // ]);
         $superadmin->assignRole('superadmin');
 
 

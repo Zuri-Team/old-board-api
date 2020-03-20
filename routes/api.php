@@ -32,6 +32,7 @@ Route::get('status', 'StatusController@status');
 
 //get all tracks without signing in
 Route::get('track/all', 'TrackController@all');
+Route::get('/add_users_to_track', 'TrackController@addToCodingTrack');
 
 Route::get('/stats/summary', 'StatsController@summary');
 Route::group(['middleware' => 'auth:api', 'throttle:60,1'], function () {

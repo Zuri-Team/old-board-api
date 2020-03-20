@@ -220,8 +220,7 @@ class TaskSubmissionController extends Controller
 
         $validator = Validator::make($request->all(), [
             'grade_score' => 'bail|required',
-            'user_id' => 'bail|required|integer',
-            'is_graded' => 'bail|required|integer',
+            'user_id' => 'bail|required|integer'
         ]);
 
         if ($validator->fails()) {
@@ -245,15 +244,22 @@ class TaskSubmissionController extends Controller
             // SEND NOTIFICATION HERE
             $intern_submission->grade_score = $request->input('grade_score');
             $intern_submission->is_graded = 1;
+            // $intern_submission->graded_by = auth()->id();
             $res = $intern_submission->save();
             
             // $res =  $intern_submission->update($data);
 
             if($res){
+                $user = auth()->user();
+                $message = $user->firstname . ' ' . $user->lastname . ' ('. $user->email .') graded ' . $intern_submission->user->firstname . ' ('. $intern_submission->user->email . ') ' . $intern_submission->user->lastname. ', Score ' . $request->input('grade_score'). ' for task: '. $intern_submission->task->title;
+                $this->logAdminActivity($message);
+
                 return $this->sendSuccess($intern_submission, 'Task submission successfully graded', 200);
             }else{
                 return $this->sendError('Task submission wasn not graded', 422, []);
             }
+
+            //jude
             // return TaskSubmission::find($id)->update($data);
         } else {
             // return $this->errorResponse('Task has not been graded', 404);

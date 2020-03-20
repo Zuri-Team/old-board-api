@@ -37,6 +37,5 @@ class CreateUserTableSeeder extends Seeder
 
         $superadmin->assignRole('superadmin');
 
-
     }
 }

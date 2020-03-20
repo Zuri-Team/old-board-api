@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Track;
 use App\TrackUser;
+use App\TaskSubmission;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Classes\ResponseTrait;
@@ -240,6 +241,52 @@ class TrackController extends Controller
                 'user_id' => $intern->id
             ]);
         }
+    }
+
+//     public function changeSubmissions(){
+//         dd('jdue');
+//         $codingTaskId = 6;
+//         $goTaskid = 5;
+//         $mock_submissions = TaskSubmission::orderBy('user_id')->where('task_id', '!=', $goTaskid)->get();
+
+//         dd($mock_submissions);
+//         foreach($mock_submissions as $submission) {
+//                 $submission->task_id = $codingTaskId;
+//                 $submission->save();
+//         }
+//         $duplicateRecords = DB::table('task_submissions')
+//         ->where('task_id', '!=', $goTaskid)
+//         ->orderBy('user_id')
+//         ->get()->duplicatesStrict('user_id');
+        
+//         foreach($duplicateRecords as $key => $value){
+//             $mock_submissions[$key]->delete();
+//         }
+// ​
+//         // $submissions = TaskSubmission::orderBy('created_at', 'desc')->with(['user', 'task'])->get();
+//     }
+
+    public function change(){
+        // dd("jude");
+        $codingTaskId = 30;
+        $goTaskid = 27;
+        $mock_submissions = TaskSubmission::orderBy('user_id')->where('task_id', '!=', $goTaskid)->get();
+
+        foreach($mock_submissions as $submission){
+            $submission->task_id = $codingTaskId;
+            $submission->save();
+        }
+
+        $duplicateRecords = DB::table('task_submissions')
+            ->where('task_id', '!=', $goTaskid)
+            ->orderBy('user_id')
+            ->get()->duplicatesStrict('user_id');
+
+        foreach($duplicateRecords as $key => $value){
+            $mock_submissions[$key]->delete();
+        }
+
+        // $submissions = TaskSubmission::order 
     }
 
 }

@@ -37,14 +37,26 @@ $factory->define(User::class, function (Faker $faker) {
     // return 
 });
 
-// $factory->define(TaskSubmission::class, function (Faker $faker){
-//     return [
-//         'user_id', 
-//         'task_id', 
-//         'submission_link', 
-//         'comment', 
-//         'grade_score', 
-//         'is_submitted', 
-//         'is_graded'
-//     ];
-// });
+$autoIncrement = autoIncrement();
+
+$factory->define(TaskSubmission::class, function (Faker $faker) use ($autoIncrement) {
+    // $autoIncrement->next();
+
+    static $number = 5;
+    return [
+        'user_id' => $number++, 
+        'task_id' => 7,
+        'submission_link' => 'hhtps://jude.com', 
+        'comment' => 'test', 
+        'grade_score' => 30, 
+        'is_submitted' => 1, 
+        'is_graded' => 0
+    ];
+});
+
+function autoIncrement()
+{
+    for ($i = 4; $i < 1000; $i++) {
+        yield $i;
+    }
+}

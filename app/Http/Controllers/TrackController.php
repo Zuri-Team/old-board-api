@@ -232,7 +232,7 @@ class TrackController extends Controller
         $designTrackId = 3;
 
         foreach($interns as $intern){
-            if($intern->tracks->contains(Track::find($designTrackId))){
+            if($intern->tracks->contains(Track::find($designTrackId)) && $intern->tracks->count() == 1){
                 continue;
             }
             TrackUser::updateOrCreate([

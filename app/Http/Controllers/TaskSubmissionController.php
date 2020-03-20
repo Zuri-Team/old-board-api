@@ -219,7 +219,7 @@ class TaskSubmissionController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'grade_score' => 'bail|required|integer',
+            'grade_score' => 'bail|required',
             'user_id' => 'bail|required|integer',
             'is_graded' => 'bail|required|integer',
         ]);

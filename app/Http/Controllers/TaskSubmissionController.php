@@ -31,7 +31,7 @@ class TaskSubmissionController extends Controller
         if (!auth('api')->user()->hasAnyRole(['admin', 'superadmin'])) {
             return $this->ERROR('You dont have the permission to perform this action');
         }
-        $submissions = TaskSubmission::orderBy('created_at', 'desc')->with(['user', 'task'])->get();
+        $submissions = TaskSubmission::orderBy('created_at', 'desc')->with(['user', 'task', 'graded_by:id,firstname,lastname,email,username'])->get();
         if ($submissions) {
             // return TaskSubmissionResource::collection($submissions);
             return $this->sendSuccess($submissions, 'AllTasks submissions fetched', 200);
@@ -244,7 +244,7 @@ class TaskSubmissionController extends Controller
             // SEND NOTIFICATION HERE
             $intern_submission->grade_score = $request->input('grade_score');
             $intern_submission->is_graded = 1;
-            // $intern_submission->graded_by = auth()->id();
+            $intern_submission->graded_by = auth()->id();
             $res = $intern_submission->save();
             
             // $res =  $intern_submission->update($data);
@@ -307,7 +307,7 @@ class TaskSubmissionController extends Controller
 
         $user = auth()->user();
 
-        if (!auth('api')->user()->hasAnyRole(['intern'])) {
+        if (!auth('api')->user()->hasAnyRole(['intern', 'admin', 'superadmin'])) {
             return $this->ERROR('You dont have the permission to perform this action');
         }
 

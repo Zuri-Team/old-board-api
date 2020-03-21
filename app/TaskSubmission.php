@@ -18,4 +18,9 @@ class TaskSubmission extends Model
     {
         return $this->belongsTo('App\User', 'user_id');
     }
+
+    public function graded_by()
+    {
+        return $this->belongsTo('App\User', 'graded_by');
+    }
 }

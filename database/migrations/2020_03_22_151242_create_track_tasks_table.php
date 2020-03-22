@@ -15,10 +15,12 @@ class CreateTrackTasksTable extends Migration
     {
         Schema::create('track_tasks', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('task_id')->unsigned();
+            $table->bigInteger('task_id')->nullable()->unsigned();
             $table->foreign('task_id')->references('id')->on('tasks')->onDelete('cascade')->onUpdate('cascade');            
             $table->bigInteger('track_id')->unsigned();
             $table->foreign('track_id')->references('id')->on('tracks');
+            $table->bigInteger('course_id')->nullable()->unsigned();
+            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade')->onUpdate('cascade');            
             $table->timestamps();
         });
     }
@@ -30,6 +32,6 @@ class CreateTrackTasksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('track_tasks');
+        Schema::dropIfExists('track_task');
     }
 }

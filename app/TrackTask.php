@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class TrackTask extends Model
 {
-    protected $fillable = ['track_id', 'task_id'];
+    protected $fillable = ['track_id', 'task_id', 'course_id'];
 
 
     public function tasks(){
-        return $this->hasMany('App\TaskSubmission');
+        return $this->hasMany('App\Task');
     }
 
     public function tracks(){

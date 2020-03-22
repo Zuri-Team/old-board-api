@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateTasksAddCourseIdTable extends Migration
+class UpdateCourseTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class UpdateTasksAddCourseIdTable extends Migration
      */
     public function up()
     {
-        Schema::table('tasks', function (Blueprint $table) {
-            $table->bigInteger('course_id')->unsigned();
-            $table->foreign('course_id')->references('id')->on('courses');
+        Schema::table('courses', function (Blueprint $table) {
+            $table->string('description');
         });
     }
 
@@ -26,7 +25,7 @@ class UpdateTasksAddCourseIdTable extends Migration
      */
     public function down()
     {
-        Schema::table('tasks', function (Blueprint $table) {
+        Schema::table('courses', function (Blueprint $table) {
             //
         });
     }

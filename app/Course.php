@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
 {
-    protected $fillable = ['course_name', 'track_id'];
+    protected $fillable = ['course_name', 'track_id', 'description'];
 
 
     public function track(){

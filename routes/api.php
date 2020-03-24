@@ -55,6 +55,14 @@ Route::group(['middleware' => 'auth:api', 'throttle:60,1'], function () {
 
     });
 
+    #Route::resources('/courses', 'CoursesController');
+    Route::group(['prefix' => 'course-registration'], function(){
+        Route::post('/{user}/{track}', 'CourseregistrationsController@store');
+        Route::put('/{user}/{track}/{id}', 'CourseregistrationsController@update');
+        Route::post('/{user_id}/{track}/{id}/course-reg-status', 'CourseregistrationsController@course_reg_status');
+        Route::get('/{user}/{track}/{id}', 'Courseregistrations@show');
+    });
+
         
     //Activity Routes
     Route::group(['prefix' => 'activity'], function () {

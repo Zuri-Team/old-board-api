@@ -6,6 +6,7 @@ use App\Http\Requests\StoreTask;
 
 use App\Http\Resources\TaskResource;
 use App\TrackUser;
+use App\TrackTask;
 use App\Track;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Classes\ActivityTrait;
@@ -69,7 +70,7 @@ class TasksController extends Controller
         $this->middleware(['role:superadmin', 'role:admin']);
 
          $validator = Validator::make($request->all(), [
-            'track_id' => 'required',
+            //'track_id' => 'required',
             'title' => 'required|max:255',
             'body' => 'required',
             'deadline' => 'required',
@@ -82,7 +83,22 @@ class TasksController extends Controller
 
         $data = $request->all();
 
+        $tracks = $request->input('track_id');
+
+        // Check if multiple tracks are selected, else convert a single track to array
+        $get_tracks = is_array($tracks) ? $tracks : [$tracks];
+
         $task = Task::create($data);
+
+        if($task) {
+            $task_id = $task->id;
+            
+            $taskModel = new Task();
+
+            //Loops through tracks selected for a particular task
+            $taskModel->getTracks($get_tracks, $task_id);
+            
+         }
 
         $this->logAdminActivity("created " . $task->title . " Task");
 

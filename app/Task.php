@@ -4,9 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\TrackTask;
+
 class Task extends Model
 {
-    protected $fillable = ['track_id', 'title', 'body', 'deadline', 'is_active', 'status'];
+    protected $fillable = ['title', 'body', 'deadline', 'is_active', 'status'];
     // protected $with = ['track'];
     // protected $dates = ['deadline'];
 
@@ -21,5 +23,18 @@ class Task extends Model
 
     public function track(){
         return $this->belongsTo('App\Track', 'track_id');
+    }
+
+    public static function getTracks($tracks, $task_id){
+
+        // Loop through tracks
+        foreach ($tracks as $track) {
+
+            TrackTask::create([
+                'task_id' => $task_id,
+                'track_id' => $track
+            ]);
+        }
+
     }
 }

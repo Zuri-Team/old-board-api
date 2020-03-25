@@ -62,8 +62,10 @@ class TrackRequestController extends Controller
 
         $timeAfter = Carbon::now()->addDays(1);
         
-        $check = TrackRequest::where('user_id', $user_id)->where('track_id', $request->track_id)->where('created_at', '<', $timeAfter)->first();
-        if($check) return $this->sendError('You already requested for Modification on this Track. Plaese wait in 24Hours to make another change', 400, []);
+        // $check = TrackRequest::where('user_id', $user_id)->where('track_id', $request->track_id)->where('created_at', '>', $timeAfter)->first();
+        $check = TrackRequest::where('user_id', $user_id)->where('track_id', $request->track_id)->first();
+        $date_created = $check->created_at->addDays(1);
+        if($date_created < Carbon::now()) return $this->sendError('You already requested for Modification on this Track. Plaese wait in 24Hours to make another change', 400, []);
 
         try {
             $trackRequest = TrackRequest::create([

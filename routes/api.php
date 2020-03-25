@@ -89,11 +89,12 @@ Route::group(['middleware' => 'auth:api', 'throttle:60,1'], function () {
 
     //Track Request routes
     Route::group(['prefix' => 'track-requests'], function() {
-    Route::get('/all', 'TrackRequestController@all');
-    Route::get('/request-count', 'TrackRequestController@get_request_count');
-    Route::post('/send-request', 'TrackRequestController@request');
-    Route::put('/accept/{id}', 'TrackRequestController@accept');
-    Route::delete('/reject/{id}', 'TrackRequestController@reject');
+        Route::get('/all', 'TrackRequestController@all');
+        Route::get('/request-count', 'TrackRequestController@get_request_count');
+        Route::post('/send-request', 'TrackRequestController@request');
+        Route::put('/accept/{id}', 'TrackRequestController@accept');
+        Route::delete('/reject/{id}', 'TrackRequestController@reject');
+        Route::get('/delete_all', 'TrackRequestController@deleteAll');
     });
 
     

@@ -169,6 +169,10 @@ class TrackRequestController extends Controller
         }
     }
 
+    public function deleteAll(){
+        TrackRequest::truncate();
+    }
+
     
 
 }

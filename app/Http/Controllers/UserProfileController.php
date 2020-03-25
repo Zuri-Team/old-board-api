@@ -378,8 +378,11 @@ class UserProfileController extends Controller
             //$user = User::find($id)->first();
 
             if($user){
-
-                    return $this->sendSuccess($user, 'Successfully reset Password', 200);
+                $data = array();
+                $data['user'] = $user;
+                $data['roles'] = $user->roles;
+                
+                    return $this->sendSuccess($user, 'User details', 200);
 
             } else {
                 return $this->sendError('User not found', 404, []);

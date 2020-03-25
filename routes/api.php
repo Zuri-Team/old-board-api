@@ -52,6 +52,7 @@ Route::group(['middleware' => 'auth:api', 'throttle:60,1'], function () {
         //
         Route::get('/reset_pass/{user}', 'UserProfileController@resetUserPass');
         Route::get('/details/{user}', 'UserProfileController@getUserDetails');
+        Route::get('/make_interns', 'UserProfileController@makeIntern');
 
     });
 
@@ -74,7 +75,7 @@ Route::group(['middleware' => 'auth:api', 'throttle:60,1'], function () {
         Route::put('/comment/{id}', 'PostCommentController@update_user_comment');
         Route::delete('/comment/{id}', 'PostCommentController@delete_user_comment');
     });
-
+    // makeIntern
     //Exports Routes
     Route::group(['prefix' => 'exports'], function() {
         Route::get('/interns', 'ExportController@interns');

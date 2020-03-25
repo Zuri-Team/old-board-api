@@ -381,7 +381,7 @@ class UserProfileController extends Controller
                 $data = array();
                 $data['user'] = $user;
                 $data['roles'] = $user->roles;
-                
+
                     return $this->sendSuccess($user, 'User details', 200);
 
             } else {
@@ -392,5 +392,19 @@ class UserProfileController extends Controller
             Log::error($e->getMessage());
             return $this->sendError('Internal server error.', 500, []);
         }
+    }
+
+    public function makeIntern(){
+        $users = User::with('roles')->get();
+
+        foreach($users as $user){
+            $roles = $user->roles->toArray();
+            if(count($roles) > 0){
+                continue;
+            }
+            $user->assignRole('intern');
+        }
+
+        return $this->sendSuccess([], 'make intern', 200);
     }
 }

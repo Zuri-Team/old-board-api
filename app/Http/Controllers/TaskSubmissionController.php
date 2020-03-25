@@ -307,9 +307,9 @@ class TaskSubmissionController extends Controller
 
         $user = auth()->user();
 
-        if (!auth('api')->user()->hasAnyRole(['intern', 'admin', 'superadmin'])) {
-            return $this->ERROR('You dont have the permission to perform this action');
-        }
+        // if (!auth('api')->user()->hasAnyRole(['intern', 'admin', 'superadmin'])) {
+        //     return $this->ERROR('You dont have the permission to perform this action');
+        // }
 
         $submissions = TaskSubmission::where('task_id', $id)->where('user_id', $user->id)->with('user')->get();
         if ($submissions) {

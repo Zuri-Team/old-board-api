@@ -61,7 +61,7 @@ class TrackRequestController extends Controller
         }
 
         // $check = TrackRequest::where('user_id', $user_id)->where('track_id', $request->track_id)->where('created_at', '>', $timeAfter)->first();
-        $checkRequest = TrackRequest::where('user_id', $user_id)->where('track_id', $request->track_id)->first();
+        $checkRequest = TrackRequest::where('user_id', $user_id)->where('track_id', $request->track_id)->where('approved', false)->first();
         if($checkRequest){
             return $this->sendError('You already requested for Modification on this Track', 400, []);
         }

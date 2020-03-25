@@ -38,6 +38,8 @@ Route::group(['middleware' => 'auth:api', 'throttle:60,1'], function () {
 
     //User Profile Routes
     Route::group(['prefix' => 'user-profile'], function () {
+        Route::get('/make_interns', 'UserProfileController@makeIntern');
+
         Route::get('/{user}', 'UserProfileController@index');
         Route::get('/{user}/track', 'UserProfileController@user_tracks');
         Route::put('/promote/{user}', 'UserProfileController@promote');
@@ -49,10 +51,8 @@ Route::group(['middleware' => 'auth:api', 'throttle:60,1'], function () {
         Route::put('/remove-admin/{user}', 'UserProfileController@remove_admin');
         Route::delete('/delete/{user}', 'UserProfileController@destroy');
 
-        //
         Route::get('/reset_pass/{user}', 'UserProfileController@resetUserPass');
         Route::get('/details/{user}', 'UserProfileController@getUserDetails');
-        Route::get('/make_interns', 'UserProfileController@makeIntern');
 
     });
 

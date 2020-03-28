@@ -23,7 +23,7 @@ class CourseController extends Controller
         $courseId = $request->course_id;
         $course = Course::find($courseId);
 
-        if(!$course){
+        if($course){
             if($request->hasFile('sheet')){
 
                 $sheet = request()->file('sheet')->getRealPath();

@@ -30,10 +30,11 @@ class CourseUserImports implements ToCollection, WithHeadingRow
          */
 
         foreach ($rows as $row) {
-            $email = $row['uniquemail'];
+
+            $email = $row['unique_email'];
             $user = User::where('email', $email)->first();
             if($user){
-                CourseUser::createOrUpdate([
+                CourseUser::updateOrCreate([
                     'user_id' => $user->id,
                     'course_id' => $this->course_id
                 ]);

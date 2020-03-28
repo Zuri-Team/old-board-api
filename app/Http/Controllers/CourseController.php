@@ -66,5 +66,18 @@ class CourseController extends Controller
             return $this->sendError('All courses', 200, $courses);
         }
 
+        //getInterns
+
+        public function getInterns($id){
+
+            $course = Course::find($id);
+
+            if(!$course){
+                return $this->sendError('Track does not exist', 404, []);
+            }
+            $interns = Course::where('id', $id)->with('interns');
+            return $this->sendError('All Interns in a course', 200, $interns);
+        }
+
 
 }

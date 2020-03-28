@@ -189,4 +189,6 @@ Route::get('leaderboard/{week}', 'LeaderboardController@viewAll');
 Route::group(['prefix' => 'course'], function() {
     Route::post('/import', 'CourseController@importCourse');
     Route::post('/create', 'CourseController@createCourse');
+    Route::get('/all', 'CourseController@allCourses');
+    //allCourses
 });

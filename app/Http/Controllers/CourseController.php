@@ -45,11 +45,6 @@ class CourseController extends Controller
 
      public function createCourse(Request $request){
 
-        //  if(auth()->user()){
-            // if(!Auth::user()->hasAnyRole(['admin', 'superadmin'])){
-            //     return $this->sendError('You dont have the permission to perform this action', 400, []);
-            // }
-
             $trackId = $request->track_id;
             $track = Track::find($trackId);
 
@@ -64,8 +59,12 @@ class CourseController extends Controller
                 } 
                 return $this->sendError('Course creation failed', 500, []);
         }
-        // return $this->sendError('Unauthorized', 401, []);
-    // }
+
+        public function allCourses(){
+
+            $courses = Course::all();
+            return $this->sendError('All courses', 200, $courses);
+        }
 
 
 }

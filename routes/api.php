@@ -97,6 +97,10 @@ Route::group(['middleware' => 'auth:api', 'throttle:60,1'], function () {
         Route::get('/delete_all', 'TrackRequestController@deleteAll');
     });
 
+
+    Route::group(['prefix' => 'course'], function() {
+        Route::post('/import', 'CourseController@importCourse');
+    });
     
 //stat
 Route::get('/stats/dashboard', 'StatsController@dashboard');
@@ -180,3 +184,8 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
 
 
 Route::get('leaderboard/{week}', 'LeaderboardController@viewAll');
+
+//Course Routes
+Route::group(['prefix' => 'course'], function() {
+    Route::post('/import', 'CourseController@importCourse');
+});

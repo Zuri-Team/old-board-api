@@ -10,6 +10,7 @@ use App\Imports\CourseUserImports;
 use App\Http\Classes\ResponseTrait;
 use Illuminate\Http\JsonResponse;
 use App\User;
+use App\Track;
 use Auth;
 use Carbon\Carbon;
 use App\Http\Classes\ActivityTrait;
@@ -43,11 +44,11 @@ class CourseController extends Controller
     }
 
      public function createCourse(Request $request){
-         
-         if(auth()->user()){
-            if(!Auth::user()->hasAnyRole(['admin', 'superadmin'])){
-                return $this->sendError('You dont have the permission to perform this action', 400, []);
-            }
+
+        //  if(auth()->user()){
+            // if(!Auth::user()->hasAnyRole(['admin', 'superadmin'])){
+            //     return $this->sendError('You dont have the permission to perform this action', 400, []);
+            // }
 
             $trackId = $request->track_id;
             $track = Track::find($trackId);
@@ -59,13 +60,12 @@ class CourseController extends Controller
             $course = $request->all();
                 if(Course::create($course)){
                     $course_name = $course['name'];
-                    $this->logAdminActivity("created " . $course_name . " course");
                     return $this->sendError('Course creation successful', 200, $course);
                 } 
                 return $this->sendError('Course creation failed', 500, []);
         }
-        return $this->sendError('Unauthorized', 401, []);
-    }
+        // return $this->sendError('Unauthorized', 401, []);
+    // }
 
 
 }

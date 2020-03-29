@@ -191,5 +191,4 @@ Route::group(['prefix' => 'course'], function() {
     Route::post('/create', 'CourseController@createCourse');
     Route::get('/all', 'CourseController@allCourses');
     Route::get('/interns/{id}', 'CourseController@getInterns');
-    //allCourses
 });

@@ -22,4 +22,8 @@ class Task extends Model
     public function track(){
         return $this->belongsTo('App\Track', 'track_id');
     }
+
+    public function course(){
+        return $this->belongsTo('App\Course', 'course_id');
+    }
 }

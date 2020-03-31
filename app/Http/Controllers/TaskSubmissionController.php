@@ -463,7 +463,7 @@ class TaskSubmissionController extends Controller
             $submissions = $user->submissions;
             $submissionsArray = $submissions->pluck('task_id')->all();
             $courses = $user->courses;
-            $tasksArray = array();
+            $tasksArray = array(30);
             foreach($courses as $course){
                 $aTask = Task::where('course_id', $course->id)->orderBy('created_at', 'asc')->first();
                 array_push($tasksArray, $aTask->id);

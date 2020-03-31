@@ -411,7 +411,7 @@ class TaskSubmissionController extends Controller
             $submissions = $user->submissions;
             $submissionsArray = $submissions->pluck('task_id')->all();
             $courses = $user->courses;
-            $tasksArray = array();
+            $tasksArray = [30];
             foreach($courses as $course){
                 $aTask = Task::where('course_id', $course->id)->orderBy('created_at', 'asc')->first();
                 array_push($tasksArray, $aTask->id);
@@ -473,8 +473,8 @@ class TaskSubmissionController extends Controller
 
             if(count($diff) == 0){
                 //promote user
-                // array_push($usersArray, $user->username);
-                $count += 1;
+                array_push($usersArray, $user->username);
+                // $count += 1;
                 // $slack_id =  $user->slack_id;
                 // Slack::removeFromChannel($slack_id, 1);
                 // Slack::addToChannel($slack_id, 2);
@@ -485,7 +485,7 @@ class TaskSubmissionController extends Controller
             }
 
         }
-        return $this->sendSuccess($count, 'successfully promoted interns', 200);
+        return $this->sendSuccess($usersArray, 'successfully promoted interns', 200);
     }
 
 }

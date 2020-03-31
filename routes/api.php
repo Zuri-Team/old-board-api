@@ -134,7 +134,6 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
     Route::post('test_promotion', 'TaskSubmissionController@test_promotion'); //test promotion
     //test_promotion
 
-
     Route::post('track/create', 'TrackController@create_track');
     Route::put('track/edit', 'TrackController@edit_track');
     Route::delete('track/delete', 'TrackController@delete_track');

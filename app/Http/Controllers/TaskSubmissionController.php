@@ -6,6 +6,7 @@ use App\Http\Requests\StoreTaskSubmission;
 use App\Http\Resources\TaskSubmissionResource;
 use App\Task;
 use App\Slack;
+use App\User;
 use App\TaskSubmission;
 use App\TrackUser;
 use Carbon\Carbon;
@@ -437,6 +438,7 @@ class TaskSubmissionController extends Controller
         $users = User::where('role', 'intern')->get();
 
         $usersArray = array();
+        $count = 0;
 
         foreach($users as $user){
             //get all their submissions
@@ -453,7 +455,8 @@ class TaskSubmissionController extends Controller
 
             if(count($diff) == 0){
                 //promote user
-                array_push($usersArray, $user->username);
+                // array_push($usersArray, $user->username);
+                $count += 1;
                 // $slack_id =  $user->slack_id;
                 // Slack::removeFromChannel($slack_id, 1);
                 // Slack::addToChannel($slack_id, 2);
@@ -464,7 +467,7 @@ class TaskSubmissionController extends Controller
             }
 
         }
-        return $this->sendSuccess($usersArray, 'successfully promoted interns', 200);
+        return $this->sendSuccess($count, 'successfully promoted interns', 200);
     }
 
 }

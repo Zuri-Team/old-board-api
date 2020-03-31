@@ -45,7 +45,7 @@ class CourseController extends Controller
 
     public function moveToGenaral()
     {
-        $courseId = 30;
+        $courseId = 13;
         $course = Course::find($courseId);
 
         if($course){

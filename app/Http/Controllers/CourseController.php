@@ -14,6 +14,7 @@ use App\Track;
 use Auth;
 use Carbon\Carbon;
 use App\TrackUser;
+use App\CourseUser;
 use App\Http\Classes\ActivityTrait;
 
 class CourseController extends Controller

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreTaskSubmission;
 use App\Http\Resources\TaskSubmissionResource;
 use App\Task;
+use App\Slack;
 use App\TaskSubmission;
 use App\TrackUser;
 use Carbon\Carbon;
@@ -359,37 +360,6 @@ class TaskSubmissionController extends Controller
     public function submit(Request $request)
     {
 
-//         $messages = [
-//             'user_id.unique' => "You have already submitted",
-//             'submission_link.required' => "Provide a submission link",
-//             'submission_link.url' => "Submission link must be a URL",
-//             'task_id.required' => "No task selected",
-//         ];
-
-//         $validator = Validator::make($request->all(), [
-//             'task_id' => ['bail', 'required', 'integer'],
-//             'user_id' => 'bail|required|integer',
-//             'submission_link' => 'bail|required|string',
-//             'comment' => 'bail|required|string',
-//             // 'is_submitted' => 'integer',
-//             // 'is_graded' => 'integer'
-//         ], $messages);
-
-        // $this->validate($request, [
-        //     'task_id' => ['bail', 'required', 'integer'],
-        //     'user_id' => 'bail|required|integer',
-        //     'submission_link' => 'bail|required',
-        //     'comment' => 'bail|required|string',
-        // ]);
-        
-//         if ($validator->fails()) {
-//             return $this->sendError('', 400, $validator->errors());
-//         }
-
-        // if (!auth('api')->user()->hasAnyRole(['intern'])) {
-        //     return $this->ERROR('You dont have the permission to perform this action');
-        // }
-
         // check if task exist
         $checkTask = Task::where('id', $request->task_id)->get();
 
@@ -430,6 +400,71 @@ class TaskSubmissionController extends Controller
             return $this->sendSuccess($task, 'Task submitted successfully', 200);
         }
 
+    }
+
+    public function promote_to_stage_2(){
+        $users = User::where('role', 'intern')->get();
+
+        foreach($users as $user){
+            //get all their submissions
+            $submissions = $user->submissions;
+            $submissionsArray = $submissions->pluck('task_id')->all();
+            $courses = $user->courses;
+            $tasksArray = array();
+            foreach($courses as $course){
+                $aTask = Task::where('course_id', $course->id)->orderBy('created_at', 'asc')->first();
+                array_push($tasksArray, $aTask->id);
+            }
+
+            $diff = array_diff($submissionsArray, $tasksArray);
+
+            if(count($diff) == 0){
+                //promote user
+                $slack_id =  $user->slack_id;
+                Slack::removeFromChannel($slack_id, 1);
+                Slack::addToChannel($slack_id, 2);
+                $user->stage = 2;
+                $user->save();
+            }else{
+                continue;
+            }
+
+        }
+        return $this->sendSuccess($user, 'successfully promoted interns', 200);
+    }
+
+    public function test_promotion(){
+        $users = User::where('role', 'intern')->get();
+
+        $usersArray = array();
+
+        foreach($users as $user){
+            //get all their submissions
+            $submissions = $user->submissions;
+            $submissionsArray = $submissions->pluck('task_id')->all();
+            $courses = $user->courses;
+            $tasksArray = array();
+            foreach($courses as $course){
+                $aTask = Task::where('course_id', $course->id)->orderBy('created_at', 'asc')->first();
+                array_push($tasksArray, $aTask->id);
+            }
+
+            $diff = array_diff($submissionsArray, $tasksArray);
+
+            if(count($diff) == 0){
+                //promote user
+                array_push($usersArray, $user->username);
+                // $slack_id =  $user->slack_id;
+                // Slack::removeFromChannel($slack_id, 1);
+                // Slack::addToChannel($slack_id, 2);
+                // $user->stage = 2;
+                // $user->save();
+            }else{
+                continue;
+            }
+
+        }
+        return $this->sendSuccess($usersArray, 'successfully promoted interns', 200);
     }
 
 }

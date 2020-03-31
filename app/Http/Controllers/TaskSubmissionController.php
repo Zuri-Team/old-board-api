@@ -404,7 +404,7 @@ class TaskSubmissionController extends Controller
     }
 
     public function promote_to_stage_2(){
-        $users = User::where('role', 'intern')->get();
+        $users = User::where('role', 'intern')->where('stage', 1)->get();
 
         foreach($users as $user){
             //get all their submissions

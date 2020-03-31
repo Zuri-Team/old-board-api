@@ -131,6 +131,7 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
     Route::delete('submission', 'TaskSubmissionController@delete_all_submission');
 
     Route::post('promote_interns_2', 'TaskSubmissionController@promote_to_stage_2'); //promote interns to stage 2
+    Route::post('promote_admins_to_stage_2', 'TaskSubmissionController@promote_admins_to_stage_2'); //promote interns to stage 2
     Route::post('test_promotion', 'TaskSubmissionController@test_promotion'); //test promotion
     //test_promotion
 

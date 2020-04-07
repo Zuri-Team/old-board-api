@@ -54,7 +54,7 @@ class LeaderboardController extends Controller
             array_push($res, $user);
         }
 
-        return $this->paginate($res, 5);
+        return $this->paginate($res, 15);
     }
 
     public function paginate($items, $perPage = 5, $page = null, $options = [])
@@ -69,13 +69,13 @@ class LeaderboardController extends Controller
         $db = DB::table('task_submissions')
             ->where('user_id', $user_id)
             ->sum('grade_score');
-        return $db;
+        return round($db, 2);
             
-        $score = 0;
-        foreach($db as $s){
-            $score += $s->grade_score;
-        }
-        return (int)$score;
+        // $score = 0;
+        // foreach($db as $s){
+        //     $score += $s->grade_score;
+        // }
+        // return (int)$score;
     }
 
 }

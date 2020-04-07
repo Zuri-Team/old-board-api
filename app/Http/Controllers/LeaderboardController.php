@@ -10,11 +10,14 @@ use Illuminate\Http\Request;
 class LeaderboardController extends Controller
 {
     public function viewAll($week = 0){
-        $users = User::where('role', '=', 'intern')->with('tracks')->get();
+        $users = User::where('role', '=', 'intern')
+                ->with('tracks')
+                ->paginate(15);
+
         $res = [];
 
-        foreach($users as $user){
-            $user['total_score'] = $user->totalScoreForWeek($week);
+        foreach($users->data as $user){
+            $user['total_score'] = $user->totalScoreForWeek();
             $track_name = '';
             foreach($user->tracks as $sub){
                 $track_name  = $track_name . "". $sub->track_name. ", ";

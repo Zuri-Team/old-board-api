@@ -115,13 +115,13 @@ class User extends Authenticatable
     }
 
     public function totalScoreForWeek($week = 0){
-        $internship_start_date = env('PROGRAMME_START_DATE', '2020-03-01 12:00:00');
-        $days = $week * 7; 
-        $formattedDate = $days == 0 ? $internship_start_date : Carbon::now()->addDay($days);
+        // $internship_start_date = env('PROGRAMME_START_DATE', '2020-03-01 12:00:00');
+        // $days = $week * 7; 
+        // $formattedDate = $days == 0 ? $internship_start_date : Carbon::now()->addDay($days);
 
         $db = DB::table('task_submissions')
             ->where('user_id', $this->id)
-            ->whereDate('created_at', '>=', $formattedDate)
+            // ->whereDate('created_at', '>=', $formattedDate)
             ->select('grade_score')
             ->get();
             

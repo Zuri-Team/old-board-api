@@ -189,7 +189,7 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
 });
 
 
-Route::get('leaderboard/{week}', 'LeaderboardController@viewAll');
+Route::get('leaderboard/{track}', 'LeaderboardController@viewAll');
 
 //Course Routes
 Route::group(['prefix' => 'course'], function() {

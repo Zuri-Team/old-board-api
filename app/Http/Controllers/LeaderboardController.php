@@ -57,9 +57,9 @@ class LeaderboardController extends Controller
         }
 
         // return $res;
-        return $this->sort_array_of_array($res, 'total_score');
+        // return $this->sort_array_of_array($res, 'total_score');
 
-        // return $this->paginate($res, 15);
+        return $this->paginate($res, 15);
     }
 
     function sort_array_of_array(&$array, $subfield)

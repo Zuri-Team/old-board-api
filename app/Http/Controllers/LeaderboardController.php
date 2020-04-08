@@ -52,9 +52,33 @@ class LeaderboardController extends Controller
             $user['all_tracks'] = $track_name;
             $user['tracks'] = [];
             array_push($res, $user);
+        // return $res;
+
         }
 
-        return $this->paginate($res, 15);
+        // return $res;
+        return $this->sort_array_of_array($res, 'total_score');
+
+        // return $this->paginate($res, 15);
+    }
+
+    function sort_array_of_array(&$array, $subfield)
+{
+    $sortarray = array();
+    foreach ($array as $key => $row)
+    {
+
+        dd($row[$subfield]);
+        $sortarray[$key] = $row[$subfield];
+    }
+
+    array_multisort($sortarray, SORT_ASC, $array);
+}
+
+    function invenDescSort($item1,$item2)
+    {
+        if ($item1['price'] == $item2['price']) return 0;
+        return ($item1['price'] < $item2['price']) ? 1 : -1;
     }
 
     public function paginate($items, $perPage = 5, $page = null, $options = [])

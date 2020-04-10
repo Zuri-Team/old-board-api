@@ -102,9 +102,10 @@ class AuthController extends Controller
                 $trackUser->save();
             }
         }
+        $user->assignRole('intern');
+
         DB::commit();
         
-        $user->assignRole('intern');
         // $user->notify(new UserRegistration($user));
 
         //add user to first stage

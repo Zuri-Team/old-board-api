@@ -378,8 +378,11 @@ class UserProfileController extends Controller
             //$user = User::find($id)->first();
 
             if($user){
+                $data = array();
+                $data['user'] = $user;
+                $data['roles'] = $user->roles;
 
-                    return $this->sendSuccess($user, 'Successfully reset Password', 200);
+                    return $this->sendSuccess($user, 'User details', 200);
 
             } else {
                 return $this->sendError('User not found', 404, []);
@@ -389,5 +392,19 @@ class UserProfileController extends Controller
             Log::error($e->getMessage());
             return $this->sendError('Internal server error.', 500, []);
         }
+    }
+
+    public function makeIntern(){
+        $users = User::with('roles')->get();
+
+        foreach($users as $user){
+            $roles = $user->roles->toArray();
+            if(count($roles) > 0){
+                continue;
+            }
+            $user->assignRole('intern');
+        }
+
+        return $this->sendSuccess([], 'make intern', 200);
     }
 }

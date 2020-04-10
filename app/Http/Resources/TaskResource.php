@@ -19,12 +19,14 @@ class TaskResource extends JsonResource
         return [
             'id' => $this->id,
             'track_id' => $this->track_id,
+            'course_id' => $this->course_id,
             'title' => $this->title,
             'body' => $this->body,
             'deadline' => $this->deadline,
             'is_active' => $this->is_active,
             'total_submissions' => $this->tasks->count(),
             'submissions' => TaskSubmissionResource::collection($this->tasks),
+            'course' => $this->course
         ];
     }
 }

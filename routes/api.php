@@ -38,6 +38,8 @@ Route::group(['middleware' => 'auth:api', 'throttle:60,1'], function () {
 
     //User Profile Routes
     Route::group(['prefix' => 'user-profile'], function () {
+        // Route::get('/make_interns', 'UserProfileController@makeIntern');
+
         Route::get('/{user}', 'UserProfileController@index');
         Route::get('/{user}/track', 'UserProfileController@user_tracks');
         Route::put('/promote/{user}', 'UserProfileController@promote');
@@ -49,7 +51,6 @@ Route::group(['middleware' => 'auth:api', 'throttle:60,1'], function () {
         Route::put('/remove-admin/{user}', 'UserProfileController@remove_admin');
         Route::delete('/delete/{user}', 'UserProfileController@destroy');
 
-        //
         Route::get('/reset_pass/{user}', 'UserProfileController@resetUserPass');
         Route::get('/details/{user}', 'UserProfileController@getUserDetails');
 
@@ -74,7 +75,7 @@ Route::group(['middleware' => 'auth:api', 'throttle:60,1'], function () {
         Route::put('/comment/{id}', 'PostCommentController@update_user_comment');
         Route::delete('/comment/{id}', 'PostCommentController@delete_user_comment');
     });
-
+    // makeIntern
     //Exports Routes
     Route::group(['prefix' => 'exports'], function() {
         Route::get('/interns', 'ExportController@interns');
@@ -88,13 +89,18 @@ Route::group(['middleware' => 'auth:api', 'throttle:60,1'], function () {
 
     //Track Request routes
     Route::group(['prefix' => 'track-requests'], function() {
-    Route::get('/all', 'TrackRequestController@all');
-    Route::get('/request-count', 'TrackRequestController@get_request_count');
-    Route::post('/send-request', 'TrackRequestController@request');
-    Route::put('/accept/{id}', 'TrackRequestController@accept');
-    Route::delete('/reject/{id}', 'TrackRequestController@reject');
+        Route::get('/all', 'TrackRequestController@all');
+        Route::get('/request-count', 'TrackRequestController@get_request_count');
+        Route::post('/send-request', 'TrackRequestController@request');
+        Route::put('/accept/{id}', 'TrackRequestController@accept');
+        Route::delete('/reject/{id}', 'TrackRequestController@reject');
+        Route::get('/delete_all', 'TrackRequestController@deleteAll');
     });
 
+
+    Route::group(['prefix' => 'course'], function() {
+        Route::post('/import', 'CourseController@importCourse');
+    });
     
 //stat
 Route::get('/stats/dashboard', 'StatsController@dashboard');
@@ -124,6 +130,12 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
     Route::delete('task/{taskId}', 'TaskSubmissionController@delete_interns_submissions');
     Route::delete('submission', 'TaskSubmissionController@delete_all_submission');
 
+    Route::post('promote_interns_2', 'TaskSubmissionController@promote_to_stage_2'); //promote interns to stage 2
+    Route::get('promote', 'TaskSubmissionController@promote'); //promote interns to stage 2
+    Route::post('promote_admins_to_stage_2', 'TaskSubmissionController@promote_admins_to_stage_2'); //promote interns to stage 2
+    Route::post('test_promotion', 'TaskSubmissionController@test_promotion'); //test promotion
+    //test_promotion
+
     Route::post('track/create', 'TrackController@create_track');
     Route::put('track/edit', 'TrackController@edit_track');
     Route::delete('track/delete', 'TrackController@delete_track');
@@ -134,6 +146,7 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
     Route::get('track/list', 'TrackController@get_all_tracks');
     Route::get('track/{track}', 'TrackController@get_track_by_id');
     Route::get('users/track/{id}/list', 'TrackController@get_all_users_in_track');
+    // Route::get('users/add_to_coding', 'TrackController@addToCodingTrack');
 
     Route::get('tasks/active/', 'TasksController@getActiveTasks');
     Route::resource('tasks', 'TasksController'); #URL for tasks
@@ -176,4 +189,13 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
 });
 
 
-Route::get('leaderboard/{week}', 'LeaderboardController@viewAll');
+Route::get('leaderboard/{track}', 'LeaderboardController@viewAll');
+
+//Course Routes
+Route::group(['prefix' => 'course'], function() {
+    Route::post('/import', 'CourseController@importCourse');
+    Route::post('/create', 'CourseController@createCourse');
+    Route::get('/all', 'CourseController@allCourses');
+    Route::get('/interns/{id}', 'CourseController@getInterns');
+    Route::get('/move', 'CourseController@moveToGenaral');
+});

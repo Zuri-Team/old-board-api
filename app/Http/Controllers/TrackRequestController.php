@@ -60,10 +60,16 @@ class TrackRequestController extends Controller
             }
         }
 
-        $timeAfter = Carbon::now()->addDays(1);
-        
-        $check = TrackRequest::where('user_id', $user_id)->where('track_id', $request->track_id)->where('created_at', '<', $timeAfter)->first();
-        if($check) return $this->sendError('You already requested for Modification on this Track. Plaese wait in 24Hours to make another change', 400, []);
+        // $check = TrackRequest::where('user_id', $user_id)->where('track_id', $request->track_id)->where('created_at', '>', $timeAfter)->first();
+        $checkRequest = TrackRequest::where('user_id', $user_id)->where('track_id', $request->track_id)->where('approved', false)->first();
+        if($checkRequest){
+            return $this->sendError('You already requested for Modification on this Track', 400, []);
+        }
+          
+        // if($check){
+        //     $date_created = $check->created_at->addDays(1);
+        //     if($date_created < Carbon::now()) return $this->sendError('You already requested for Modification on this Track. Please wait in 24Hours to make another change', 400, []);
+        // }
 
         try {
             $trackRequest = TrackRequest::create([
@@ -161,6 +167,10 @@ class TrackRequestController extends Controller
         }catch(\Throwable $e){
             return $this->sendError('Accepting request failed: '. $e, 500, []);
         }
+    }
+
+    public function deleteAll(){
+        TrackRequest::truncate();
     }
 
     

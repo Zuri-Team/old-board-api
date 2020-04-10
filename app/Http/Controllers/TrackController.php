@@ -227,20 +227,20 @@ class TrackController extends Controller
     }
 
     public function addToCodingTrack(){
-        // $interns = User::where('role', 'intern')->get();
+        $interns = User::where('role', 'intern')->get();
 
-        // $codingTrackId = 5;
-        // $designTrackId = 3;
+        $codingTrackId = 5;
+        $designTrackId = 3;
 
-        // foreach($interns as $intern){
-        //     if($intern->tracks->contains(Track::find($designTrackId)) && $intern->tracks->count() == 1){
-        //         continue;
-        //     }
-        //     TrackUser::updateOrCreate([
-        //         'track_id' => $codingTrackId,
-        //         'user_id' => $intern->id
-        //     ]);
-        // }
+        foreach($interns as $intern){
+            if($intern->tracks->contains(Track::find($designTrackId)) && $intern->tracks->count() == 1){
+                continue;
+            }
+            TrackUser::updateOrCreate([
+                'track_id' => $codingTrackId,
+                'user_id' => $intern->id
+            ]);
+        }
     }
 
 //     public function changeSubmissions(){
@@ -266,27 +266,26 @@ class TrackController extends Controller
 //         // $submissions = TaskSubmission::orderBy('created_at', 'desc')->with(['user', 'task'])->get();
 //     }
 
-    public function change(){
-        // dd("jude");
-        // $codingTaskId = 30;
-        // $goTaskid = 27;
-        // $mock_submissions = TaskSubmission::orderBy('user_id')->where('task_id', '!=', $goTaskid)->get();
+    // public function change(){
+    //     $codingTaskId = 30;
+    //     $goTaskid = 27;
+    //     $mock_submissions = TaskSubmission::orderBy('user_id')->where('task_id', '!=', $goTaskid)->get();
 
-        // foreach($mock_submissions as $submission){
-        //     $submission->task_id = $codingTaskId;
-        //     $submission->save();
-        // }
+    //     foreach($mock_submissions as $submission){
+    //         $submission->task_id = $codingTaskId;
+    //         $submission->save();
+    //     }
 
-        // $duplicateRecords = DB::table('task_submissions')
-        //     ->where('task_id', '!=', $goTaskid)
-        //     ->orderBy('user_id')
-        //     ->get()->duplicatesStrict('user_id');
+    //     $duplicateRecords = DB::table('task_submissions')
+    //         ->where('task_id', '!=', $goTaskid)
+    //         ->orderBy('user_id')
+    //         ->get()->duplicatesStrict('user_id');
 
-        // foreach($duplicateRecords as $key => $value){
-        //     $mock_submissions[$key]->delete();
-        // }
+    //     foreach($duplicateRecords as $key => $value){
+    //         $mock_submissions[$key]->delete();
+    //     }
 
-        // $submissions = TaskSubmission::order 
-    }
+    //     $submissions = TaskSubmission::order 
+    // }
 
 }

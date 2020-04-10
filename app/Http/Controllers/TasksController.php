@@ -36,7 +36,7 @@ class TasksController extends Controller
         $this->middleware(['role:superadmin', 'role:admin']);
 
 
-            $tasks = Task::orderBy('id', 'desc')->with(['track', 'tasks'])->get();
+            $tasks = Task::orderBy('id', 'desc')->with(['track', 'tasks', 'course'])->get();
             
             if($tasks){
                 return TaskResource::collection($tasks);

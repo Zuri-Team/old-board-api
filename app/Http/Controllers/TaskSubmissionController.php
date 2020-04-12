@@ -473,6 +473,37 @@ class TaskSubmissionController extends Controller
         return $this->sendSuccess($user, 'successfully promoted interns', 200);
     }
 
+    public function promote_to_stage_3(){
+        $users = User::where('role', 'intern')->where('stage', 2)->get();
+
+        foreach($users as $user){
+            //get all their submissions
+            $submissions = $user->submissions;
+            $submissionsArray = $submissions->pluck('task_id')->all();
+            $courses = $user->courses;
+            $tasksArray = array();
+            foreach($courses as $course){
+                $aTask = Task::where('course_id', $course->id)->where('id', '!=', 88)->where('id', '!=', 87)->orderBy('created_at', 'asc')->get();
+                $arrT = $aTask->pluck('id')->all();
+                // array_push($tasksArray, $aTask->id);
+                array_merge($tasksArray, $arrT);
+            }
+
+            $diff = array_diff($tasksArray, $submissionsArray);
+            if(count($diff) == 0){
+                //promote user
+                $slack_id =  $user->slack_id;
+                Slack::removeFromChannel($slack_id, 2);
+                Slack::addToChannel($slack_id, 3);
+                $user->stage = 2;
+                $user->save();
+            }else{
+                continue;
+            }
+        }
+        return $this->sendSuccess($user, 'successfully promoted interns', 200);
+    }
+
     public function promote_admins_to_stage_2(){
         $users = User::where('role', 'admin')->get();
 
@@ -511,12 +542,7 @@ class TaskSubmissionController extends Controller
             if(count($diff) == 0){
                 //promote user
                 array_push($usersArray, $user->username);
-                // $count += 1;
-                // $slack_id =  $user->slack_id;
-                // Slack::removeFromChannel($slack_id, 1);
-                // Slack::addToChannel($slack_id, 2);
-                // $user->stage = 2;
-                // $user->save();
+               
             }else{
                 continue;
             }

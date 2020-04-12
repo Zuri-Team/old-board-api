@@ -36,7 +36,7 @@ class TasksController extends Controller
         $this->middleware(['role:superadmin', 'role:admin']);
 
 
-            $tasks = Task::orderBy('id', 'desc')->with(['track', 'tasks', 'course'])->get();
+            $tasks = Task::orderBy('created_at', 'desc')->with(['track', 'tasks', 'course'])->get();
             
             if($tasks){
                 return TaskResource::collection($tasks);
@@ -209,31 +209,44 @@ class TasksController extends Controller
         }
     }
     
+    // #Get tasks based on Interns track(s)
+    //  public function intern_view_track_task()
+    // {
+    //     $this->middleware(['role: intern']);
+        
+    //     $user_tracks = auth()->user()->tracks;
+
+    //     $res = array();
+
+    //      foreach($user_tracks as $user_track){
+    //          //Get all task for the task
+    //          $track_tasks = Task::where('track_id', $user_track->id)->orderBy('created_at', 'desc')->get();
+    //          $collection = TaskResource::collection($track_tasks);
+
+    //          array_push($res, $collection);
+
+    //      }
+
+    //      return response([
+    //          'message' => 'User tasks fetched successfully',
+    //         'data' => $res,
+    //     ]);
+    //  } 
+
     #Get tasks based on Interns track(s)
-     public function intern_view_track_task()
+    public function intern_view_track_task()
     {
         $this->middleware(['role: intern']);
         
-        $user_tracks = auth()->user()->tracks;
+        $user_courses = auth()->user()->courses;
 
         $res = array();
 
-         foreach($user_tracks as $user_track){
-
-             
+         foreach($user_courses as $user_course){
              //Get all task for the task
-             $track_tasks = Task::where('track_id', $user_track->id)->orderBy('created_at', 'desc')->get();
-             $collection = TaskResource::collection($track_tasks);
-
+             $course_tasks = Task::where('course', $user_course->id)->orderBy('created_at', 'desc')->get();
+             $collection = TaskResource::collection($course_tasks);
              array_push($res, $collection);
-
-            //  if ($track_tasks) {
-            //     return TaskResource::collection($track_tasks);
-            //  } else {
-            //     return \response([
-            //         'message' => 'Track task not available'
-            //     ]);
-            //  }
          }
 
          return response([

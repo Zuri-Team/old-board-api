@@ -404,7 +404,7 @@ class TaskSubmissionController extends Controller
     }
 
     public function promote(){
-        $users = User::where('role', 'intern')->get();
+        $users = User::where('role', 'intern')->where('stage', 1)->get();
 
         foreach($users as $user){
             //get all their submissions
@@ -522,7 +522,8 @@ class TaskSubmissionController extends Controller
 
     public function test_promotion(){
         $users = User::where('role', 'intern')->get();
-        $count = 0;
+        $stage1 = 0;
+        $stage2 = 0;
 
         foreach($users as $user){
             //get all their submissions
@@ -540,29 +541,25 @@ class TaskSubmissionController extends Controller
 
             if(count($diff) == 0){
                 //promote user
-
-                $count += 1;
                 
-                // if($stage == 1){
-                //     $slack_id =  $user->slack_id;
-                //     Slack::removeFromChannel($slack_id, 1);
-                //     Slack::addToChannel($slack_id, 2);
-                //     $user->stage = 2;
-                //     $user->save();
+                if($stage == 1){
+                    $stage2 += 1;
                 }
-            // }
-            // else{
-            //     //demote if in stage 1
-            //     if($stage == 2){
-            //         $slack_id =  $user->slack_id;
-            //         Slack::removeFromChannel($slack_id, 2);
-            //         Slack::addToChannel($slack_id, 1);
-            //         $user->stage = 1;
-            //         $user->save();
-            //     }
-            // }
+            }
+            else{
+                //demote if in stage 1
+                if($stage == 2){
+                    $stage1 += 1;
+
+                    // $slack_id =  $user->slack_id;
+                    // Slack::removeFromChannel($slack_id, 2);
+                    // Slack::addToChannel($slack_id, 1);
+                    // $user->stage = 1;
+                    // $user->save();
+                }
+            }
         }
-        return $this->sendSuccess($count, 'successfully promoted interns', 200);
+        return $this->sendSuccess([$stage1, $stage2], 'successfully promoted interns', 200);
         // return $this->sendSuccess($usersArray, 'successfully promoted interns', 200);
     }
 

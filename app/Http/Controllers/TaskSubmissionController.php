@@ -537,8 +537,6 @@ class TaskSubmissionController extends Controller
         $users = User::where('role', 'intern')->where('stage', 2)->get();
         $count = 0;
         $rr = array();
-        
-
         foreach($users as $user){
             //get all their submissions
             $submissions = $user->submissions;
@@ -554,15 +552,8 @@ class TaskSubmissionController extends Controller
             $diff = array_diff($tasksArray, $submissionsArray);
 
             if(count($diff) == 0){
-                //promote user
-
                 array_push($rr, $user->username);
                 $count += 1;
-                // $slack_id =  $user->slack_id;
-                // Slack::removeFromChannel($slack_id, 2);
-                // Slack::addToChannel($slack_id, 3);
-                // $user->stage = 3;
-                // $user->save();
             }else{
                 continue;
             }

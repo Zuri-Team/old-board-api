@@ -474,8 +474,29 @@ class TaskSubmissionController extends Controller
         return $this->sendSuccess($user, 'successfully promoted interns', 200);
     }
 
+    public function array_flatten(array $array)
+{
+    $flat = array(); // initialize return array
+    $stack = array_values($array); // initialize stack
+    while($stack) // process stack until done
+    {
+        $value = array_shift($stack);
+        if (is_array($value)) // a value to further process
+        {
+            $stack = array_merge(array_values($value), $stack);
+        }
+        else // a value to take
+        {
+           $flat[] = $value;
+        }
+    }
+    return $flat;
+}
+
     public function promote_to_stage_3(){
         $users = User::where('role', 'intern')->where('stage', 2)->get();
+        $count = 0;
+        $rr = array();
 
         foreach($users as $user){
             //get all their submissions
@@ -483,14 +504,18 @@ class TaskSubmissionController extends Controller
             $submissionsArray = $submissions->pluck('task_id')->all();
             $courses = $user->courses;
             $tasksArray = array();
+            if(count($submissionsArray) > 0){
             foreach($courses as $course){
                 // $aTask = Task::where('course_id', $course->id)->where('id', '!=', 88)->where('id', '!=', 87)->orderBy('created_at', 'asc')->get();
                 $aTask = Task::where('course_id', $course->id)->whereIn('id', [49, 71, 74, 83, 51, 73, 48, 50, 52, 76, 53, 68, 72, 82])->get();
                 $arrT = $aTask->pluck('id')->all();
                 // array_push($tasksArray, $aTask->id);
-                $tasksArray = array_merge($tasksArray, $arrT);
+                $r = array();
+                array_push($tasksArray, $arrT);
+                // $tasksArray = array_merge($tasksArray, $arrT);
             }
 
+            $tasksArray = $this->array_flatten($tasksArray);
             $diff = array_diff($tasksArray, $submissionsArray);
             if(count($diff) == 0){
                 //promote user
@@ -502,8 +527,12 @@ class TaskSubmissionController extends Controller
             }else{
                 continue;
             }
+
         }
-        return $this->sendSuccess($user, 'successfully promoted interns', 200);
+
+            
+        }
+        return $this->sendSuccess([$count, $rr], 'successfully promoted interns', 200);
     }
 
     public function promote_admins_to_stage_3(){
@@ -550,8 +579,12 @@ class TaskSubmissionController extends Controller
                 // $aTask = Task::where('course_id', $course->id)->where('id', '!=', 88)->where('id', '!=', 87)->orderBy('created_at', 'asc')->get();
                 $aTask = Task::where('course_id', $course->id)->whereIn('id', [49, 71, 74, 83, 51, 73, 48, 50, 52, 76, 53, 68, 72, 82])->get();
                 $arrT = $aTask->pluck('id')->all();
-                $tasksArray = array_merge($tasksArray, $arrT);
+                // $tasksArray = array_merge($tasksArray, $arrT);
+
+                array_push($tasksArray, $arrT);
             }
+
+            $tasksArray = $this->array_flatten($tasksArray);
 
             $diff = array_diff($tasksArray, $submissionsArray);
 

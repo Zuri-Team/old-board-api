@@ -429,16 +429,17 @@ class TaskSubmissionController extends Controller
                     $user->stage = 2;
                     $user->save();
                 }
-            }else{
-                //demote if in stage 1
-                if($stage == 2){
-                    $slack_id =  $user->slack_id;
-                    Slack::removeFromChannel($slack_id, 2);
-                    Slack::addToChannel($slack_id, 1);
-                    $user->stage = 1;
-                    $user->save();
-                }
             }
+            // else{
+            //     //demote if in stage 1
+            //     if($stage == 2){
+            //         $slack_id =  $user->slack_id;
+            //         Slack::removeFromChannel($slack_id, 2);
+            //         Slack::addToChannel($slack_id, 1);
+            //         $user->stage = 1;
+            //         $user->save();
+            //     }
+            // }
         }
         return $this->sendSuccess($user, 'successfully promoted interns', 200);
 

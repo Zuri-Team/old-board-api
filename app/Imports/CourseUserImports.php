@@ -31,7 +31,8 @@ class CourseUserImports implements ToCollection, WithHeadingRow
 
         foreach ($rows as $row) {
 
-            $email = $row['unique_email'];
+            // $email = $row['unique_email'];
+            $email = $row['startng_email_address'];
             $user = User::where('email', $email)->first();
             if($user){
                 CourseUser::updateOrCreate([

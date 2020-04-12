@@ -488,7 +488,7 @@ class TaskSubmissionController extends Controller
                 $aTask = Task::where('course_id', $course->id)->whereIn('id', [49, 71, 74, 83, 51, 73, 48, 50, 52, 76, 53, 68, 72, 82])->get();
                 $arrT = $aTask->pluck('id')->all();
                 // array_push($tasksArray, $aTask->id);
-                array_merge($tasksArray, $arrT);
+                $tasksArray = array_merge($tasksArray, $arrT);
             }
 
             $diff = array_diff($tasksArray, $submissionsArray);

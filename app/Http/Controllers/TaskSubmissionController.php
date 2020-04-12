@@ -504,7 +504,7 @@ class TaskSubmissionController extends Controller
         return $this->sendSuccess($user, 'successfully promoted interns', 200);
     }
 
-    public function promote_admins_to_stage_2(){
+    public function promote_admins_to_stage_3(){
         $users = User::where('role', 'admin')->get();
 
         foreach($users as $user){

@@ -100,5 +100,16 @@ class CourseController extends Controller
             return $this->sendError('All Interns in a course', 200, $interns);
         }
 
+        public function getInternCourses($id){
+
+            $userCourses = auth()->user()->courses;
+
+            if(!$userCourses){
+                return $this->sendError('error!', 404, []);
+            }
+            // $interns = Course::where('id', $id)->with('interns')->first();
+            return $this->sendError('Get all courses', 200, $userCourses);
+        }
+
 
 }

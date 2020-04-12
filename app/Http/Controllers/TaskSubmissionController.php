@@ -561,4 +561,25 @@ class TaskSubmissionController extends Controller
         return $this->sendSuccess([$count, $rr], 'successfully promoted interns', 200);
     }
 
+    public function grading_task_submissions(Request $request){
+        $task_id = $request->task_id;
+        $grade = $request->grade;
+
+        if(!$task_id){  
+            return $this->sendError('No Task ID', 404, []);
+        }
+
+        if(!$grade){  
+            return $this->sendError('No Grade', 404, []);
+        }
+
+        $res = TaskSubmission::where('task_id', $task_id)->update([
+            'grade_score' => $grade,
+            'is_graded' => true,
+            'graded_by' => 2
+        ]);
+
+        return $this->sendSuccess($res, 'successfully graded task', 200);
+    }
+
 }

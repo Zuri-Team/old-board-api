@@ -484,7 +484,8 @@ class TaskSubmissionController extends Controller
             $courses = $user->courses;
             $tasksArray = array();
             foreach($courses as $course){
-                $aTask = Task::where('course_id', $course->id)->where('id', '!=', 88)->where('id', '!=', 87)->orderBy('created_at', 'asc')->get();
+                // $aTask = Task::where('course_id', $course->id)->where('id', '!=', 88)->where('id', '!=', 87)->orderBy('created_at', 'asc')->get();
+                $aTask = Task::where('course_id', $course->id)->whereIn('id', [49, 71, 74, 83, 51, 73, 48, 50, 52, 76, 53, 68, 72, 82])->get();
                 $arrT = $aTask->pluck('id')->all();
                 // array_push($tasksArray, $aTask->id);
                 array_merge($tasksArray, $arrT);
@@ -541,10 +542,13 @@ class TaskSubmissionController extends Controller
             //get all their submissions
             $submissions = $user->submissions;
             $submissionsArray = $submissions->pluck('task_id')->all();
+
+            if(count($submissionsArray) > 0){
             $courses = $user->courses;
             $tasksArray = array();
             foreach($courses as $course){
-                $aTask = Task::where('course_id', $course->id)->where('id', '!=', 88)->where('id', '!=', 87)->orderBy('created_at', 'asc')->get();
+                // $aTask = Task::where('course_id', $course->id)->where('id', '!=', 88)->where('id', '!=', 87)->orderBy('created_at', 'asc')->get();
+                $aTask = Task::where('course_id', $course->id)->whereIn('id', [49, 71, 74, 83, 51, 73, 48, 50, 52, 76, 53, 68, 72, 82])->get();
                 $arrT = $aTask->pluck('id')->all();
                 $tasksArray = array_merge($tasksArray, $arrT);
             }
@@ -557,6 +561,7 @@ class TaskSubmissionController extends Controller
             }else{
                 continue;
             }
+        }
         }
         return $this->sendSuccess([$count, $rr], 'successfully promoted interns', 200);
     }

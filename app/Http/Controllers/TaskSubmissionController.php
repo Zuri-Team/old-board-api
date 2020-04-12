@@ -519,11 +519,25 @@ class TaskSubmissionController extends Controller
         return $this->sendSuccess($user, 'successfully promoted admin', 200);
     }
 
+    public function remove_stage_3(){
+        $users = User::where('role', 'intern')->where('stage', 3)->get();
+
+        foreach($users as $user){
+            $slack_id =  $user->slack_id;
+            Slack::removeFromChannel($slack_id, 3);
+            Slack::addToChannel($slack_id, 2);
+            $user->stage = 2;
+            $user->save();
+        }
+
+    }
+
 
     public function test_promotion(){
         $users = User::where('role', 'intern')->where('stage', 2)->get();
         $count = 0;
         $rr = array();
+        
 
         foreach($users as $user){
             //get all their submissions
@@ -534,11 +548,11 @@ class TaskSubmissionController extends Controller
             foreach($courses as $course){
                 $aTask = Task::where('course_id', $course->id)->where('id', '!=', 88)->where('id', '!=', 87)->orderBy('created_at', 'asc')->get();
                 $arrT = $aTask->pluck('id')->all();
-                // array_push($tasksArray, $aTask->id);
-                array_merge($tasksArray, $arrT);
+                $tasksArray = array_merge($tasksArray, $arrT);
             }
 
             $diff = array_diff($tasksArray, $submissionsArray);
+
             if(count($diff) == 0){
                 //promote user
 

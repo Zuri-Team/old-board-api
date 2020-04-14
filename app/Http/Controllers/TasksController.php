@@ -244,7 +244,7 @@ class TasksController extends Controller
 
          foreach($user_courses as $user_course){
              //Get all task for the task
-             $course_tasks = Task::where('course', $user_course->id)->orderBy('created_at', 'desc')->get();
+             $course_tasks = Task::where('course_id', $user_course->id)->orderBy('created_at', 'desc')->get();
              $collection = TaskResource::collection($course_tasks);
              array_push($res, $collection);
          }

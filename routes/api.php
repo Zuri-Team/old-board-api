@@ -98,7 +98,7 @@ Route::group(['middleware' => 'auth:api', 'throttle:60,1'], function () {
     });
 
 
-     //Track Request routes
+     //Course Request routes
      Route::group(['prefix' => 'course-requests'], function() {
         Route::get('/all', 'CourseRequestController@all');
         Route::get('/request-count', 'CourseRequestController@get_request_count');

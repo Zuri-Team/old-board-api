@@ -81,7 +81,7 @@ class CourseRequestController extends Controller
 
             if ($trackRequest) {
                 $act = $request->action == 'add' ? 'ADDED to' : 'REMOVED from';
-                $this->logInternActivity($user->firstname .' '. $user->lastname . ' requested to be '. $act . ' '. $checkCourse->track_name. ' Course');
+                $this->logInternActivity($user->firstname .' '. $user->lastname . ' requested to be '. $act . ' '. $checkCourse->name. ' Course');
 
                     return $this->sendSuccess($trackRequest, 'Request sent successfully.', 200);
             } else {
@@ -123,7 +123,7 @@ class CourseRequestController extends Controller
                     'message'=>"You have been added to a new track.",
                 ];
                 // $user->notify(new CourseNotifications($message));
-                $this->logAdminActivity('added '. $user->email . '  to ' . $track->track_name . ' track');
+                $this->logAdminActivity('added '. $user->email . '  to ' . $track->name . ' track');
             }else if($trackRequest->action == 'remove'){
                 if(!$has_joined) return $this->sendError('User is not on this track', 400, []);
                 $has_joined->delete();
@@ -134,10 +134,10 @@ class CourseRequestController extends Controller
 
                 //SEND NOTIFICATION HERE
                 $message = [
-                    'message'=>"You have been removed ". $track->track_name ." track.",
+                    'message'=>"You have been removed ". $track->name ." track.",
                 ];
                 // $user->notify(new CourseNotifications($message));
-                $this->logAdminActivity('removed '. $user->email . '  from ' . $track->track_name . ' track');
+                $this->logAdminActivity('removed '. $user->email . '  from ' . $track->name . ' track');
 
             } 
 

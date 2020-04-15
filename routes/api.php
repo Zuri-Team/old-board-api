@@ -98,6 +98,17 @@ Route::group(['middleware' => 'auth:api', 'throttle:60,1'], function () {
     });
 
 
+     //Track Request routes
+     Route::group(['prefix' => 'course-requests'], function() {
+        Route::get('/all', 'CourseRequestController@all');
+        Route::get('/request-count', 'CourseRequestController@get_request_count');
+        Route::post('/send-request', 'CourseRequestController@request');
+        Route::put('/accept/{id}', 'CourseRequestController@accept');
+        Route::delete('/reject/{id}', 'CourseRequestController@reject');
+        Route::get('/delete_all', 'CourseRequestController@deleteAll');
+    });
+
+
     Route::group(['prefix' => 'course'], function() {
         Route::post('/import', 'CourseController@importCourse');
     });

@@ -98,6 +98,17 @@ Route::group(['middleware' => 'auth:api', 'throttle:60,1'], function () {
     });
 
 
+     //Course Request routes
+     Route::group(['prefix' => 'course-requests'], function() {
+        Route::get('/all', 'CourseRequestController@all');
+        Route::get('/request-count', 'CourseRequestController@get_request_count');
+        Route::post('/send-request', 'CourseRequestController@request');
+        Route::put('/accept/{id}', 'CourseRequestController@accept');
+        Route::delete('/reject/{id}', 'CourseRequestController@reject');
+        Route::get('/delete_all', 'CourseRequestController@deleteAll');
+    });
+
+
     Route::group(['prefix' => 'course'], function() {
         Route::post('/import', 'CourseController@importCourse');
     });
@@ -131,10 +142,13 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
     Route::delete('submission', 'TaskSubmissionController@delete_all_submission');
 
     Route::post('promote_interns_2', 'TaskSubmissionController@promote_to_stage_2'); //promote interns to stage 2
-    Route::get('promote', 'TaskSubmissionController@promote'); //promote interns to stage 2
-    Route::post('promote_admins_to_stage_2', 'TaskSubmissionController@promote_admins_to_stage_2'); //promote interns to stage 2
+    Route::post('promote_2', 'TaskSubmissionController@promote'); //promote interns to stage 2
+    Route::post('promote_admins_to_stage_3', 'TaskSubmissionController@promote_admins_to_stage_3'); //promote interns to stage 2
+    Route::post('promote', 'TaskSubmissionController@promote_to_stage_3'); //promote interns to stage 2
+    Route::post('remove_stage_3', 'TaskSubmissionController@remove_stage_3'); //promote interns to stage 2
     Route::post('test_promotion', 'TaskSubmissionController@test_promotion'); //test promotion
-    //test_promotion
+    Route::post('grading_task_submissions', 'TaskSubmissionController@grading_task_submissions'); 
+    //remove_stage_3
 
     Route::post('track/create', 'TrackController@create_track');
     Route::put('track/edit', 'TrackController@edit_track');
@@ -197,5 +211,6 @@ Route::group(['prefix' => 'course'], function() {
     Route::post('/create', 'CourseController@createCourse');
     Route::get('/all', 'CourseController@allCourses');
     Route::get('/interns/{id}', 'CourseController@getInterns');
-    Route::get('/move', 'CourseController@moveToGenaral');
+    // Route::get('/move', 'CourseController@moveToGenaral');
+    Route::get('/user', 'CourseController@getInternCourses');
 });

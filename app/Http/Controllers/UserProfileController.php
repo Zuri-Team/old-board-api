@@ -20,13 +20,13 @@ class UserProfileController extends Controller
     use ResponseTrait;
 
     public function __construct(){
-        $this->middleware('role:superadmin', ['except' => ['index']]);
+        $this->middleware(['role:superadmin'], ['except' => ['index']]);
     }
 
     public function index($user) {
 //         $getUser = $user->with('teams')->with('tracks')->with('profile')->get();
-        $getUser = User::where('id', $user)->with('teams')->with('tracks')->first();
-	$getUser['profile_img'] = $getUser->profile->profileImg();
+        $getUser = User::where('id', $user)->with('teams')->with('tracks')->with('courses')->first();
+	    $getUser['profile_img'] = $getUser->profile->profileImg();
 
         if ($getUser) {
             return $this->sendSuccess($getUser, 'User profile info fetched', 200);

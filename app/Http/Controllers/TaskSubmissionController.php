@@ -575,15 +575,15 @@ class TaskSubmissionController extends Controller
         return $this->sendSuccess([$count, $rr], 'successfully promoted interns', 200);
     }
 
-    public function promote_admins_to_stage_3(){
+    public function promote_admins_to_stage_4(){
         $users = User::where('role', 'admin')->get();
 
         foreach($users as $user){
                 //promote user
                 $slack_id =  $user->slack_id;
                 // Slack::removeFromChannel($slack_id, 1);
-                Slack::addToChannel($slack_id, 3);
-                $user->stage = 3;
+                Slack::addToChannel($slack_id, 4);
+                $user->stage = 4;
                 $user->save();
         }
         return $this->sendSuccess($user, 'successfully promoted admin', 200);

@@ -535,6 +535,46 @@ class TaskSubmissionController extends Controller
         return $this->sendSuccess([$count, $rr], 'successfully promoted interns', 200);
     }
 
+    public function promote_to_stage_4(){
+        $users = User::where('role', 'intern')->where('stage', 3)->get();
+        $count = 0;
+        $rr = array();
+
+        foreach($users as $user){
+            //get all their submissions
+            $submissions = $user->submissions;
+            $submissionsArray = $submissions->pluck('task_id')->all();
+            $courses = $user->courses;
+            $tasksArray = array();
+            if(count($submissionsArray) > 0 && count($courses) > 0){
+            foreach($courses as $course){
+                $aTask = Task::where('course_id', $course->id)->whereIn('id', [88, 114, 93, 87, 89, 113, 119, 120, 122, 124, 126, 125])->get();
+                $arrT = $aTask->pluck('id')->all();
+                $r = array();
+                array_push($tasksArray, $arrT);
+            }
+
+            $tasksArray = $this->array_flatten($tasksArray);
+            $diff = array_diff($tasksArray, $submissionsArray);
+            if(count($diff) == 0){
+                //promote user
+                // $count += 1;
+                // array_push($rr, $user->username);
+                $slack_id =  $user->slack_id;
+                Slack::removeFromChannel($slack_id, 3);
+                Slack::addToChannel($slack_id, 4);
+                $user->stage = 4;
+                $user->save();
+            }else{
+                continue;
+            }
+
+        }
+            
+        }
+        return $this->sendSuccess([$count, $rr], 'successfully promoted interns', 200);
+    }
+
     public function promote_admins_to_stage_3(){
         $users = User::where('role', 'admin')->get();
 

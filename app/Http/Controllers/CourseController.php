@@ -57,6 +57,7 @@ class CourseController extends Controller
                         'user_id' => $user_id,
                         'course_id' => $courseId
                     ]);
+                    //here update
                 }
                 return $this->sendSuccess('Course successfully updated', 200);
         }

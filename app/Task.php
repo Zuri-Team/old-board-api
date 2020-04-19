@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
-    protected $fillable = ['track_id', 'title', 'body', 'deadline', 'is_active', 'status'];
+    protected $fillable = ['track_id', 'course_id', 'title', 'body', 'deadline', 'is_active', 'status'];
     // protected $with = ['track'];
     // protected $dates = ['deadline'];
 

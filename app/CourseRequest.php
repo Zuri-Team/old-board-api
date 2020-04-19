@@ -14,6 +14,6 @@ class CourseRequest extends Model
 
     public function course()
     {
-        return $this->belongsTo('App\Track', 'course_id');
+        return $this->belongsTo('App\Course', 'course_id');
     }
 }

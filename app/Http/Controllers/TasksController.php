@@ -2,24 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreTask;
-
-use App\Http\Resources\TaskResource;
-use App\TrackUser;
-use App\Track;
-use Symfony\Component\HttpFoundation\Response;
 use App\Http\Classes\ActivityTrait;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\JsonResponse;
 use App\Http\Classes\ResponseTrait;
+use App\Http\Resources\TaskResource;
+use App\Task;
+use Illuminate\Http\Request;
 
 //use App\Http\Resources\Task\TaskCollection;
 //use App\Http\Resources\Task\TaskResource;
 
-use App\Task;
-
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Symfony\Component\HttpFoundation\Response;
 
 class TasksController extends Controller
 {
@@ -35,16 +29,15 @@ class TasksController extends Controller
     {
         $this->middleware(['role:superadmin', 'role:admin']);
 
+        $tasks = Task::orderBy('created_at', 'desc')->with(['track', 'tasks', 'course'])->get();
 
-            $tasks = Task::orderBy('created_at', 'desc')->with(['track', 'tasks', 'course'])->get();
-            
-            if($tasks){
-                return TaskResource::collection($tasks);
-            }else{
-                return response([
-                    'message' => Response::HTTP_NOT_FOUND
-                ], 404);
-            }
+        if ($tasks) {
+            return TaskResource::collection($tasks);
+        } else {
+            return response([
+                'message' => Response::HTTP_NOT_FOUND,
+            ], 404);
+        }
 
     }
 
@@ -68,8 +61,9 @@ class TasksController extends Controller
     {
         $this->middleware(['role:superadmin', 'role:admin']);
 
-         $validator = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'track_id' => 'required',
+            'course_id' => 'required',
             'title' => 'required|max:255',
             'body' => 'required',
             'deadline' => 'required',
@@ -91,9 +85,6 @@ class TasksController extends Controller
         ], Response::HTTP_CREATED);
 
     }
-
-    
-
 
     // $messages = [
     //     'user_id.unique' => "You have already submitted",
@@ -192,7 +183,6 @@ class TasksController extends Controller
         }
     }
 
-
     public function view_track_task($track_id)
     {
 
@@ -204,16 +194,16 @@ class TasksController extends Controller
             return TaskResource::collection($track_tasks);
         } else {
             return \response([
-                'message' => 'Track task not available'
+                'message' => 'Track task not available',
             ]);
         }
     }
-    
+
     // #Get tasks based on Interns track(s)
     //  public function intern_view_track_task()
     // {
     //     $this->middleware(['role: intern']);
-        
+
     //     $user_tracks = auth()->user()->tracks;
 
     //     $res = array();
@@ -231,29 +221,29 @@ class TasksController extends Controller
     //          'message' => 'User tasks fetched successfully',
     //         'data' => $res,
     //     ]);
-    //  } 
+    //  }
 
     #Get tasks based on Interns track(s)
     public function intern_view_track_task()
     {
         $this->middleware(['role: intern']);
-        
+
         $user_courses = auth()->user()->courses;
 
         $res = array();
 
-         foreach($user_courses as $user_course){
-             //Get all task for the task
-             $course_tasks = Task::where('course_id', $user_course->id)->orderBy('created_at', 'desc')->get();
-             $collection = TaskResource::collection($course_tasks);
-             array_push($res, $collection);
-         }
+        foreach ($user_courses as $user_course) {
+            //Get all task for the task
+            $course_tasks = Task::where('course_id', $user_course->id)->orderBy('created_at', 'desc')->get();
+            $collection = TaskResource::collection($course_tasks);
+            array_push($res, $collection);
+        }
 
-         return response([
-             'message' => 'User tasks fetched successfully',
+        return response([
+            'message' => 'User tasks fetched successfully',
             'data' => $res,
         ]);
-     } 
+    }
 
     public function view_task($id)
     {
@@ -266,53 +256,53 @@ class TasksController extends Controller
             return TaskResource::collection($task);
         } else {
             return \response([
-                'message' => 'No Task available'
+                'message' => 'No Task available',
             ]);
         }
 
     }
-  
+
 //    public function viewTrack($track){
-//
-//
-//        $this->middleware(['role: intern', 'role:superadmin']);
-//
-//        $user_id = auth()->user()->id;
-//
-//        $user_track = TrackUser::where('user_id', $user_id)->where('track_name', 'LIKE', "%{$track}%");
-//
-//
-//        if($user_track){
-//            $task = Task::find($user_track->id);
-//
-//            return TaskResource::collection($task);
-//        }else{
-//            return \response([
-//                'message' => 'Track not available'
-//            ]);
-//        }
-//    }
-//
-//    public function viewTask($track_id, $id){
-//
-//        $this->middleware(['role: intern', 'role:superadmin']);
-//
-//        $user_id = auth()->user()->id;
-//
-//        $user_track = TrackUser::where('user_id', $user_id)->where('track_trid', $track_id);
-//
-//        $task_track = Task::where('track_id', $track_id)->where();
-//
-//        if($user_track && $task_track){
-//
-//            $task = Task::find($user_track->id);
-//            return TaskResource::collection($task);
-//        }else{
-//            return \response([
-//                'message' => 'No Task available'
-//            ]);
-//        }
-//    }
+    //
+    //
+    //        $this->middleware(['role: intern', 'role:superadmin']);
+    //
+    //        $user_id = auth()->user()->id;
+    //
+    //        $user_track = TrackUser::where('user_id', $user_id)->where('track_name', 'LIKE', "%{$track}%");
+    //
+    //
+    //        if($user_track){
+    //            $task = Task::find($user_track->id);
+    //
+    //            return TaskResource::collection($task);
+    //        }else{
+    //            return \response([
+    //                'message' => 'Track not available'
+    //            ]);
+    //        }
+    //    }
+    //
+    //    public function viewTask($track_id, $id){
+    //
+    //        $this->middleware(['role: intern', 'role:superadmin']);
+    //
+    //        $user_id = auth()->user()->id;
+    //
+    //        $user_track = TrackUser::where('user_id', $user_id)->where('track_trid', $track_id);
+    //
+    //        $task_track = Task::where('track_id', $track_id)->where();
+    //
+    //        if($user_track && $task_track){
+    //
+    //            $task = Task::find($user_track->id);
+    //            return TaskResource::collection($task);
+    //        }else{
+    //            return \response([
+    //                'message' => 'No Task available'
+    //            ]);
+    //        }
+    //    }
 
     public function changeTaskStatus(Request $request, $id)
     {
@@ -333,12 +323,12 @@ class TasksController extends Controller
     public function getActiveTasks()
     {
         $tasks = Task::with(['track', 'tasks'])->where('is_active', '1')->orderBy('id', 'desc')->get();
-            
-        if($tasks){
+
+        if ($tasks) {
             return TaskResource::collection($tasks);
-        }else{
+        } else {
             return response([
-                'message' => Response::HTTP_NOT_FOUND
+                'message' => Response::HTTP_NOT_FOUND,
             ], 404);
         }
     }

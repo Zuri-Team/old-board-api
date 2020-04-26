@@ -504,10 +504,11 @@ class TaskSubmissionController extends Controller
             $submissionsArray = $submissions->pluck('task_id')->all();
             $courses = $user->courses;
             $tasksArray = array();
-            if(count($submissionsArray) > 0){
+            if(count($submissionsArray) > 0 && count($courses) > 0){
             foreach($courses as $course){
                 // $aTask = Task::where('course_id', $course->id)->where('id', '!=', 88)->where('id', '!=', 87)->orderBy('created_at', 'asc')->get();
-                $aTask = Task::where('course_id', $course->id)->whereIn('id', [49, 71, 74, 83, 51, 73, 48, 50, 52, 76, 53, 68, 72, 82])->get();
+                // $aTask = Task::where('course_id', $course->id)->whereIn('id', [49, 71, 74, 83, 51, 73, 48, 50, 52, 76, 53, 68, 72, 82])->get();
+                $aTask = Task::where('course_id', $course->id)->whereIn('id', [48, 76, 82, 53, 50, 83, 73, 68, 74, 71, 72, 52, 51, 49])->get();
                 $arrT = $aTask->pluck('id')->all();
                 // array_push($tasksArray, $aTask->id);
                 $r = array();

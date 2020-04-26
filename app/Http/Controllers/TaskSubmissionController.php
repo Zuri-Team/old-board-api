@@ -605,6 +605,7 @@ class TaskSubmissionController extends Controller
 
 
     public function test_promotion(){
+
         $users = User::where('role', 'intern')->where('stage', 2)->get();
         $count = 0;
         $rr = array();
@@ -612,23 +613,19 @@ class TaskSubmissionController extends Controller
             //get all their submissions
             $submissions = $user->submissions;
             $submissionsArray = $submissions->pluck('task_id')->all();
-
-            if(count($submissionsArray) > 0){
             $courses = $user->courses;
             $tasksArray = array();
+            if(count($submissionsArray) > 0 && count($courses) > 0){
             foreach($courses as $course){
-                // $aTask = Task::where('course_id', $course->id)->where('id', '!=', 88)->where('id', '!=', 87)->orderBy('created_at', 'asc')->get();
-                $aTask = Task::where('course_id', $course->id)->whereIn('id', [49, 71, 74, 83, 51, 73, 48, 50, 52, 76, 53, 68, 72, 82])->get();
+                $aTask = Task::where('course_id', $course->id)->whereIn('id', [88, 114, 93, 87, 89, 113, 119, 120, 122, 124, 126, 125])->get();
                 $arrT = $aTask->pluck('id')->all();
-                // $tasksArray = array_merge($tasksArray, $arrT);
-
+                $r = array();
                 array_push($tasksArray, $arrT);
             }
 
+
             $tasksArray = $this->array_flatten($tasksArray);
-
             $diff = array_diff($tasksArray, $submissionsArray);
-
             if(count($diff) == 0){
                 array_push($rr, $user->username);
                 $count += 1;

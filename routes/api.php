@@ -53,6 +53,7 @@ Route::group(['middleware' => 'auth:api', 'throttle:60,1'], function () {
 
         Route::get('/reset_pass/{user}', 'UserProfileController@resetUserPass');
         Route::get('/details/{user}', 'UserProfileController@getUserDetails');
+        Route::get('/total_score', 'UserProfileController@getTotalScore'); //user total score
 
     });
 

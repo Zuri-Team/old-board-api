@@ -382,7 +382,32 @@ class UserProfileController extends Controller
                 $data['user'] = $user;
                 $data['roles'] = $user->roles;
 
+                $total = $user->totalScore();
+                $data['total_score'] = $total;
+
                     return $this->sendSuccess($user, 'User details', 200);
+
+            } else {
+                return $this->sendError('User not found', 404, []);
+            }
+
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return $this->sendError('Internal server error.', 500, []);
+        }
+    }
+
+    public function getTotalScore(){
+        try{
+            $user = auth()->user();
+
+            if($user){
+                $total = $user->totalScore();
+
+                $data = array();
+                $data['total_score'] = $total;
+
+                return $this->sendSuccess($data, 'User total score', 200);
 
             } else {
                 return $this->sendError('User not found', 404, []);

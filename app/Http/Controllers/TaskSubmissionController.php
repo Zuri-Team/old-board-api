@@ -588,14 +588,14 @@ class TaskSubmissionController extends Controller
             $courses = $user->courses;
 
             $coursesArr = $courses->pluck('id')->all();
-            $legitCourses = [1, 3, 8, 9, 11, 12];
+            $legitCourses = [1, 3, 8, 11, 9, 12];
             // $arrDiff = array_diff($legitCourses, $coursesArr);
             $arrDiff = array_diff($coursesArr, $legitCourses);
 
             $tasksArray = array();
             if(count($submissionsArray) > 0 && count($courses) > 0 && count($arrDiff) == 0){
             foreach($courses as $course){
-                $aTask = Task::where('course_id', $course->id)->whereIn('id', [132, 128, 131, 139, 140])->get();
+                $aTask = Task::where('course_id', $course->id)->whereIn('id', [132, 128, 131, 139, 140, 141])->get();
                 $arrT = $aTask->pluck('id')->all();
                 $r = array();
                 array_push($tasksArray, $arrT);
@@ -603,6 +603,7 @@ class TaskSubmissionController extends Controller
 
             $tasksArray = $this->array_flatten($tasksArray);
             $diff = array_diff($tasksArray, $submissionsArray);
+            
 
             if(count($diff) == 0){
                 //promote user
@@ -664,20 +665,21 @@ class TaskSubmissionController extends Controller
             $courses = $user->courses;
 
             $coursesArr = $courses->pluck('id')->all();
-            $legitCourses = [1, 3, 8, 9, 11, 12];
+            $legitCourses = [1, 3, 8, 11, 9, 12];
             // $arrDiff = array_diff($legitCourses, $coursesArr);
             $arrDiff = array_diff($coursesArr, $legitCourses);
 
             $tasksArray = array();
             if(count($submissionsArray) > 0 && count($courses) > 0 && count($arrDiff) == 0){
             foreach($courses as $course){
-                $aTask = Task::where('course_id', $course->id)->whereIn('id', [132, 128, 131, 139, 140])->get();
+                $aTask = Task::where('course_id', $course->id)->whereIn('id', [132, 128, 131, 139, 140, 141])->get();
                 $arrT = $aTask->pluck('id')->all();
                 $r = array();
                 array_push($tasksArray, $arrT);
             }
 
             $tasksArray = $this->array_flatten($tasksArray);
+
             $diff = array_diff($tasksArray, $submissionsArray);
             if(count($diff) == 0){
                 array_push($rr, $user->username);

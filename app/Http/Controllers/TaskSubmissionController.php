@@ -576,15 +576,62 @@ class TaskSubmissionController extends Controller
         return $this->sendSuccess([$count, $rr], 'successfully promoted interns', 200);
     }
 
-    public function promote_admins_to_stage_4(){
+    public function promote_to_stage_5(){
+        $users = User::where('role', 'intern')->where('stage', 4)->get();
+        $count = 0;
+        $rr = array();
+
+        foreach($users as $user){
+            //get all their submissions
+            $submissions = $user->submissions;
+            $submissionsArray = $submissions->pluck('task_id')->all();
+            $courses = $user->courses;
+
+            $coursesArr = $courses->pluck('id')->all();
+            $legitCourses = [1, 3, 8, 11, 12];
+            // $arrDiff = array_diff($legitCourses, $coursesArr);
+            $arrDiff = array_diff($coursesArr, $legitCourses);
+
+            $tasksArray = array();
+            if(count($submissionsArray) > 0 && count($courses) > 0 && count($arrDiff) == 0){
+            foreach($courses as $course){
+                $aTask = Task::where('course_id', $course->id)->whereIn('id', [132, 128, 131, 139, 140])->get();
+                $arrT = $aTask->pluck('id')->all();
+                $r = array();
+                array_push($tasksArray, $arrT);
+            }
+
+            $tasksArray = $this->array_flatten($tasksArray);
+            $diff = array_diff($tasksArray, $submissionsArray);
+
+            if(count($diff) == 0){
+                //promote user
+                // $count += 1;
+                // array_push($rr, $user->username);
+                $slack_id =  $user->slack_id;
+                Slack::removeFromChannel($slack_id, 4);
+                Slack::addToChannel($slack_id, 5);
+                $user->stage = 5;
+                $user->save();
+            }else{
+                continue;
+            }
+
+        }
+            
+        }
+        return $this->sendSuccess([$count, $rr], 'successfully promoted interns', 200);
+    }
+
+    public function promote_admins_to_stage_5(){
         $users = User::where('role', 'admin')->get();
 
         foreach($users as $user){
                 //promote user
                 $slack_id =  $user->slack_id;
                 // Slack::removeFromChannel($slack_id, 1);
-                Slack::addToChannel($slack_id, 4);
-                $user->stage = 4;
+                Slack::addToChannel($slack_id, 5);
+                $user->stage = 5;
                 $user->save();
         }
         return $this->sendSuccess($user, 'successfully promoted admin', 200);
@@ -606,23 +653,29 @@ class TaskSubmissionController extends Controller
 
     public function test_promotion(){
 
-        $users = User::where('role', 'intern')->where('stage', 2)->get();
+        $users = User::where('role', 'intern')->where('stage', 4)->get();
         $count = 0;
         $rr = array();
+
         foreach($users as $user){
             //get all their submissions
             $submissions = $user->submissions;
             $submissionsArray = $submissions->pluck('task_id')->all();
             $courses = $user->courses;
+
+            $coursesArr = $courses->pluck('id')->all();
+            $legitCourses = [1, 3, 8, 11, 12];
+            // $arrDiff = array_diff($legitCourses, $coursesArr);
+            $arrDiff = array_diff($coursesArr, $legitCourses);
+
             $tasksArray = array();
-            if(count($submissionsArray) > 0 && count($courses) > 0){
+            if(count($submissionsArray) > 0 && count($courses) > 0 && count($arrDiff) == 0){
             foreach($courses as $course){
-                $aTask = Task::where('course_id', $course->id)->whereIn('id', [88, 114, 93, 87, 89, 113, 119, 120, 122, 124, 126, 125])->get();
+                $aTask = Task::where('course_id', $course->id)->whereIn('id', [132, 128, 131, 139, 140])->get();
                 $arrT = $aTask->pluck('id')->all();
                 $r = array();
                 array_push($tasksArray, $arrT);
             }
-
 
             $tasksArray = $this->array_flatten($tasksArray);
             $diff = array_diff($tasksArray, $submissionsArray);
@@ -632,7 +685,9 @@ class TaskSubmissionController extends Controller
             }else{
                 continue;
             }
+
         }
+            
         }
         return $this->sendSuccess([$count, $rr], 'successfully promoted interns', 200);
     }

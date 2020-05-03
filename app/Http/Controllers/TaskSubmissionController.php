@@ -588,7 +588,7 @@ class TaskSubmissionController extends Controller
             $courses = $user->courses;
 
             $coursesArr = $courses->pluck('id')->all();
-            $legitCourses = [1, 3, 8, 11, 12];
+            $legitCourses = [1, 3, 8, 9, 11, 12];
             // $arrDiff = array_diff($legitCourses, $coursesArr);
             $arrDiff = array_diff($coursesArr, $legitCourses);
 
@@ -664,7 +664,7 @@ class TaskSubmissionController extends Controller
             $courses = $user->courses;
 
             $coursesArr = $courses->pluck('id')->all();
-            $legitCourses = [1, 3, 8, 11, 12];
+            $legitCourses = [1, 3, 8, 9, 11, 12];
             // $arrDiff = array_diff($legitCourses, $coursesArr);
             $arrDiff = array_diff($coursesArr, $legitCourses);
 

@@ -149,6 +149,11 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
     Route::post('remove_stage_3', 'TaskSubmissionController@remove_stage_3'); //promote interns to stage 2
     Route::post('test_promotion', 'TaskSubmissionController@test_promotion'); //test promotion
     Route::post('grading_task_submissions', 'TaskSubmissionController@grading_task_submissions'); 
+
+
+    Route::get('percent', 'TaskSubmissionController@check_percent'); 
+
+    //check_percent
     //remove_stage_3
 
     Route::post('track/create', 'TrackController@create_track');

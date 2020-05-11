@@ -17,6 +17,7 @@ use App\Http\Classes\ResponseTrait;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Classes\ActivityTrait;
+use DB;
 
 class TaskSubmissionController extends Controller
 {
@@ -665,14 +666,14 @@ class TaskSubmissionController extends Controller
             $courses = $user->courses;
 
             $coursesArr = $courses->pluck('id')->all();
-            $legitCourses = [1, 2, 3, 4, 6, 8, 9, 10, 11, 12];
+            $legitCourses = [1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12];
             // $arrDiff = array_diff($legitCourses, $coursesArr);
             $arrDiff = array_diff($coursesArr, $legitCourses);
 
             $tasksArray = array();
             if(count($submissionsArray) > 0 && count($courses) > 0 && count($arrDiff) == 0){
             foreach($courses as $course){
-                $aTask = Task::where('course_id', $course->id)->whereIn('id', [128, 131, 132, 139, 140, 141, 145, 146, 147, 148])->get();
+                $aTask = Task::where('course_id', $course->id)->whereIn('id', [128, 131, 132, 139, 140, 141, 145, 146, 147, 148, 149])->get();
                 $arrT = $aTask->pluck('id')->all();
                 $r = array();
                 array_push($tasksArray, $arrT);
@@ -714,5 +715,34 @@ class TaskSubmissionController extends Controller
 
         return $this->sendSuccess($res, 'successfully graded task', 200);
     }
+
+    public function check_percent(){
+        //
+
+        $users = User::find(20);
+
+        $submissions = DB::table('task_submissions')
+                        //  ->select(DB::raw('((50/100) * sum(grade_score)) as score'))
+                         ->select(DB::raw('sum(grade_score) as score'))
+                         ->where('user_id', '=', 428)
+                         ->get();
+
+        return $submissions;
+
+        // $courses = Course::all();
+        // foreach($courses as $course){
+        //    $tasks = Task::where('course_id', $course->id)->get();
+        //    foreach($tasks as $task){
+        //        $total_score = $task->total_score;
+        //        //run percentage query and count number of records with more than that percent
+        //        $submissions = DB::table('task_submissions')
+        //              ->select(DB::raw('((50/10) * sum(grade_score)) as score'))
+        //              ->get();
+        // }
+    }
+
+    // $submissions = DB::table('task_submissions')
+    //                  ->select(DB::raw('((50/10) * sum(grade_score)) as score'))
+    //                  ->get();
 
 }

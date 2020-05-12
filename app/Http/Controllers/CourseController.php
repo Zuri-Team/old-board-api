@@ -64,6 +64,25 @@ class CourseController extends Controller
         return $this->sendError('Course Doesnt exist', 404, []);
     }
 
+    public function moveToFinalTask()
+    {
+        $courseId = 14;
+        $course = Course::find($courseId);
+
+        if($course){
+            $users = User::all();
+                foreach($users as $user){
+                    CourseUser::updateOrCreate([
+                        'user_id' => $user->id,
+                        'course_id' => $courseId
+                    ]);
+                    //here update
+                }
+                return $this->sendSuccess('Course successfully updated', 200);
+        }
+        return $this->sendError('Course Doesnt exist', 404, []);
+    }
+
 
      public function createCourse(Request $request){
 

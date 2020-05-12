@@ -218,5 +218,6 @@ Route::group(['prefix' => 'course'], function() {
     Route::get('/all', 'CourseController@allCourses');
     Route::get('/interns/{id}', 'CourseController@getInterns');
     Route::get('/move', 'CourseController@moveToGenaral');
+    Route::get('/move_to_final', 'CourseController@moveToFinalTask');
     Route::get('/user', 'CourseController@getInternCourses');
 });

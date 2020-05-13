@@ -70,7 +70,8 @@ class CourseController extends Controller
         $course = Course::find($courseId);
 
         if($course){
-            $users = User::where('stage', 5)->get();
+            // $users = User::where('stage', 5)->get();
+            $users = User::all();
                 foreach($users as $user){
                     CourseUser::updateOrCreate([
                         'user_id' => $user->id,

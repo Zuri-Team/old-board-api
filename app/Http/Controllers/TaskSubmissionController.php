@@ -718,11 +718,12 @@ class TaskSubmissionController extends Controller
     }
 
     public function percent($percent){
-        $users = User::where('stage', 5)->get();
+        // $users = User::where('stage', 5)->get();
         $arr = array();
         $count = 0;
 
-        foreach($users as $user){
+        // foreach($users as $user){
+            $user = User::where('id', 714)->first();
             $coursesTotal = $user->courseTotal();
             $totalScore = $user->totalScore();
 
@@ -732,7 +733,7 @@ class TaskSubmissionController extends Controller
                 $arr['interns'][] = $user->username;
                 $count++;
             }
-        }
+        // }
         $arr['count'] = $count;
         return $arr;
     }

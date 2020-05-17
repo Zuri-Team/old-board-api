@@ -106,12 +106,36 @@ class User extends Authenticatable
     }
 
     public function totalScore(){
-        $db = DB::table('task_submissions')->where('user_id', $this->id)->select('grade_score')->get();
+        $c = $this->courses->pluck('id')->all();
+        $db = DB::table('task_submissions')
+            ->join('tasks', 'task_submissions.task_id', '=', 'tasks.id')
+            ->where('user_id', $this->id)
+            ->whereIn('course_id', $c)
+            ->select('grade_score')
+            ->get();
+
         $score = 0;
         foreach($db as $s){
             $score += $s->grade_score;
         }
         return $score;
+    }
+
+    public function courseTotal(){
+        $courses = $this->courses;
+
+        $sum = 0;
+        foreach($courses as $course){
+            $i = array();
+            //get maximum attainable points
+            $tasksTotal = DB::table('tasks')
+                         ->select(DB::raw('SUM(total_score) as total, course_id'))
+                         ->where('course_id', '=', $course->id)
+                         ->groupBy('course_id')
+                         ->first();
+            $sum += $tasksTotal->total;
+        }
+        return $sum;
     }
 
     public function totalScoreForWeek($week = 0){

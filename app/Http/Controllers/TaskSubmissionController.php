@@ -9,6 +9,7 @@ use App\Slack;
 use App\User;
 use App\TaskSubmission;
 use App\TrackUser;
+use App\Course;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -716,33 +717,95 @@ class TaskSubmissionController extends Controller
         return $this->sendSuccess($res, 'successfully graded task', 200);
     }
 
-    public function check_percent(){
-        //
+    public function percent($percent){
+        $users = User::where('stage', 5)->get();
+        $arr = array();
+        $count = 0;
 
-        $users = User::find(20);
+        foreach($users as $user){
+            $coursesTotal = $user->courseTotal();
+            $totalScore = $user->totalScore();
 
-        $submissions = DB::table('task_submissions')
-                        //  ->select(DB::raw('((50/100) * sum(grade_score)) as score'))
-                         ->select(DB::raw('sum(grade_score) as score'))
-                         ->where('user_id', '=', 428)
-                         ->get();
+            $percentValue = round(($percent / 100) * $coursesTotal, 2);
 
-        return $submissions;
-
-        // $courses = Course::all();
-        // foreach($courses as $course){
-        //    $tasks = Task::where('course_id', $course->id)->get();
-        //    foreach($tasks as $task){
-        //        $total_score = $task->total_score;
-        //        //run percentage query and count number of records with more than that percent
-        //        $submissions = DB::table('task_submissions')
-        //              ->select(DB::raw('((50/10) * sum(grade_score)) as score'))
-        //              ->get();
-        // }
+            if($totalScore >= $percentValue){
+                $arr['interns'][] = $user->username;
+                $count++;
+            }
+        }
+        $arr['count'] = $count;
+        return $arr;
     }
 
-    // $submissions = DB::table('task_submissions')
-    //                  ->select(DB::raw('((50/10) * sum(grade_score)) as score'))
-    //                  ->get();
+    public function check_percent($percent){
+
+        //get all courses
+        $courses = Course::all();
+
+        $arr = array();
+        foreach($courses as $course){
+            $i = array();
+            //get maximum attainable points
+            $tasksTotal = DB::table('tasks')
+                         ->select(DB::raw('SUM(total_score) as total, course_id'))
+                         ->where('course_id', '=', $course->id)
+                         ->groupBy('course_id')
+                         ->first();
+            $sub = $this->getCourseSubmissions($course->id, $tasksTotal->total, $percent);
+            
+            $percentValue = round(($percent / 100) * $tasksTotal->total, 2);
+
+            $i['total'] = $tasksTotal;
+            $i['course_name'] = $course->name;
+            $i['percent'] = $percent;
+            $i['percent_value'] = $percentValue;
+            $i['count'] = count($sub);
+            $i['sub'] = $sub;
+            
+            $arr[] = $i;
+        }
+        //get maximum attainable points for each courses
+        //get list of interns that have 80% of the score
+
+        return $arr;
+    }
+
+    public function getCourseSubmissions($courseId, $total, $percent){
+        $arr = array();
+        $tasks = Task::where('course_id', $courseId)->get();
+        $users = User::where('stage', 5)->get();
+        foreach($users as $user){
+            foreach($tasks as $task){
+                $subs = DB::table('task_submissions')
+                             ->select(DB::raw('SUM(grade_score) as score, user_id'))
+                             ->where('task_id', '=', $task->id)
+                             ->where('user_id', '=', $user->id)
+                             ->groupBy('user_id')
+                             ->get()
+                             ->toArray();
+
+                if(!is_null($subs) && !count($subs) == 0){
+                    $arr[] = $subs;
+                }
+            }
+        }
+
+        $sum = array_reduce($arr, function ($a, $b) {
+            $b = (array) $b[0];
+            isset($a[$b['user_id']]) ? $a[$b['user_id']]['score'] += $b['score'] : $a[$b['user_id']] = $b;  
+            return $a;
+        });
+
+        $percentValue = round(($percent / 100) * $total, 2);
+        $t = array();
+        foreach(array_values($sum) as $j){
+            if($j['score'] >= $percentValue){
+                $t[] = $j;
+            }
+        }
+        return $t;
+        
+
+    } 
 
 }

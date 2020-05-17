@@ -727,6 +727,8 @@ class TaskSubmissionController extends Controller
             $coursesTotal = $user->courseTotal();
             $totalScore = $user->totalScore();
 
+            dd($coursesTotal, $totalScore);
+
             $percentValue = round(($percent / 100) * $coursesTotal, 2);
 
             if($totalScore >= $percentValue){

@@ -726,12 +726,13 @@ class TaskSubmissionController extends Controller
             $user = User::where('id', 714)->first();
             $coursesTotal = $user->courseTotal();
             $totalScore = $user->totalScore();
+            $courses = $user->courses;
 
-            dd($coursesTotal, $totalScore);
+            // dd($coursesTotal, $totalScore);
 
             $percentValue = round(($percent / 100) * $coursesTotal, 2);
 
-            if($totalScore >= $percentValue){
+            if($totalScore >= $percentValue && count($courses) > 0 && $totalScore > 0 && $coursesTotal > 0){
                 $arr['interns'][] = $user->username;
                 $count++;
             }

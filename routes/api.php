@@ -155,6 +155,7 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
     Route::get('more_percent/{percent}/{type}', 'TaskSubmissionController@dynamic_percent'); 
     Route::get('check_percent/{percent}', 'TaskSubmissionController@percent'); 
     Route::post('submit_team', 'TaskSubmissionController@submitTeamTask'); 
+    Route::get('export_final', 'TaskSubmissionController@exportFinals'); 
 
     //check_percent
     //remove_stage_3

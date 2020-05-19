@@ -138,6 +138,14 @@ class User extends Authenticatable
         return $sum;
     }
 
+    public function percentValue(){
+        $totalScore = $this->totalScore();
+        $coursesTotal = $this->courseTotal();
+        
+        $userPercent = round(($totalScore / $coursesTotal) * 100, 2);
+        return $userPercent;
+    }
+
     public function totalScoreForWeek($week = 0){
         // $internship_start_date = env('PROGRAMME_START_DATE', '2020-03-01 12:00:00');
         // $days = $week * 7; 

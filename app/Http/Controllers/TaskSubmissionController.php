@@ -21,6 +21,7 @@ use App\Http\Classes\ActivityTrait;
 use DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\TeamTaskImport;
+use App\Exports\StartNGFinalExports;
 
 
 class TaskSubmissionController extends Controller
@@ -720,6 +721,16 @@ class TaskSubmissionController extends Controller
         return $this->sendSuccess($res, 'successfully graded task', 200);
     }
 
+    public function export() 
+    {
+        $export = new InvoicesExport([
+            [1, 2, 3],
+            [4, 5, 6]
+        ]);
+
+        return Excel::download($export, 'invoices.xlsx');
+    }
+
     public function percent($percent){
         $users = User::where('stage', 5)->get();
         $arr = array();
@@ -773,6 +784,11 @@ class TaskSubmissionController extends Controller
         }
         $arr['count'] = $count;
         return $arr;
+
+    }
+
+    public function exportFinals(){
+        return Excel::download(new StartNGFinalExports, 'startng_finals.xlsx');
     }
 
     public function check_percent($percent){

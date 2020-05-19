@@ -734,9 +734,10 @@ class TaskSubmissionController extends Controller
             // dd($coursesTotal, $totalScore);
 
             $percentValue = round(($percent / 100) * $coursesTotal, 2);
+            $userPercent = round(($totalScore / $coursesTotal) * 100, 2);
 
             if($totalScore >= $percentValue && count($courses) > 0 && $totalScore > 0 && $coursesTotal > 0){
-                $arr['interns'][] = $user->username;
+                $arr['interns'][] = $user->username . " | " . $coursesTotal . " / " . $totalScore . " | Percent: ". $userPercent;
                 $count++;
             }
         }
@@ -814,25 +815,6 @@ class TaskSubmissionController extends Controller
 
     } 
 
-    // public function submitTeamTask(){
-    //     $users = User::where('stage', 5)->get();
-
-    //     foreach($users as $user){
-    //         $res = new TaskSubmission();
-    //         $res->user_id = $user->id;
-    //         $res->task_id = 152;
-    //         $res->submission_link = ' ';
-    //         $res->grade_score = 2;
-    //         $res->comment = ' ';
-    //         $res->is_submitted = true;
-    //         $res->is_graded = true;
-    //         $res->graded_by = 714;
-
-    //         $res->save();
-    //     }
-
-    //     return $this->sendSuccess($res, 'successfully graded task', 200);
-    // }
 
     public function submitTeamTask(Request $request)
     {

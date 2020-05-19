@@ -19,6 +19,9 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Classes\ActivityTrait;
 use DB;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\TeamTaskImport;
+
 
 class TaskSubmissionController extends Controller
 {
@@ -811,24 +814,40 @@ class TaskSubmissionController extends Controller
 
     } 
 
-    public function submitTeamTask(){
-        $users = User::where('stage', 5)->get();
+    // public function submitTeamTask(){
+    //     $users = User::where('stage', 5)->get();
 
-        foreach($users as $user){
-            $res = new TaskSubmission();
-            $res->user_id = $user->id;
-            $res->task_id = 152;
-            $res->submission_link = ' ';
-            $res->grade_score = 2;
-            $res->comment = ' ';
-            $res->is_submitted = true;
-            $res->is_graded = true;
-            $res->graded_by = 714;
+    //     foreach($users as $user){
+    //         $res = new TaskSubmission();
+    //         $res->user_id = $user->id;
+    //         $res->task_id = 152;
+    //         $res->submission_link = ' ';
+    //         $res->grade_score = 2;
+    //         $res->comment = ' ';
+    //         $res->is_submitted = true;
+    //         $res->is_graded = true;
+    //         $res->graded_by = 714;
 
-            $res->save();
-        }
+    //         $res->save();
+    //     }
 
-        return $this->sendSuccess($res, 'successfully graded task', 200);
+    //     return $this->sendSuccess($res, 'successfully graded task', 200);
+    // }
+
+    public function submitTeamTask(Request $request)
+    {
+            if($request->hasFile('sheet')){
+
+                $sheet = request()->file('sheet')->getRealPath();
+                $import = Excel::import(new TeamTaskImport(), $request->file('sheet'));
+    
+                if($import){
+                return $this->sendSuccess('Team task submitted successfully Imported', 200);
+    
+                }else{
+                    return $this->sendError('Could not process', 500, []);
+                }
+            }
     }
 
 }

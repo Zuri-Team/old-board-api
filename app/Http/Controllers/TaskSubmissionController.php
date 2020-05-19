@@ -720,26 +720,31 @@ class TaskSubmissionController extends Controller
         return $this->sendSuccess($res, 'successfully graded task', 200);
     }
 
-    public function percent($percent){
+    public function percent($percent, $type){
         $users = User::where('stage', 5)->get();
         $arr = array();
         $count = 0;
 
         foreach($users as $user){
-            // $user = User::where('id', 714)->first();
             $coursesTotal = $user->courseTotal();
             $totalScore = $user->totalScore();
             $courses = $user->courses;
 
-            // dd($coursesTotal, $totalScore);
-
             $percentValue = round(($percent / 100) * $coursesTotal, 2);
             $userPercent = round(($totalScore / $coursesTotal) * 100, 2);
 
-            if($totalScore >= $percentValue && count($courses) > 0 && $totalScore > 0 && $coursesTotal > 0){
-                $arr['interns'][] = $user->username . " ------------- " . $totalScore . " out of " . $coursesTotal . " -------------------- Percent: ". $userPercent;
-                $count++;
+            if($type == 'score'){
+                if($totalScore >= $percent && count($courses) > 0 && $totalScore > 0 && $coursesTotal > 0){
+                    $arr['interns'][] = $user->username . " ------------- " . $totalScore . " out of " . $coursesTotal . " -------------------- Percent: ". $userPercent;
+                    $count++;
+                }
+            }else{
+                if($totalScore >= $percentValue && count($courses) > 0 && $totalScore > 0 && $coursesTotal > 0){
+                    $arr['interns'][] = $user->username . " ------------- " . $totalScore . " out of " . $coursesTotal . " -------------------- Percent: ". $userPercent;
+                    $count++;
+                }
             }
+            
         }
         $arr['count'] = $count;
         return $arr;

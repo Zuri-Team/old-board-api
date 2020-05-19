@@ -769,17 +769,18 @@ class TaskSubmissionController extends Controller
             $percentValue = round(($percent / 100) * $coursesTotal, 2);
             $userPercent = round(($totalScore / $coursesTotal) * 100, 2);
 
-            if($type == 'score'){
-                if($totalScore >= $percent && count($courses) > 0 && $totalScore > 0 && $coursesTotal > 0){
-                    $arr['interns'][] = $user->username . " ------------- " . $totalScore . " out of " . $coursesTotal . " -------------------- Percent: ". $userPercent;
-                    $count++;
-                }
-            }else{
+            // if($type == 'score'){
+            //     if($totalScore >= $percent && count($courses) > 0 && $totalScore > 0 && $coursesTotal > 0){
+            //         $arr['interns'][] = $user->username . " ------------- " . $totalScore . " out of " . $coursesTotal . " -------------------- Percent: ". $userPercent;
+            //         $count++;
+            //     }
+            // }else{
                 if($totalScore >= $percentValue && count($courses) > 0 && $totalScore > 0 && $coursesTotal > 0){
-                    $arr['interns'][] = $user->username . " ------------- " . $totalScore . " out of " . $coursesTotal . " -------------------- Percent: ". $userPercent;
+                    $arr['interns'][] = $user->email;
+                    // $arr['interns'][] = $user->username . " ------------- " . $totalScore . " out of " . $coursesTotal . " -------------------- Percent: ". $userPercent;
                     $count++;
                 }
-            }
+            // }
             
         }
         $arr['count'] = $count;

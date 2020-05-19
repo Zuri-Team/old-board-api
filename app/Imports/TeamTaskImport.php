@@ -21,8 +21,8 @@ class TeamTaskImport implements ToCollection, WithHeadingRow
         foreach ($rows as $row) {
             $email = $row['email'];
 
-            $user = User::where('email', $email)->first();
-            if($user && $user->stage == 5){
+            $user = User::where('email', $email)->where('stage', 5)->first();
+            if($user){
                 $res = new TaskSubmission();
                 $res->user_id = $user->id;
                 $res->task_id = 152;
@@ -32,6 +32,7 @@ class TeamTaskImport implements ToCollection, WithHeadingRow
                 $res->is_submitted = true;
                 $res->is_graded = true;
                 $res->graded_by = 714;
+                $res->save();
             }else{
                 continue;
             }

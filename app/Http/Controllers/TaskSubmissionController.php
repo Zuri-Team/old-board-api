@@ -737,7 +737,7 @@ class TaskSubmissionController extends Controller
             $userPercent = round(($totalScore / $coursesTotal) * 100, 2);
 
             if($totalScore >= $percentValue && count($courses) > 0 && $totalScore > 0 && $coursesTotal > 0){
-                $arr['interns'][] = $user->username . " | " . $coursesTotal . " / " . $totalScore . " | Percent: ". $userPercent;
+                $arr['interns'][] = $user->username . " ------------- " . $totalScore . " out of " . $coursesTotal . " -------------------- Percent: ". $userPercent;
                 $count++;
             }
         }

@@ -14,6 +14,7 @@
 Route::get('slacks/test/{prev}/{next}', 'SlackController@show');
 Route::post('slacks/verify','SlackController@verify_user');
 Route::post('slacks/profile','SlackController@slack_user_profile');
+Route::get('slacks/test','SlackController@test');
 
 Route::post('login', 'AuthController@login');
 Route::post('register', 'AuthController@register');

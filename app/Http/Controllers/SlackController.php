@@ -13,6 +13,19 @@ use Craftyx\SlackApi\Facades\SlackChannel;
 
 class SlackController extends Controller
 {
+
+    public function test(){
+        // $slackUser = SlackUser::lookupByEmail('seyi@hng.tech');
+
+        // $result = Slack::removeFromChannel('U013HPAR9TP', '2');
+        // $result = Slack::addToChannel('U013HPAR9TP', '6');
+
+
+        // $result = SlackChat::message('#general', '');
+        $result = SlackChat::message('#test-channel', '👍');
+
+        dd($result);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -60,7 +73,7 @@ class SlackController extends Controller
      */
     public function show($prev, $next)
     {
-        $slack_id =  'UUGV02WD7';//$user->slack_id; CODEBUG
+        $slack_id =  'U013RAALL3W';//$user->slack_id; CODEBUG
         $pre_stage = $prev;//.$user->stage;
         $next_stage = $next;//.$nextStage;
 

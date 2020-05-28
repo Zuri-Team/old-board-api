@@ -24,13 +24,13 @@ class CreateUserTableSeeder extends Seeder
         $superadmin = User::create([
             'firstname' => 'Seyi',
             'lastname' => 'Onifade',
-            'username' => '@xyluz',
+            'username' => 'xyluz',
             'email' => 'seyi@hng.tech',
             'stack' => '',
             'location' => '',
 	        'slack_id' => '',
 	        'gender' => 'Male',
-            'password' => bcrypt('[password]'),
+            'password' => bcrypt('National1'),
             'role' => 'superadmin',
             'email_verified_at' => now(),
         ]);

@@ -6,7 +6,7 @@
 
 </div>
 
-## Installation Guide
+# Installation Guide
 
 - You need a server, download [Wamp](http://www.wampserver.com/en/) or [Xampp](https://www.apachefriends.org/index.html)
 - Install [Composer](https://getcomposer.org) &  [Laravel](https://laravel.com)

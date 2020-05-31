@@ -58,9 +58,9 @@ class TrackController extends Controller
     }
     
     public function edit_track(Request $request){
-        if(!Auth::user()->hasAnyRole(['admin', 'superadmin'])){
-            return $this->ERROR('You dont have the permission to perform this action');
-        }
+        // if(!Auth::user()->hasAnyRole(['admin', 'superadmin'])){
+        //     return $this->ERROR('You dont have the permission to perform this action');
+        // }
         $track = Track::find($request->track_id);
         try{
             if ($track){
@@ -79,9 +79,9 @@ class TrackController extends Controller
     }
 
     public function delete_track(Request $request){
-        if(!Auth::user()->hasAnyRole(['admin', 'superadmin'])){
-            return $this->ERROR('You dont have the permission to perform this action');
-        }
+        // if(!Auth::user()->hasAnyRole(['admin', 'superadmin'])){
+        //     return $this->ERROR('You dont have the permission to perform this action');
+        // }
         try{
             $track = Track::find($request->track_id);
             if ($track){
@@ -122,9 +122,9 @@ class TrackController extends Controller
      * @return Response
      */
     public function add_user_to_track(Request $request){
-        if(!Auth::user()->hasAnyRole(['admin', 'superadmin'])){
-            return $this->ERROR('You dont have the permission to perform this action');
-        }
+        // if(!Auth::user()->hasAnyRole(['admin', 'superadmin'])){
+        //     return $this->ERROR('You dont have the permission to perform this action');
+        // }
 
         $validator = Validator::make($request->all(), [
             'track_id' => 'bail|required|integer',
@@ -162,9 +162,9 @@ class TrackController extends Controller
     }
 
     public function remove_user_from_track(Request $request){
-        if(!Auth::user()->hasAnyRole(['admin', 'superadmin'])){
-            return $this->ERROR('You dont have the permission to perform this action');
-        }
+        // if(!Auth::user()->hasAnyRole(['admin', 'superadmin'])){
+        //     return $this->ERROR('You dont have the permission to perform this action');
+        // }
         $request = $request->all();
         $user = User::find($request['user_id']);
         $track = TrackUser::where($request)->first();
@@ -188,9 +188,9 @@ class TrackController extends Controller
     }
 
     public function get_all_tracks(){
-        if(!Auth::user()->hasAnyRole(['admin', 'superadmin'])){
-            return $this->ERROR('You dont have the permission to perform this action');
-        }
+        // if(!Auth::user()->hasAnyRole(['admin', 'superadmin'])){
+        //     return $this->ERROR('You dont have the permission to perform this action');
+        // }
         // $this->RESTRICTED_TO('admin');
 
         $tracks = Track::orderBy('created_at', 'desc')->paginate(10);

@@ -22,15 +22,15 @@ class CreateUserTableSeeder extends Seeder
 
         /** @var \App\User $user */
         $superadmin = User::create([
-            'firstname' => 'Seyi',
-            'lastname' => 'Onifade',
-            'username' => 'xyluz',
-            'email' => 'seyi@hng.tech',
+            'firstname' => 'The',
+            'lastname' => 'Adming',
+            'username' => 'hngi7bot',
+            'email' => 'admin@hng.tech',
             'stack' => '',
             'location' => '',
 	        'slack_id' => '',
 	        'gender' => 'Male',
-            'password' => bcrypt('National1'),
+            'password' => bcrypt('hngPass321'),
             'role' => 'superadmin',
             'email_verified_at' => now(),
         ]);

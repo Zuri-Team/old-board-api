@@ -109,7 +109,7 @@ class AuthController extends Controller
         // $user->notify(new UserRegistration($user));
 
         //add user to first stage
-        Slack::addToChannel($input['slack_id'], '1');
+        Slack::addToChannel($input['slack_id'], '0');
 
         return response()->json([
             'status' => true,

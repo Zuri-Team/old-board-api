@@ -15,16 +15,16 @@ class SlackController extends Controller
 {
 
     public function test(){
-        // $slackUser = SlackUser::lookupByEmail('seyi@hng.tech');
+        $slackUser = SlackUser::lookupByEmail('seyi@hng.tech');
 
         // $result = Slack::removeFromChannel('U013HPAR9TP', '2');
         // $result = Slack::addToChannel('U013HPAR9TP', '6');
 
 
         // $result = SlackChat::message('#general', '');
-        $result = SlackChat::message('#test-channel', '👍');
+        // $result = SlackChat::message('#random', '🕺');
 
-        dd($result);
+        dd($slackUser);
     }
     /**
      * Display a listing of the resource.

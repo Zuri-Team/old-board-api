@@ -82,7 +82,6 @@ class AuthController extends Controller
                 'errors' => $validator->errors()
             ], 401);
         }
-
         
         $input['slack_id'] = $slackUser->user->id;
         // dd($input['slack_id']);
@@ -94,14 +93,15 @@ class AuthController extends Controller
         $user = User::create($input);
         
         $tracks = $request->tracks;
-        if ($tracks && is_array($tracks)) {
-            foreach ($tracks as $track) {
+        // if ($tracks && is_array($tracks)) {
+            // foreach ($tracks as $track) {
                 $trackUser = new TrackUser;
                 $trackUser->user_id = $user->id;
-                $trackUser->track_id = $track;
+                // $trackUser->track_id = $track;
+                $trackUser->track_id = $tracks;
                 $trackUser->save();
-            }
-        }
+            // }
+        // }
         $user->assignRole('intern');
 
         DB::commit();

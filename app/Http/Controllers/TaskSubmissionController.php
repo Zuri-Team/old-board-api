@@ -878,7 +878,7 @@ class TaskSubmissionController extends Controller
             }
     }
     public function moveToZero(){
-        $users = User::where('role', 'intern')->get();
+        $users = User::where('role', 'intern')->where('stage', 1)->get();
 
         foreach($users as $user){
                 //promote user

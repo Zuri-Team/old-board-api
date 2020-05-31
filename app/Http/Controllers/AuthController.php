@@ -97,8 +97,8 @@ class AuthController extends Controller
             // foreach ($tracks as $track) {
                 $trackUser = new TrackUser;
                 $trackUser->user_id = $user->id;
-                // $trackUser->track_id = $track;
-                $trackUser->track_id = $tracks;
+                // $trackUser->track_id = $tracks;
+                $trackUser->track_id = $request->track;
                 $trackUser->save();
             // }
         // }

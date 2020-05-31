@@ -20,7 +20,7 @@ class UserProfileController extends Controller
     use ResponseTrait;
 
     public function __construct(){
-        $this->middleware(['role:superadmin'], ['except' => ['index']]);
+        // $this->middleware(['role:superadmin'], ['except' => ['index']]);
     }
 
     public function index($user) {

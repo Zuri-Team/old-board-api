@@ -744,7 +744,6 @@ class TaskSubmissionController extends Controller
             $percentValue = round(($percent / 100) * $coursesTotal, 2);
             $userPercent = round(($totalScore / $coursesTotal) * 100, 2);
 
-            
             if($totalScore >= $percentValue && count($courses) > 0 && $totalScore > 0 && $coursesTotal > 0){
                 // $arr['interns'][] = $user->username . " ------------- " . $totalScore . " out of " . $coursesTotal . " -------------------- Percent: ". $userPercent;
                 $arr['interns'][] = $user->email;
@@ -877,6 +876,19 @@ class TaskSubmissionController extends Controller
                     return $this->sendError('Could not process', 500, []);
                 }
             }
+    }
+    public function moveToZero(){
+        $users = User::where('role', 'intern')->get();
+
+        foreach($users as $user){
+                //promote user
+                $slack_id =  $user->slack_id;
+                Slack::removeFromChannel($slack_id, 1);
+                Slack::addToChannel($slack_id, 0);
+                $user->stage = 0;
+                $user->save();
+        }
+        return $this->sendSuccess($user, 'successfully moved interns', 200);
     }
 
 }

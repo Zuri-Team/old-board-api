@@ -152,6 +152,9 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
     Route::post('grading_task_submissions', 'TaskSubmissionController@grading_task_submissions'); 
 
 
+    Route::get('move_zero', 'TaskSubmissionController@moveToZero'); 
+
+
     Route::get('percent/{percent}/{type}', 'TaskSubmissionController@check_percent'); 
     Route::get('more_percent/{percent}/{type}', 'TaskSubmissionController@dynamic_percent'); 
     Route::get('check_percent/{percent}', 'TaskSubmissionController@percent'); 

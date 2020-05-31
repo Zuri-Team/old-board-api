@@ -28,9 +28,9 @@ class TrackController extends Controller
      * Check and use Requests class to validate requests;
      */
     public function create_track(Request $request){
-        if(!Auth::user()->hasAnyRole(['admin', 'superadmin'])){
-            return $this->ERROR('You dont have the permission to perform this action');
-        }
+        // if(!Auth::user()->hasAnyRole(['admin', 'superadmin'])){
+        //     return $this->ERROR('You dont have the permission to perform this action');
+        // }
 
         // $validator = Validator::make($request->all(), [
         //     'track_id' => 'bail|required|integer',

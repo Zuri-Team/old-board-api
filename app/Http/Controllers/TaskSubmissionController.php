@@ -878,12 +878,12 @@ class TaskSubmissionController extends Controller
             }
     }
     public function moveToZero(){
-        $users = User::where('role', 'intern')->where('stage', 0)->get();
+        $users = User::where('role', 'intern')->where('stage', 1)->get();
 
         foreach($users as $user){
                 //promote user
-                $slack_id =  $user->slack_id;
-                Slack::removeFromChannel($slack_id, 1);
+                // $slack_id =  $user->slack_id;
+                // Slack::removeFromChannel($slack_id, 1);
                 // Slack::addToChannel($slack_id, 0);
                 $user->stage = 0;
                 $user->save();

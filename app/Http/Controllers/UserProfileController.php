@@ -26,7 +26,7 @@ class UserProfileController extends Controller
     public function index($user) {
 //         $getUser = $user->with('teams')->with('tracks')->with('profile')->get();
         $getUser = User::where('id', $user)->with('teams')->with('tracks')->first();
-	    // $getUser['profile_img'] = $getUser->profile->profileImg();
+	    $getUser['profile_img'] = $getUser->profile->profileImg();
 
         if ($getUser) {
             return $this->sendSuccess($getUser, 'User profile info fetched', 200);

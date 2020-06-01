@@ -106,19 +106,20 @@ class User extends Authenticatable
     }
 
     public function totalScore(){
-        $c = $this->courses->pluck('id')->all();
-        $db = DB::table('task_submissions')
-            ->join('tasks', 'task_submissions.task_id', '=', 'tasks.id')
-            ->where('user_id', $this->id)
-            ->whereIn('course_id', $c)
-            ->select('grade_score')
-            ->get();
+        // $c = $this->courses->pluck('id')->all();
+        // $db = DB::table('task_submissions')
+        //     ->join('tasks', 'task_submissions.task_id', '=', 'tasks.id')
+        //     ->where('user_id', $this->id)
+        //     ->whereIn('course_id', $c)
+        //     ->select('grade_score')
+        //     ->get();
 
-        $score = 0;
-        foreach($db as $s){
-            $score += $s->grade_score;
-        }
-        return $score;
+        // $score = 0;
+        // foreach($db as $s){
+        //     $score += $s->grade_score;
+        // }
+        // return $score;
+        return 0;
     }
 
     public function courseTotal(){

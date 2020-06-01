@@ -145,7 +145,7 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
 
     Route::post('promote_interns_2', 'TaskSubmissionController@promote_to_stage_2'); //promote interns to stage 2
     Route::post('promote_3', 'TaskSubmissionController@promote_to_stage_3'); //promote interns to stage 2
-    Route::post('promote_admins_to_stage_5', 'TaskSubmissionController@promote_admins_to_stage_5'); //promote interns to stage 2
+    Route::get('promote_admins/{stage}', 'TaskSubmissionController@promote_admins'); //promote admins
     Route::post('promote_5', 'TaskSubmissionController@promote_to_stage_5'); //promote interns to stage 2
     Route::post('remove_stage_3', 'TaskSubmissionController@remove_stage_3'); //promote interns to stage 2
     Route::post('test_promotion', 'TaskSubmissionController@test_promotion'); //test promotion

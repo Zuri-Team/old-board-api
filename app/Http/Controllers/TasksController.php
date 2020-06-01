@@ -63,7 +63,7 @@ class TasksController extends Controller
 
         $validator = Validator::make($request->all(), [
             'track_id' => 'required',
-            'course_id' => 'required',
+            // 'course_id' => 'required',
             'title' => 'required|max:255',
             'body' => 'required',
             'deadline' => 'required',

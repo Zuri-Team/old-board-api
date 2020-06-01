@@ -401,6 +401,32 @@ class TaskSubmissionController extends Controller
             return $this->sendError('Task submission Closed', 422, []);
         }
 
+        //check if task is the second task
+        //if yes, confirm if first task has been submited
+        //if yes, promote
+        //if not, don't allow submission
+
+        if($request->task_id == 2){
+            $u = auth()->user();
+            $previousTask = 1;
+            $checkPrev = TaskSubmission::where('user_id', $u->id)->where('task_id', $previousTask)->first();
+
+            if($checkPrev){
+                $task = TaskSubmission::create($request->all());
+                if ($task) {
+                    Slack::removeFromChannel($u->slack_id, '0');
+                    Slack::addToChannel($u->slack_id, '1');
+                    $u->stage = 1;
+                    $u->save();
+                    return $this->sendSuccess($task, 'Task submitted successfully', 200);
+                }else{
+                    return $this->sendError('Something went wrong', 400, []);
+                }
+
+            }
+            return $this->sendError('Submit your Lucid Task first', 400, []);
+        }
+
         $task = TaskSubmission::create($request->all());
         if ($task) {
             // return new TaskSubmissionResource($task);

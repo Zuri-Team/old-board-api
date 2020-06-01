@@ -406,8 +406,8 @@ class TaskSubmissionController extends Controller
         //if yes, promote
         //if not, don't allow submission
 
-        $lucidTaskId = 152;
-        $githubTaskId = 153;
+        $lucidTaskId = 1;
+        $githubTaskId = 2;
 
         if($request->task_id == $lucidTaskId){
             $link = $request->submission_link;

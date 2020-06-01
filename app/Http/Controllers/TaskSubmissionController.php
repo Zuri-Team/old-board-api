@@ -406,32 +406,58 @@ class TaskSubmissionController extends Controller
         //if yes, promote
         //if not, don't allow submission
 
-        if($request->task_id == 2){
-            $u = auth()->user();
-            $previousTask = 1;
-            $checkPrev = TaskSubmission::where('user_id', $u->id)->where('task_id', $previousTask)->first();
+        $lucidTaskId = 152;
+        $githubTaskId = 153;
 
-            if($checkPrev){
+        if($request->task_id == $lucidTaskId){
+            $link = $request->submission_link;
+            $word = 'lucid.blog';
+
+            if(strpos($link, $word) !== false){
                 $task = TaskSubmission::create($request->all());
                 if ($task) {
-                    Slack::removeFromChannel($u->slack_id, '0');
-                    Slack::addToChannel($u->slack_id, '1');
-                    $u->stage = 1;
-                    $u->save();
+                    // return new TaskSubmissionResource($task);
                     return $this->sendSuccess($task, 'Task submitted successfully', 200);
-                }else{
-                    return $this->sendError('Something went wrong', 400, []);
                 }
-
+            } else{
+                return $this->sendError('Invalid submission for Lucid task', 400, []);
             }
+        }else if($request->task_id == $githubTaskId){
+            $u = auth()->user();
+            $checkPrev = TaskSubmission::where('user_id', $u->id)->where('task_id', $lucidTaskId)->count();
+
+            if($checkPrev > 0){
+
+                $link = $request->submission_link;
+                $word = 'github.com';
+
+                if(strpos($link, $word) !== false){
+                    $task = TaskSubmission::create($request->all());
+                    if ($task) {
+                        Slack::removeFromChannel($u->slack_id, '0');
+                        Slack::addToChannel($u->slack_id, '1');
+                        $u->stage = 1;
+                        $u->save();
+                        return $this->sendSuccess($task, 'Task submitted successfully', 200);
+                    }else{
+                        return $this->sendError('Something went wrong', 400, []);
+                    }
+                } else{
+                    return $this->sendError('Invalid submission for Github task', 400, []);
+                }
+            }
+
             return $this->sendError('Submit your Lucid Task first', 400, []);
         }
-
-        $task = TaskSubmission::create($request->all());
-        if ($task) {
-            // return new TaskSubmissionResource($task);
-            return $this->sendSuccess($task, 'Task submitted successfully', 200);
+        else{
+            $task = TaskSubmission::create($request->all());
+            if ($task) {
+                // return new TaskSubmissionResource($task);
+                return $this->sendSuccess($task, 'Task submitted successfully', 200);
+            }
         }
+
+        
 
     }
 

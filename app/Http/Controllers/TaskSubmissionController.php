@@ -449,13 +449,13 @@ class TaskSubmissionController extends Controller
 
             return $this->sendError('Submit your Lucid Task first', 400, []);
         }
-        else{
-            $task = TaskSubmission::create($request->all());
-            if ($task) {
-                // return new TaskSubmissionResource($task);
-                return $this->sendSuccess($task, 'Task submitted successfully', 200);
-            }
-        }
+        // else{
+        //     $task = TaskSubmission::create($request->all());
+        //     if ($task) {
+        //         // return new TaskSubmissionResource($task);
+        //         return $this->sendSuccess($task, 'Task submitted successfully', 200);
+        //     }
+        // }
 
         
 

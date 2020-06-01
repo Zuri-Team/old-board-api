@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'https://dev.start.ng'),
+    'url' => env('APP_URL', 'https://board.hng.tech'),
 
     'asset_url' => env('ASSET_URL', null),
 

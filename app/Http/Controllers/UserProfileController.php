@@ -25,7 +25,7 @@ class UserProfileController extends Controller
 
     public function index($user) {
 //         $getUser = $user->with('teams')->with('tracks')->with('profile')->get();
-        $getUser = User::where('id', $user)->with('teams')->with('tracks')->with('courses')->first();
+        $getUser = User::where('id', $user)->with('teams')->with('tracks')->first();
 	    $getUser['profile_img'] = $getUser->profile->profileImg();
 
         if ($getUser) {

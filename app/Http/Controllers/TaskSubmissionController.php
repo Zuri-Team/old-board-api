@@ -930,17 +930,22 @@ class TaskSubmissionController extends Controller
             }
     }
     public function moveToZero(){
-        $users = User::where('role', 'intern')->where('stage', 1)->get();
+        $users = User::where('role', 'intern')->get();
 
         foreach($users as $user){
+
+            $t = new TrackUser;
+            $t->user_id = $user->id;
+            $t->track_id = 6;
+            $t->save();
                 //promote user
                 // $slack_id =  $user->slack_id;
                 // Slack::removeFromChannel($slack_id, 1);
                 // Slack::addToChannel($slack_id, 0);
-                $user->stage = 0;
-                $user->save();
+                // $user->stage = 0;
+                // $user->save();
         }
-        return $this->sendSuccess($user, 'successfully moved interns', 200);
+        return $this->sendSuccess($user, 'successfully moved interns to general', 200);
     }
 
 }

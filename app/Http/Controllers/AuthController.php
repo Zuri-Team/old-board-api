@@ -101,6 +101,11 @@ class AuthController extends Controller
                 // $trackUser->track_id = $tracks;
                 $trackUser->track_id = $request->track;
                 $trackUser->save();
+
+                $t = new TrackUser;
+                $t->user_id = $user->id;
+                $t->track_id = 6;
+                $t->save();
             // }
         // }
         $user->assignRole('intern');

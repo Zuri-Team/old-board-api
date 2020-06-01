@@ -226,16 +226,16 @@ class TasksController extends Controller
     #Get tasks based on Interns track(s)
     public function intern_view_track_task()
     {
-        $this->middleware(['role: intern']);
+        // $this->middleware(['role: intern']);
 
-        $user_courses = auth()->user()->courses;
+        $user_tracks = auth()->user()->tracks;
 
         $res = array();
 
-        foreach ($user_courses as $user_course) {
+        foreach ($user_tracks as $user_track) {
             //Get all task for the task
-            $course_tasks = Task::where('course_id', $user_course->id)->orderBy('created_at', 'desc')->get();
-            $collection = TaskResource::collection($course_tasks);
+            $track_tasks = Task::where('track_id', $user_track->id)->orderBy('created_at', 'desc')->get();
+            $collection = TaskResource::collection($track_tasks);
             array_push($res, $collection);
         }
 

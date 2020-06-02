@@ -366,7 +366,6 @@ class TaskSubmissionController extends Controller
 
     public function submit(Request $request)
     {
-
         // check if task exist
         $checkTask = Task::where('id', $request->task_id)->first();
 
@@ -408,6 +407,7 @@ class TaskSubmissionController extends Controller
 
         $lucidTaskId = 1;
         $githubTaskId = 2;
+        $designTaskId = 4;
 
         if($request->task_id == $lucidTaskId){
             $link = $request->submission_link;
@@ -427,7 +427,6 @@ class TaskSubmissionController extends Controller
             $checkPrev = TaskSubmission::where('user_id', $u->id)->where('task_id', $lucidTaskId)->count();
 
             if($checkPrev > 0){
-
                 $link = $request->submission_link;
                 $word = 'github.com';
 
@@ -448,14 +447,13 @@ class TaskSubmissionController extends Controller
             }
 
             return $this->sendError('Submit your Lucid Task first', 400, []);
+        }else{
+            $task = TaskSubmission::create($request->all());
+            if ($task) {
+                // return new TaskSubmissionResource($task);
+                return $this->sendSuccess($task, 'Task submitted successfully', 200);
+            }
         }
-        // else{
-        //     $task = TaskSubmission::create($request->all());
-        //     if ($task) {
-        //         // return new TaskSubmissionResource($task);
-        //         return $this->sendSuccess($task, 'Task submitted successfully', 200);
-        //     }
-        // }
 
         
 

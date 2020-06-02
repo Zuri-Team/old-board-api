@@ -452,6 +452,8 @@ class TaskSubmissionController extends Controller
             if ($task) {
                 // return new TaskSubmissionResource($task);
                 return $this->sendSuccess($task, 'Task submitted successfully', 200);
+            }else{
+                return $this->sendError('Something went wrong', 400, []);
             }
         }
 

@@ -979,7 +979,7 @@ class TaskSubmissionController extends Controller
 
                 $email = str_replace(' ', '', $datum['email']);
                 $user = User::where('email', $email)->first();
-                if($user && $user->stage == 1){
+                if(!empty($user) && $user->stage == 1){
                     //promote user here
 
                     $slack_id =  $user->slack_id;
@@ -1002,7 +1002,6 @@ class TaskSubmissionController extends Controller
 
         return $arr;
     }
-
 
 }
 

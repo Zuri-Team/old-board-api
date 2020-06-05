@@ -983,7 +983,7 @@ class TaskSubmissionController extends Controller
 
         foreach($data as $datum){
             $all_submissions++;
-            if($datum['status'] == 'pass'){
+            if($datum['status'] == 'Pass'){
                 $passed_submissions++;
 
                 $email = str_replace(' ', '', $datum['email']);

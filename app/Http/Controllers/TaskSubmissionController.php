@@ -5500,7 +5500,7 @@ class TaskSubmissionController extends Controller
                 if(!empty($user) && $user->stage == 1){
                     //promote user here
 
-                    $arr['emails'][] = $email;
+                    // $arr['emails'][] = $email;
  
                     $slack_id =  $user->slack_id;
                     Slack::removeFromChannel($slack_id, 1);

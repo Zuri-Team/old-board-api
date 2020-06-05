@@ -956,7 +956,7 @@ class TaskSubmissionController extends Controller
         $channel = '#' . $request->channel;
 
         $result = SlackChat::message($channel, $message);
-        return $result;
+        return 'sent';
     }
 
     public function task_2_promotion(Request $request){

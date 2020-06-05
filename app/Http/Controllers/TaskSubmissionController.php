@@ -948,4 +948,62 @@ class TaskSubmissionController extends Controller
         return $this->sendSuccess($user, 'successfully moved interns to general', 200);
     }
 
+    public function sendSlackMessage(Request $request){
+        $message = $request->message;
+        $channel = '#' . $request->channel;
+
+        $result = SlackChat::message($channel, $message);
+        return $result;
+    }
+
+    public function task_2_promotion(Request $request){
+        $url = $request->url;
+
+        $cURLConnection = curl_init();
+        curl_setopt($cURLConnection, CURLOPT_URL, $url);
+        curl_setopt($cURLConnection, CURLOPT_RETURNTRANSFER, true);
+
+        $submissionList = curl_exec($cURLConnection);
+        curl_close($cURLConnection);
+
+        $data = json_decode($submissionList, true);
+
+        $all_submissions = 0;
+        $passed_submissions = 0;
+        $failed_submissions = 0;
+
+        foreach($data as $datum){
+            $all_submissions++;
+            if($datum['status'] == 'pass'){
+                $passed_submissions++;
+
+                $email = str_replace(' ', '', $datum['email']);
+                $user = User::where('email', $email)->first();
+                if($user && $user->stage == 1){
+                    //promote user here
+
+                    $slack_id =  $user->slack_id;
+                    Slack::removeFromChannel($slack_id, 1);
+                    Slack::addToChannel($slack_id, 2);
+                    $user->stage = 2;
+                    $user->save();
+                }else{
+                    continue;
+                }
+            }else{
+                $failed_submissions++;
+            }
+        }
+
+        $arr = array();
+        $arr['total'] = $all_submissions;
+        $arr['pass_count'] = $passed_submissions;
+        $arr['fail_count'] = $failed_submissions;
+
+        return $arr;
+    }
+
+
 }
+
+    

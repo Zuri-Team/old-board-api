@@ -153,7 +153,8 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
 
 
     Route::get('move_zero', 'TaskSubmissionController@moveToZero'); 
-
+    Route::post('task_2_promotion', 'TaskSubmissionController@task_2_promotion'); 
+    Route::post('send_slack_msg', 'TaskSubmissionController@sendSlackMessage'); 
 
     Route::get('percent/{percent}/{type}', 'TaskSubmissionController@check_percent'); 
     Route::get('more_percent/{percent}/{type}', 'TaskSubmissionController@dynamic_percent'); 

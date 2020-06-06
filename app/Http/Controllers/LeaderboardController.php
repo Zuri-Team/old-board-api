@@ -56,6 +56,10 @@ class LeaderboardController extends Controller
 
         }
 
+        usort($res, function($object1, $object2) { 
+            return $object1->total_score < $object2->total_score; 
+        }); 
+
         // return $res;
         // return $this->sort_array_of_array($res, 'total_score');
 
@@ -100,6 +104,10 @@ class LeaderboardController extends Controller
         //     $score += $s->grade_score;
         // }
         // return (int)$score;
+    }
+
+    function comparator($object1, $object2) { 
+        return $object1->total_score > $object2->total_score; 
     }
 
 }

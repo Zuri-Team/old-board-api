@@ -1020,29 +1020,23 @@ class TaskSubmissionController extends Controller
         return $arr;
     }
 
-    public function get_pass_list(Request $request){
-        $url = $request->url;
+    public function design_promotion(){
+       $designTrackId = 4;
+       $designTaskId = 4;
 
-        $cURLConnection = curl_init();
-        curl_setopt($cURLConnection, CURLOPT_URL, $url);
-        curl_setopt($cURLConnection, CURLOPT_RETURNTRANSFER, true);
+       $submissions = TaskSubmission::where('task_id', $designTaskId)->get();
 
-        $submissionList = curl_exec($cURLConnection);
-        curl_close($cURLConnection);
+       foreach($submissions as $submission){
+           if($submission->grade_score >= 4){
+               $user = User::find($submission->user_id);
 
-        $data = json_decode($submissionList, true);
-
-        $arr = array();
-
-        foreach($data as $datum){
-            $all_submissions++;
-            if($datum['status'] == 'pass'){
-                $email = str_replace(' ', '', $datum['email']);
-                $arr[] = $email;
-            }
-        }
-
-        return $arr;
+               $slack_id =  $user->slack_id;
+               Slack::removeFromChannel($slack_id, 1);
+               Slack::addToChannel($slack_id, 2);
+               $user->stage = 2;
+               $user->save();
+           }
+       }
     }
 }
 

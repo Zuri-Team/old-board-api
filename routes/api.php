@@ -157,6 +157,8 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
     Route::post('get_pass_list', 'TaskSubmissionController@get_pass_list'); 
     Route::post('send_slack_msg', 'TaskSubmissionController@sendSlackMessage');
 
+    Route::get('design_promotion', 'TaskSubmissionController@design_promotion');
+
     Route::get('percent/{percent}/{type}', 'TaskSubmissionController@check_percent'); 
     Route::get('more_percent/{percent}/{type}', 'TaskSubmissionController@dynamic_percent'); 
     Route::get('check_percent/{percent}', 'TaskSubmissionController@percent'); 

@@ -18,27 +18,6 @@ class LeaderboardController extends Controller
                 ->with('tracks')
                 ->get();
 
-        // $users = User::where('role', '=', 'intern')
-        //         ->join('track_users', 'track_users.user_id', '=', 'users.id')
-        //         ->join('tracks', 'tracks.id', '=', 'track_users.id')
-        //         // ->with('tracks')
-        //         ->select('*')->get();
-
-        // $users = DB::table('users')
-        //         // ->select('users.*')
-        //         ->join('track_users', 'track_users.user_id', '=', 'users.id')
-        //         ->join('tracks', 'track_users.track_id', '=', 'tracks.id')
-        //         ->where('users.role', '=', 'intern')
-        //         ->where('tracks.id', $track)
-        //         ->distinct()
-        //         ->get();
-
-        // $users = TrackUser::where('track_id', $track)
-        //         ->join('users')
-        //         ->get();
-
-        // return $users;
-
         $res = [];
 
         foreach($users as $user){
@@ -52,16 +31,11 @@ class LeaderboardController extends Controller
             $user['all_tracks'] = $track_name;
             $user['tracks'] = [];
             array_push($res, $user);
-        // return $res;
-
         }
 
         usort($res, function($object1, $object2) { 
             return $object1->total_score < $object2->total_score; 
         }); 
-
-        // return $res;
-        // return $this->sort_array_of_array($res, 'total_score');
 
         return $this->paginate($res, 15);
     }
@@ -98,16 +72,6 @@ class LeaderboardController extends Controller
             ->where('user_id', $user_id)
             ->sum('grade_score');
         return round($db, 2);
-            
-        // $score = 0;
-        // foreach($db as $s){
-        //     $score += $s->grade_score;
-        // }
-        // return (int)$score;
-    }
-
-    function comparator($object1, $object2) { 
-        return $object1->total_score > $object2->total_score; 
     }
 
 }

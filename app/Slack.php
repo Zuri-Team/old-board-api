@@ -51,7 +51,7 @@ class Slack extends Model
 
         $groups = SlackGroup::lists(false);
 
-        return $groups->groups;
+        return $groups;
         $res = array();
                     
         foreach($groups->groups as $group){

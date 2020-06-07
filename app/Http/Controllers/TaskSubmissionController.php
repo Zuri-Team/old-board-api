@@ -962,7 +962,7 @@ class TaskSubmissionController extends Controller
     }
 
     public function task_2_promotion(Request $request){
-        // $url = $request->url;
+        $check = $request->check;
 
         // $cURLConnection = curl_init();
         // curl_setopt($cURLConnection, CURLOPT_URL, $url);
@@ -986,7 +986,7 @@ class TaskSubmissionController extends Controller
 
         foreach($data as $datum){
             $all_submissions++;
-            if($datum['status'] == 'pass' && !empty($datum['email'])){
+            if($datum['status'] == $check && !empty($datum['email'])){
                 $passed_submissions++;
 
                 $email = str_replace(' ', '', $datum['email']);

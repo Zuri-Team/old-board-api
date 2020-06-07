@@ -35,7 +35,7 @@ class SlackController extends Controller
         // dd($us);
 
         $us = SlackApi::get('users.list', [
-            'cursor' => 'dxN1cjpVMDE0NTE1REJKQg'
+            'cursor' => 'dXNlcjpVMDE0NTE1REJKQg=='
         ]);
 
         // $result = slack()->get('users.list', [

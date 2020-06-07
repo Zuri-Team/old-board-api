@@ -25,13 +25,13 @@ class SlackController extends Controller
 
         // $result = SlackGroup::invite('C0146LZ5DFD', 'U013RAALL3W');
 
-        $us = SlackUser::lists(
-            [
-                'cursor' => 'dxN1cjpVMDE0NTE1REJKQg=='
-            ]
-        ); //all()
+        // $us = SlackUser::lists(
+        //     [
+        //         'cursor' => 'dxN1cjpVMDE0NTE1REJKQg=='
+        //     ]
+        // ); //all()
 
-        dd($us);
+        // dd($us);
 
 
         $result = slack()->post('user.lists', [

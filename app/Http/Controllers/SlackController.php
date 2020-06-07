@@ -25,7 +25,7 @@ class SlackController extends Controller
 
         // $result = SlackGroup::invite('C0146LZ5DFD', 'U013RAALL3W');
 
-        $groups = slack()->get('channels.list', [
+        $groups = slack()->get('groups.list', [
             'exclude_members' => true
         ]);
 
@@ -33,7 +33,7 @@ class SlackController extends Controller
 
         // //C0146LZ5DFD
 
-        foreach($groups->channels as $group){
+        foreach($groups->groups as $group){
             // array_push($res, $group->name);
             $result[] = $group->name;
             // if($group->name == $stage_name){

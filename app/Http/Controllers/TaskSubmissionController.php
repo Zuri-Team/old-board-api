@@ -1043,7 +1043,7 @@ class TaskSubmissionController extends Controller
         $users = User::where('role', 'intern')->where('stage', '2')->get();
  
         foreach($users as $user){
-                $user = User::find($userr->id);
+                $user = User::find($user->id);
  
                 $slack_id =  $user->slack_id;
                 // Slack::removeFromChannel($slack_id, 1);

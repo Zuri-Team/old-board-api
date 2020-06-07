@@ -21,7 +21,9 @@ class SlackController extends Controller
         // $result = Slack::addToChannel('U013RAALL3W', '2');
         // $result = Slack::addToGroup('U013RAALL3W', 'team-incredibles');
         // $result = Slack::addToGroup('U013RAALL3W', 'stage3');
-        $result = SlackGroup::lists(true);
+        $result = SlackGroup::lists([
+            'exclude_members' => true
+        ]);
 
 
         // $result = SlackChat::message('#general', '');

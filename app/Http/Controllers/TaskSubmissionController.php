@@ -998,7 +998,7 @@ class TaskSubmissionController extends Controller
                     $slack_id =  $user->slack_id;
                     Slack::removeFromChannel($slack_id, 1);
                     Slack::addToChannel($slack_id, 2);
-                    $user->stage = 2;
+                    $user->stage = 110;
                     $user->save();
                 }else{
                     continue;

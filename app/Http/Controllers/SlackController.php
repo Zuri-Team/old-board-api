@@ -27,11 +27,11 @@ class SlackController extends Controller
 
         $us = SlackUser::lists(); //all()
 
+        $result = array();
+
         foreach($us->members as $u){
-            dd($u);
+            $result[] = $u->id;
         }
-
-
 
         dd($result);
     }

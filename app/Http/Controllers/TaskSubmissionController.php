@@ -1026,7 +1026,7 @@ class TaskSubmissionController extends Controller
 
        $submissions = TaskSubmission::where('task_id', $designTaskId)->get();
 
-       dd($submissions);
+    //    dd($submissions);
 
        foreach($submissions as $submission){
            if($submission->grade_score >= 4){

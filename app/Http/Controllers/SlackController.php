@@ -30,7 +30,14 @@ class SlackController extends Controller
                 'offset' => 'U014515DBJB'
             ]
         ); //all()
-        dd($us);
+
+        return $us;
+
+
+        $result = slack()->post('user.lists', [
+            'offset' => 'U014515DBJB'
+        ]);
+
 
         // $result = array();
 

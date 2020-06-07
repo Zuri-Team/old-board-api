@@ -692,9 +692,10 @@ class TaskSubmissionController extends Controller
                 //promote user
                 $slack_id =  $user->slack_id;
                 // Slack::removeFromChannel($slack_id, 1);
-                Slack::addToChannel($slack_id, $stage);
-                $user->stage = $stage;
-                $user->save();
+                Slack::addToGroup($slack_id, $stage);
+                // Slack::addToChannel($slack_id, $stage);
+                // $user->stage = $stage;
+                // $user->save();
         }
         return $this->sendSuccess($user, 'successfully promoted admin', 200);
     }

@@ -23,20 +23,24 @@ class SlackController extends Controller
         // $result = Slack::addToGroup('U013RAALL3W', 'stage3');
         // $result = SlackGroup::lists(); 
 
-        $groups = slack()->get('groups.list', [
-            'exclude_members' => true
-        ]);
+        $result = SlackGroup::invite('C0146LZ5DFD', 'U013RAALL3W');
 
-        $result = array();
+        // $groups = slack()->get('groups.list', [
+        //     'exclude_members' => true
+        // ]);
 
-        foreach($groups->groups as $group){
-            // array_push($res, $group->name);
-            $result[] = $group->name;
-            // if($group->name == $stage_name){
-            //     return $group->id;
-            //     break;
-            // }
-        }
+        // $result = array();
+
+        // //C0146LZ5DFD
+
+        // foreach($groups->groups as $group){
+        //     // array_push($res, $group->name);
+        //     $result[] = $group->name;
+        //     // if($group->name == $stage_name){
+        //     //     return $group->id;
+        //     //     break;
+        //     // }
+        // }
 
 
         // $result = SlackChat::message('#general', '');

@@ -34,7 +34,7 @@ class SlackController extends Controller
         // dd($us);
 
 
-        $result = slack()->get('users.lists', [
+        $result = slack()->get('users.list', [
             'cursor' => 'dxN1cjpVMDE0NTE1REJKQg=='
         ]);
 

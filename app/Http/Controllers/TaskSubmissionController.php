@@ -1026,20 +1026,46 @@ class TaskSubmissionController extends Controller
 
        $submissions = TaskSubmission::where('task_id', $designTaskId)->get();
 
-    //    dd($submissions);
-
        foreach($submissions as $submission){
            if($submission->grade_score >= 4){
                $user = User::find($submission->user_id);
 
                $slack_id =  $user->slack_id;
                Slack::removeFromChannel($slack_id, 1);
-               Slack::addToChannel($slack_id, 2);
+               Slack::addToChannel($slack_id, 110);
                $user->stage = 2;
                $user->save();
            }
        }
     }
+
+    public function stage2_promotion(){
+        $users = User::where('role', 'intern')->where('stage', '2')->get();
+ 
+        foreach($users as $user){
+                $user = User::find($submission->user_id);
+ 
+                $slack_id =  $user->slack_id;
+                // Slack::removeFromChannel($slack_id, 1);
+                Slack::addToChannel($slack_id, 110);
+                // $user->stage = 2;
+                // $user->save();
+        }
+     }
+
+     public function isolate(){
+        $users = User::where('role', 'intern')->where('stage', '1')->get();
+ 
+        foreach($users as $user){
+                $user = User::find($submission->user_id);
+ 
+                $slack_id =  $user->slack_id;
+                // Slack::removeFromChannel($slack_id, 1);
+                Slack::addToGroup($slack_id, 'isolation-centa');
+                // $user->stage = 2;
+                // $user->save();
+        }
+     }
 }
 
     

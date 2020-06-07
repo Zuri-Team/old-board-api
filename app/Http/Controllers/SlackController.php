@@ -34,21 +34,21 @@ class SlackController extends Controller
 
         // dd($us);
 
-        $result = SlackApi::get('users.list', [
+        $us = SlackApi::get('users.list', [
             'cursor' => 'dxN1cjpVMDE0NTE1REJKQg'
         ]);
-
 
         // $result = slack()->get('users.list', [
         //     'cursor' => 'dxN1cjpVMDE0NTE1REJKQg=='
         // ]);
 
 
-        // $result = array();
+        $result = array();
+        $result[] = $us->response_metadata->next_cursor;
 
-        // foreach($us->members as $u){
-        //     $result[] = $u->id;
-        // }
+        foreach($us->members as $u){
+            $result[] = $u->id;
+        }
 
         dd($result);
     }

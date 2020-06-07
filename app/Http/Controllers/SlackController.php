@@ -18,12 +18,12 @@ class SlackController extends Controller
         // $result = SlackUser::lookupByEmail('seyi@hng.tech');
 
         // $result = Slack::removeFromChannel('U013RAALL3W', '2');
-        // $result = Slack::addToChannel('U013RAALL3W', '2');
+        $result = Slack::addToChannel('U013RAALL3W', '2');
         // $result = Slack::addToGroup('U013RAALL3W', 'team-incredibles');
         // $result = Slack::addToGroup('U013RAALL3W', 'stage3');
         // $result = SlackGroup::lists(); 
 
-        $result = SlackGroup::invite('C0146LZ5DFD', 'U013RAALL3W');
+        // $result = SlackGroup::invite('C0146LZ5DFD', 'U013RAALL3W');
 
         // $groups = slack()->get('groups.list', [
         //     'exclude_members' => true

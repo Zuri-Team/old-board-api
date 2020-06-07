@@ -25,7 +25,13 @@ class SlackController extends Controller
 
         // $result = SlackGroup::invite('C0146LZ5DFD', 'U013RAALL3W');
 
-        $result = SlackUser::lists(); //all()
+        $us = SlackUser::lists(); //all()
+
+        foreach($us as $u){
+            dd($u);
+        }
+
+
 
         dd($result);
     }

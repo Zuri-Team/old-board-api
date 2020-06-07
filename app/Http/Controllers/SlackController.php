@@ -17,8 +17,9 @@ class SlackController extends Controller
     public function test(){
         // $slackUser = SlackUser::lookupByEmail('seyi@hng.tech');
 
-        // $result = Slack::removeFromChannel('U013HPAR9TP', '2');
-        $result = Slack::addToGroup('U013RAALL3W', 'team-incredibles');
+        // $result = Slack::removeFromChannel('U013RAALL3W', '2');
+        $result = Slack::adToChannel('U013RAALL3W', '2');
+        // $result = Slack::addToGroup('U013RAALL3W', 'team-incredibles');
 
 
         // $result = SlackChat::message('#general', '');

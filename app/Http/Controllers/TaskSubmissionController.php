@@ -1028,13 +1028,18 @@ class TaskSubmissionController extends Controller
 
        foreach($submissions as $submission){
            if($submission->grade_score >= 4){
-               $user = User::find($submission->user_id);
+               $user = User::where('id', $submission->user_id)->where('stage', '1')->first();
 
-               $slack_id =  $user->slack_id;
-               Slack::removeFromChannel($slack_id, 1);
-               Slack::addToChannel($slack_id, 110);
-               $user->stage = 2;
-               $user->save();
+               if($user){
+                $slack_id =  $user->slack_id;
+                Slack::removeFromChannel($slack_id, 1);
+                Slack::addToChannel($slack_id, 110);
+                $user->stage = 2;
+                $user->save();
+               }else{
+                   continue;
+               }
+               
            }
        }
     }

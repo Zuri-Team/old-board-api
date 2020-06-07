@@ -18,7 +18,7 @@ class SlackController extends Controller
         // $slackUser = SlackUser::lookupByEmail('seyi@hng.tech');
 
         // $result = Slack::removeFromChannel('U013RAALL3W', '2');
-        $result = Slack::addToChannel('U013RAALL3W', '2');
+        $result = Slack::addToChannel('U013RAALL3W', '1');
         // $result = Slack::addToGroup('U013RAALL3W', 'team-incredibles');
 
 

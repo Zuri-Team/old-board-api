@@ -49,7 +49,7 @@ class Slack extends Model
         
         $stage_name = strtolower($stage_name);
 
-        $groups = SlackGroup::lists(false);
+        $groups = SlackGroup::lists(true);
 
         dd($groups);
         $res = array();

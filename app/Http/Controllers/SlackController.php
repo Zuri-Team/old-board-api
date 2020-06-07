@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Slack;
 use Validator;
 use Illuminate\Http\Request;
+use Craftyx\SlackApi\Facades\SlackApi;
 use Craftyx\SlackApi\Facades\SlackChat;
 use Craftyx\SlackApi\Facades\SlackTeam;
 use Craftyx\SlackApi\Facades\SlackUser;
@@ -33,10 +34,14 @@ class SlackController extends Controller
 
         // dd($us);
 
-
-        $result = slack()->get('users.list', [
-            'cursor' => 'dxN1cjpVMDE0NTE1REJKQg=='
+        $result = SlackApi::get('users.list', [
+            'cursor' => 'dxN1cjpVMDE0NTE1REJKQg'
         ]);
+
+
+        // $result = slack()->get('users.list', [
+        //     'cursor' => 'dxN1cjpVMDE0NTE1REJKQg=='
+        // ]);
 
 
         // $result = array();

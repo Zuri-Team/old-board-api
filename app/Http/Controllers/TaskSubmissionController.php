@@ -1067,8 +1067,8 @@ class TaskSubmissionController extends Controller
                 $slack_id =  $user->slack_id;
                 // Slack::removeFromChannel($slack_id, 1);
                 Slack::addToGroup($slack_id, 'isolation-centa');
-                // $user->stage = 2;
-                // $user->save();
+                $user->stage = 00;
+                $user->save();
         }
      }
 }

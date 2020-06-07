@@ -23,7 +23,7 @@ class SlackController extends Controller
         // $result = Slack::addToGroup('U013RAALL3W', 'stage3');
         // $result = SlackGroup::lists(); 
 
-        $result = SlackGroup::invite('G0146LZ5DFD', 'U013RAALL3W');
+        $result = SlackGroup::invite('C0146LZ5DFD', 'U013RAALL3W');
 
         // $groups = slack()->get('groups.list', [
         //     'exclude_members' => true

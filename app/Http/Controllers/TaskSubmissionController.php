@@ -22,6 +22,7 @@ use DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\TeamTaskImport;
 use App\Exports\StartNGFinalExports;
+use App\Exports\IsolatedInternsExport;
 use App\Probation;
 use Craftyx\SlackApi\Facades\SlackChat;
 
@@ -1073,4 +1074,8 @@ class TaskSubmissionController extends Controller
                 $user->save();
         }
      }
+
+     public function exportIsolated(){
+        return Excel::download(new IsolatedInternsExport, 'hng_isolated.xlsx');
+    }
 }

@@ -23,11 +23,11 @@ class SlackController extends Controller
         // $result = Slack::addToGroup('U013RAALL3W', 'team-incredibles');
         // $result = Slack::addToGroup('U013RAALL3W', 'stage3');
 
-        $groups = SlackGroup::lists(false);
+        $groups = SlackChannel::lists(false);
 
         $result = array();
                     
-        foreach($groups->groups as $group){
+        foreach($groups->channels as $group){
             array_push($result, $group->name);
             // if($group->name == $stage_name){
             //     return $group->id;

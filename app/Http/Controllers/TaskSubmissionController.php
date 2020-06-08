@@ -992,7 +992,8 @@ class TaskSubmissionController extends Controller
                 $email = str_replace(' ', '', $datum['email']);
                 $user = User::where('email', $email)->first();
 
-                if(!empty($user) && $user->stage == 01){
+                // if(!empty($user) && $user->stage == 01){
+                    if(!empty($user)){
                     $slack_id =  $user->slack_id;
                     // Slack::removeFromChannel($slack_id, 1);
                     // Slack::addToChannel($slack_id, 2);

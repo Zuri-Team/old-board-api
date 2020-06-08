@@ -21,7 +21,19 @@ class SlackController extends Controller
         // $result = Slack::removeFromChannel('U013RAALL3W', '2');
         // $result = Slack::addToChannel('U013RAALL3W', '2');
         // $result = Slack::addToGroup('U013RAALL3W', 'team-incredibles');
-        $result = Slack::addToGroup('U013RAALL3W', 'stage3');
+        // $result = Slack::addToGroup('U013RAALL3W', 'stage3');
+
+        $groups = SlackGroup::lists(false);
+
+        $result = array();
+                    
+        foreach($groups->groups as $group){
+            array_push($result, $group->name);
+            // if($group->name == $stage_name){
+            //     return $group->id;
+            //     break;
+            // }
+        }
         // $result = SlackGroup::lists(); 
 
         // $result = SlackGroup::invite('C0146LZ5DFD', 'U013RAALL3W');

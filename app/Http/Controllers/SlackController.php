@@ -21,7 +21,7 @@ class SlackController extends Controller
         // $result = Slack::removeFromChannel('U013RAALL3W', '2');
         // $result = Slack::addToChannel('U013RAALL3W', '2');
         // $result = Slack::addToGroup('U013RAALL3W', 'team-incredibles');
-        // $result = Slack::addToGroup('U013RAALL3W', 'stage3');
+        $result = Slack::addToGroup('U013RAALL3W', 'stage3');
         // $result = SlackGroup::lists(); 
 
         // $result = SlackGroup::invite('C0146LZ5DFD', 'U013RAALL3W');
@@ -34,22 +34,22 @@ class SlackController extends Controller
 
         // dd($us);
 
-        $us = SlackApi::get('users.list', [
-            'cursor' => 'dXNlcjpVMDE0NTE1REJKQg==',
-            'limit' => 2
-        ]);
+        // $us = SlackApi::get('users.list', [
+        //     'cursor' => 'dXNlcjpVMDE0NTE1REJKQg==',
+        //     'limit' => 2
+        // ]);
 
         // $result = slack()->get('users.list', [
         //     'cursor' => 'dxN1cjpVMDE0NTE1REJKQg=='
         // ]);
 
 
-        $result = array();
-        $result[] = $us->response_metadata->next_cursor;
+        // $result = array();
+        // $result[] = $us->response_metadata->next_cursor;
 
-        foreach($us->members as $u){
-            $result[] = $u->id;
-        }
+        // foreach($us->members as $u){
+        //     $result[] = $u->id;
+        // }
 
         dd($result);
     }

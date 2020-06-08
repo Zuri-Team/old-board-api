@@ -993,8 +993,6 @@ class TaskSubmissionController extends Controller
                 $user = User::where('email', $email)->first();
 
                 if(!empty($user) && $user->stage == 01){
-                    //promote user here
-
                     $slack_id =  $user->slack_id;
                     // Slack::removeFromChannel($slack_id, 1);
                     // Slack::addToChannel($slack_id, 2);

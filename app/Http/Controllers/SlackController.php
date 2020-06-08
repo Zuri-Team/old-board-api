@@ -27,8 +27,9 @@ class SlackController extends Controller
 
         $result = array();
                     
-        foreach($groups->channels as $group){
-            array_push($result, $group->name);
+        // foreach($groups->channels as $group){
+            foreach($groups[1]->channels->members as $group){
+            array_push($result, $group->id);
             // if($group->name == $stage_name){
             //     return $group->id;
             //     break;

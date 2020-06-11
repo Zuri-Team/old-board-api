@@ -30,7 +30,7 @@ class CreateUserTableSeeder extends Seeder
             'location' => '',
 	        'slack_id' => '',
 	        'gender' => 'Male',
-            'password' => bcrypt('hngPass321'),
+            'password' => bcrypt('pass'),
             'role' => 'superadmin',
             'email_verified_at' => now(),
         ]);

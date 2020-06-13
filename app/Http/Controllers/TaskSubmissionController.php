@@ -507,8 +507,8 @@ class TaskSubmissionController extends Controller
 
     }
 
-    public function promote_to_stage_2(){
-        $users = User::where('role', 'intern')->where('stage', 1)->get();
+    public function promote_to_stage_3(){
+        $users = User::where('role', 'intern')->where('stage', 3)->get();
 
         foreach($users as $user){
             //get all their submissions
@@ -555,48 +555,48 @@ class TaskSubmissionController extends Controller
     return $flat;
 }
 
-    public function promote_to_stage_3(){
-        $users = User::where('role', 'intern')->where('stage', 2)->get();
-        $count = 0;
-        $rr = array();
+    // public function promote_to_stage_3(){
+    //     $users = User::where('role', 'intern')->where('stage', 2)->get();
+    //     $count = 0;
+    //     $rr = array();
 
-        foreach($users as $user){
-            //get all their submissions
-            $submissions = $user->submissions;
-            $submissionsArray = $submissions->pluck('task_id')->all();
-            $courses = $user->courses;
-            $tasksArray = array();
-            if(count($submissionsArray) > 0 && count($courses) > 0){
-            foreach($courses as $course){
-                // $aTask = Task::where('course_id', $course->id)->where('id', '!=', 88)->where('id', '!=', 87)->orderBy('created_at', 'asc')->get();
-                // $aTask = Task::where('course_id', $course->id)->whereIn('id', [49, 71, 74, 83, 51, 73, 48, 50, 52, 76, 53, 68, 72, 82])->get();
-                $aTask = Task::where('course_id', $course->id)->whereIn('id', [48, 76, 82, 53, 50, 83, 73, 68, 74, 71, 72, 52])->get();
-                $arrT = $aTask->pluck('id')->all();
-                // array_push($tasksArray, $aTask->id);
-                $r = array();
-                array_push($tasksArray, $arrT);
-                // $tasksArray = array_merge($tasksArray, $arrT);
-            }
+    //     foreach($users as $user){
+    //         //get all their submissions
+    //         $submissions = $user->submissions;
+    //         $submissionsArray = $submissions->pluck('task_id')->all();
+    //         $courses = $user->courses;
+    //         $tasksArray = array();
+    //         if(count($submissionsArray) > 0 && count($courses) > 0){
+    //         foreach($courses as $course){
+    //             // $aTask = Task::where('course_id', $course->id)->where('id', '!=', 88)->where('id', '!=', 87)->orderBy('created_at', 'asc')->get();
+    //             // $aTask = Task::where('course_id', $course->id)->whereIn('id', [49, 71, 74, 83, 51, 73, 48, 50, 52, 76, 53, 68, 72, 82])->get();
+    //             $aTask = Task::where('course_id', $course->id)->whereIn('id', [48, 76, 82, 53, 50, 83, 73, 68, 74, 71, 72, 52])->get();
+    //             $arrT = $aTask->pluck('id')->all();
+    //             // array_push($tasksArray, $aTask->id);
+    //             $r = array();
+    //             array_push($tasksArray, $arrT);
+    //             // $tasksArray = array_merge($tasksArray, $arrT);
+    //         }
 
-            $tasksArray = $this->array_flatten($tasksArray);
-            $diff = array_diff($tasksArray, $submissionsArray);
-            if(count($diff) == 0){
-                //promote user
-                $slack_id =  $user->slack_id;
-                Slack::removeFromChannel($slack_id, 2);
-                Slack::addToChannel($slack_id, 3);
-                $user->stage = 3;
-                $user->save();
-            }else{
-                continue;
-            }
+    //         $tasksArray = $this->array_flatten($tasksArray);
+    //         $diff = array_diff($tasksArray, $submissionsArray);
+    //         if(count($diff) == 0){
+    //             //promote user
+    //             $slack_id =  $user->slack_id;
+    //             Slack::removeFromChannel($slack_id, 2);
+    //             Slack::addToChannel($slack_id, 3);
+    //             $user->stage = 3;
+    //             $user->save();
+    //         }else{
+    //             continue;
+    //         }
 
-        }
+    //     }
 
             
-        }
-        return $this->sendSuccess([$count, $rr], 'successfully promoted interns', 200);
-    }
+    //     }
+    //     return $this->sendSuccess([$count, $rr], 'successfully promoted interns', 200);
+    // }
 
     public function promote_to_stage_4(){
         $users = User::where('role', 'intern')->where('stage', 3)->get();
@@ -1047,15 +1047,15 @@ class TaskSubmissionController extends Controller
        }
     }
 
-    public function stage2_promotion(){
-        $users = User::where('role', 'intern')->where('stage', '2')->get();
+    public function stage3_promotion(){
+        $users = User::where('role', 'intern')->where('stage', '3')->get();
  
         foreach($users as $user){
                 $user = User::find($user->id);
  
                 $slack_id =  $user->slack_id;
-                // Slack::removeFromChannel($slack_id, 1);
-                Slack::addToChannel($slack_id, 110);
+                Slack::removeFromChannel($slack_id, 2);
+                Slack::addToChannel($slack_id, 3);
                 $user->stage = 110;
                 $user->save();
         }

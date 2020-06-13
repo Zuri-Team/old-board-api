@@ -22,7 +22,7 @@ class TeamTaskImport implements ToCollection, WithHeadingRow
         foreach ($rows as $row) {
             $email = $row['email'];
 
-            $email = str_replace(' ', '', $datum['email']);
+            $email = str_replace(' ', '', $email);
             $user = User::where('email', $email)->first();
 
             if(!empty($user) && $user->stage == 2){

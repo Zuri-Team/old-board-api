@@ -22,11 +22,10 @@ class TeamTaskImport implements ToCollection, WithHeadingRow
         foreach ($rows as $row) {
             $email = $row['email'];
 
-            $email = str_replace('  ', '', $email);
-            $email = str_replace(' ', '', $email);
+            $email = str_replace(' ', '', $datum['email']);
+            $user = User::where('email', $email)->first();
 
-            $user = User::where('email', $email)->where('stage', 2)->first();
-            if($user){
+            if(!empty($user) && $user->stage == 2){
                 $slack_id =  $user->slack_id;
                 Slack::removeFromChannel($slack_id, 2);
                 Slack::addToChannel($slack_id, 3);

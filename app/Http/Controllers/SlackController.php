@@ -18,7 +18,7 @@ class SlackController extends Controller
     public function test(){
         // $result = SlackUser::lookupByEmail('seyi@hng.tech');
 
-        $result = Slack::removeFromGroup('U013RAALL3W', 'stage0');
+        // $result = Slack::removeFromGroup('U013RAALL3W', 'stage0');
         // $result = Slack::addToChannel('U013RAALL3W', '2');
         // $result = Slack::addToGroup('U013RAALL3W', 'team-incredibles');
         // $result = Slack::addToGroup('U013RAALL3W', 'stage3');
@@ -47,6 +47,21 @@ class SlackController extends Controller
 
         // dd($us);
 
+        $groups = SlackGroup::lists(false);
+
+        // dd($groups);
+        $res = array();
+                    
+        foreach($groups->groups as $group){
+            array_push($res, $group->name);
+            // if($group->name == $stage_name){
+            //     return $group->id;
+            //     break;
+            // }
+        }
+
+        dd($res);
+
         // $us = SlackApi::get('users.list', [
         //     'cursor' => 'dXNlcjpVMDE0NTE1REJKQg==',
         //     'limit' => 2
@@ -64,7 +79,7 @@ class SlackController extends Controller
         //     $result[] = $u->id;
         // }
 
-        dd($result);
+        // dd($result);
     }
     /**
      * Display a listing of the resource.

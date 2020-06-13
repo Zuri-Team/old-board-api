@@ -10,6 +10,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use App\Course;
 use App\CourseUser;
 use App\TaskSubmission;
+use App\Slack;
 
 
 class TeamTaskImport implements ToCollection, WithHeadingRow
@@ -21,18 +22,16 @@ class TeamTaskImport implements ToCollection, WithHeadingRow
         foreach ($rows as $row) {
             $email = $row['email'];
 
-            $user = User::where('email', $email)->where('stage', 5)->first();
+            $email = str_replace('  ', '', $email);
+            $email = str_replace(' ', '', $email);
+
+            $user = User::where('email', $email)->where('stage', 2)->first();
             if($user){
-                $res = new TaskSubmission();
-                $res->user_id = $user->id;
-                $res->task_id = 152;
-                $res->submission_link = ' ';
-                $res->grade_score = 2;
-                $res->comment = ' ';
-                $res->is_submitted = true;
-                $res->is_graded = true;
-                $res->graded_by = 714;
-                $res->save();
+                $slack_id =  $user->slack_id;
+                Slack::removeFromChannel($slack_id, 2);
+                Slack::addToChannel($slack_id, 3);
+                $user->stage = 3;
+                $user->save();
             }else{
                 continue;
             }

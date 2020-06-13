@@ -27,12 +27,11 @@ class TeamTaskImport implements ToCollection, WithHeadingRow
 
             $user = User::where('email', $email)->where('stage', 2)->first();
             if($user){
-                dd($user->username);
-                // $slack_id =  $user->slack_id;
-                // Slack::removeFromChannel($slack_id, 2);
-                // Slack::addToChannel($slack_id, 3);
-                // $user->stage = 3;
-                // $user->save();
+                $slack_id =  $user->slack_id;
+                Slack::removeFromChannel($slack_id, 2);
+                Slack::addToChannel($slack_id, 3);
+                $user->stage = 3;
+                $user->save();
             }else{
                 continue;
             }

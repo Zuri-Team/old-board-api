@@ -25,7 +25,7 @@ class TeamTaskImport implements ToCollection, WithHeadingRow
             $email = str_replace(' ', '', $email);
             $user = User::where('email', $email)->first();
 
-            if(!empty($user) && $user->stage == 2){
+            if(!empty($user)){
                 $slack_id =  $user->slack_id;
                 // Slack::removeFromChannel($slack_id, 2);
                 // Slack::addToChannel($slack_id, 3);

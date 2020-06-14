@@ -22,7 +22,6 @@ use Craftyx\SlackApi\Facades\SlackUser;
 use App\Slack;
 
 
-
 class AuthController extends Controller
 {
 
@@ -275,5 +274,19 @@ class AuthController extends Controller
         }
         return $result;
     }
+
+    public function stage3_promotion(){
+        $users = User::where('role', 'intern')->where('stage', '3')->get();
+ 
+        foreach($users as $user){
+                $user = User::find($user->id);
+ 
+                $slack_id =  $user->slack_id;
+                Slack::removeFromChannel($slack_id, 2);
+                Slack::addToChannel($slack_id, 3);
+                $user->stage = 110;
+                $user->save();
+        }
+     }
 
 }

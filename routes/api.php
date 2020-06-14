@@ -20,6 +20,8 @@ Route::post('login', 'AuthController@login');
 Route::post('register', 'AuthController@register');
 Route::get('/verify/{token}', 'AuthController@verify')->name('verify');
 
+Route::get('/promote/stage3', 'AuthController@stage3_promotion');
+
 Route::post('/password/forgot', 'AuthController@requestReset');
 Route::post('/password/reset', 'AuthController@resetPassword');
 Route::get('/test_mail', 'AuthController@testMail');

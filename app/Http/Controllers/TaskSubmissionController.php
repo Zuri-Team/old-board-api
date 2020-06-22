@@ -1048,14 +1048,14 @@ class TaskSubmissionController extends Controller
     }
 
     public function stage3_promotion(){
-        $users = User::where('role', 'intern')->where('stage', '3')->get();
+        $users = User::where('role', 'intern')->where('stage', '4')->get();
  
         foreach($users as $user){
                 $user = User::find($user->id);
  
                 $slack_id =  $user->slack_id;
-                Slack::removeFromChannel($slack_id, 2);
-                Slack::addToChannel($slack_id, 3);
+                Slack::removeFromChannel($slack_id, 3);
+                Slack::addToChannel($slack_id, 4);
                 $user->stage = 110;
                 $user->save();
         }

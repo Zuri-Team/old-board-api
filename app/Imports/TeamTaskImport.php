@@ -29,7 +29,7 @@ class TeamTaskImport implements ToCollection, WithHeadingRow
                 $slack_id =  $user->slack_id;
                 // Slack::removeFromChannel($slack_id, 2);
                 // Slack::addToChannel($slack_id, 3);
-                $user->stage = 3;
+                $user->stage = 4;
                 $user->save();
             }else{
                 continue;

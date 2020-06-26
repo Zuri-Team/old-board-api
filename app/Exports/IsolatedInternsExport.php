@@ -13,7 +13,7 @@ class IsolatedInternsExport implements FromView
     public function view(): View
     {
         return view('exports.isolate', [
-            'users' => User::where('stage', '!=', '110')->where('stage', '!=', '4')->where('role', 'intern')->get()
+            'users' => User::where('stage', '=', '110')->where('stage', '=', '4')->where('role', 'intern')->get()
         ]);
     }
 }

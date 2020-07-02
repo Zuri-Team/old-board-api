@@ -508,6 +508,8 @@ class UserProfileController extends Controller
         }
 
         $users = explode('<@', preg_replace('/\s+/', '', $request->text));
+        array_splice($users, 0, 1);
+
 
         $count = 0;
 
@@ -549,6 +551,8 @@ class UserProfileController extends Controller
         }
 
         $users = explode('<@', preg_replace('/\s+/', '', $request->text));
+        array_splice($users, 0, 1);
+
 
         $count = 0;
 

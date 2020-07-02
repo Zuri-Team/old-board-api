@@ -39,6 +39,7 @@ Route::get('/stats/summary', 'StatsController@summary');
 Route::post('/slack/events/promote', 'UserProfileController@promoteByCommand');
 Route::post('/slack/events/demote', 'UserProfileController@demoteByCommand');
 Route::post('/slack/events/isolate', 'UserProfileController@isolateByCommand');
+Route::post('/slack/events/pardon', 'UserProfileController@pardonByCommand');
 
 Route::group(['middleware' => 'auth:api', 'throttle:60,1'], function () {
 

@@ -447,6 +447,10 @@ class UserProfileController extends Controller
     public function promoteByCommand(Request $request)
     {
         // Log::info($request);
+        if (!$request->text) {
+            return response()->json('You failed to specify a slack handle', 200);
+        }
+
         $user = User::where('slack_id', $request->user_id)->first();
         if (!$user) {
             return response()->json('You are not a valid user on this workspace', 200);
@@ -486,6 +490,9 @@ class UserProfileController extends Controller
 
     public function demoteByCommand(Request $request)
     {
+        if (!$request->text) {
+            return response()->json('You failed to specify a slack handle', 200);
+        }
         $user = User::where('slack_id', $request->user_id)->first();
         if (!$user) {
             return response()->json('You are not a valid user on this workspace', 200);
@@ -517,6 +524,36 @@ class UserProfileController extends Controller
         }
 
         return response()->json($count . " user(s) demoted successfully. " . (count($users) - $count) . " failed", 200);
+
+    }
+
+    public function isolateByCommand(Request $request)
+    {
+        if (!$request->text) {
+            return response()->json('You failed to specify a slack handle', 200);
+        }
+        $user = User::where('slack_id', $request->user_id)->first();
+        if (!$user) {
+            return response()->json('You are not a valid user on this workspace', 200);
+        }
+        if ($user->role === 'intern') {
+            return response()->json('This operation is only reserved for admins', 200);
+        }
+
+        $users = explode(' ', $request->text);
+        $count = 0;
+
+        foreach ($users as $user) {
+            $slack_id = str_replace('<@', '', explode('|', $user)[0]);
+            $user = User::where('slack_id', $slack_id)->first();
+            if ($user) {
+                Slack::addToGroup($slack_id, 'isolation-center');
+                $count += 1;
+                $user->save();
+            }
+        }
+
+        return response()->json($count . " user(s) moved to isolation center successfully. " . (count($users) - $count) . " failed", 200);
 
     }
 

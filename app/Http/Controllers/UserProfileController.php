@@ -446,8 +446,41 @@ class UserProfileController extends Controller
 
     public function promoteByCommand(Request $request)
     {
-        Log::info($request);
-        return response()->json('user promoted', 200);
+        // Log::info($request);
+        $user = User::where('slack_id', $request->user_id)->first();
+        if (!$user) {
+            return response()->json('You are not a valid user on this workspace', 200);
+        }
+        if ($user->role === 'intern') {
+            return response()->json('This operation is only preserved for admins', 200);
+        }
+
+        if (!is_numeric(substr($request->channel_name, -1)) || strpos($request->channel_name, 'stage') === false || strlen($request->channel_name) > 7) {
+            return response()->json('Promotion can only be done in stage 1 to stage 10 channels', 200);
+        };
+
+        $users = explode(' ', $request->text);
+        $count = 0;
+
+        foreach ($users as $user) {
+            $slack_id = str_replace('<@', '', explode('|', $user)[0]);
+            $user = User::where('slack_id', $slack_id)->first();
+            if ($user) {
+                $currentStage = $user->stage;
+                $nextStage = $currentStage + 1;
+                if ($nextStage > 10) {
+                    continue;
+                } else {
+                    Slack::removeFromChannel($slack_id, $currentStage);
+                    Slack::addToChannel($slack_id, $stage);
+                    $user->stage = $nextStage;
+                    $count += 1;
+                    $user->save();
+                }
+            }
+        }
+
+        return response()->json($count . " user(s) promoted successfully. " . (count($users) - $count) . " failed", 200);
 
     }
 }

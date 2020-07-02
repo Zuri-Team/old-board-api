@@ -463,8 +463,14 @@ class UserProfileController extends Controller
         //     return response()->json('Promotion can only be done in stage 1 to stage 10 channels', 200);
         // };
 
-        $users = explode(' ', $request->text);
+        $rawArray = explode(' ', $request->text);
+        $stage = (int) $rawArray[0];
+        $users = array_splice($rawArray, 0, 1);
         $count = 0;
+        if (!is_numeric($stage)) {
+            return response()->json('Please specify a stage', 200);
+
+        }
 
         foreach ($users as $user) {
             $slack_id = str_replace('<@', '', explode('|', $user)[0]);
@@ -472,11 +478,11 @@ class UserProfileController extends Controller
             if ($user) {
                 $currentStage = $user->stage;
                 $nextStage = $currentStage + 1;
-                if ($nextStage > 10) {
+                if ($stage < 1 || $stage > 10) {
                     continue;
                 } else {
                     Slack::removeFromChannel($slack_id, $currentStage);
-                    Slack::addToChannel($slack_id, $nextStage);
+                    Slack::addToChannel($slack_id, $stage);
                     $user->stage = $nextStage;
                     $count += 1;
                     $user->save();
@@ -501,8 +507,14 @@ class UserProfileController extends Controller
             return response()->json('This operation is only reserved for admins', 200);
         }
 
-        $users = explode(' ', $request->text);
+        $rawArray = explode(' ', $request->text);
+        $stage = (int) $rawArray[0];
+        $users = array_splice($rawArray, 0, 1);
         $count = 0;
+        if (!is_numeric($stage)) {
+            return response()->json('Please specify a stage', 200);
+
+        }
 
         foreach ($users as $user) {
             $slack_id = str_replace('<@', '', explode('|', $user)[0]);
@@ -511,11 +523,11 @@ class UserProfileController extends Controller
                 $currentStage = $user->stage;
                 $previousStage = $currentStage - 1;
 
-                if ($previousStage < 1) {
+                if ($stage < 1 || $stage > 10) {
                     continue;
                 } else {
                     Slack::removeFromChannel($slack_id, $currentStage);
-                    Slack::addToChannel($slack_id, $previousStage);
+                    Slack::addToChannel($slack_id, $stage);
                     $user->stage = $previousStage;
                     $count += 1;
                     $user->save();

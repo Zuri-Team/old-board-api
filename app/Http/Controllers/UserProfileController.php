@@ -509,7 +509,7 @@ class UserProfileController extends Controller
                 } else {
                     Slack::removeFromChannel($slack_id, $currentStage);
                     Slack::addToChannel($slack_id, $previousStage);
-                    $user->stage = $nextStage;
+                    $user->stage = $previousStage;
                     $count += 1;
                     $user->save();
                 }

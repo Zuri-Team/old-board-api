@@ -463,7 +463,7 @@ class UserProfileController extends Controller
         //     return response()->json('Promotion can only be done in stage 1 to stage 10 channels', 200);
         // };
 
-        $users = explode(' ', $request->text);
+        $users = explode('<@', preg_replace('/\s+/', '', $request->text));
         $stage = $users[0];
         array_splice($users, 0, 1);
         $count = 0;
@@ -473,7 +473,7 @@ class UserProfileController extends Controller
         }
 
         foreach ($users as $user) {
-            $slack_id = str_replace('<@', '', explode('|', $user)[0]);
+            $slack_id = explode('|', $user)[0];
             $user = User::where('slack_id', $slack_id)->first();
             if ($user) {
                 $currentStage = $user->stage;
@@ -481,8 +481,8 @@ class UserProfileController extends Controller
                 if (intval($stage) < 1 || intval($stage) > 10) {
                     continue;
                 } else {
-                    Slack::removeFromChannel($slack_id, $currentStage);
-                    Slack::addToChannel($slack_id, $stage);
+                    // Slack::removeFromChannel($slack_id, $currentStage);
+                    // Slack::addToChannel($slack_id, $stage);
                     $user->stage = $stage;
                     $count += 1;
                     $user->save();
@@ -507,11 +507,13 @@ class UserProfileController extends Controller
             return response()->json('This operation is only reserved for admins', 200);
         }
 
-        $users = explode(' ', $request->text);
+        $users = explode('<@', preg_replace('/\s+/', '', $request->text));
+
         $count = 0;
 
         foreach ($users as $user) {
-            $slack_id = str_replace('<@', '', explode('|', $user)[0]);
+            $slack_id = explode('|', $user)[0];
+
             $user = User::where('slack_id', $slack_id)->first();
             if ($user) {
                 $currentStage = $user->stage;
@@ -546,11 +548,13 @@ class UserProfileController extends Controller
             return response()->json('This operation is only reserved for admins', 200);
         }
 
-        $users = explode(' ', $request->text);
+        $users = explode('<@', preg_replace('/\s+/', '', $request->text));
+
         $count = 0;
 
         foreach ($users as $user) {
-            $slack_id = str_replace('<@', '', explode('|', $user)[0]);
+            $slack_id = explode('|', $user)[0];
+
             $user = User::where('slack_id', $slack_id)->first();
             if ($user) {
                 Slack::addToGroup($slack_id, 'isolation-center');
@@ -576,11 +580,13 @@ class UserProfileController extends Controller
             return response()->json('This operation is only reserved for admins', 200);
         }
 
-        $users = explode(' ', $request->text);
+        $users = explode('<@', preg_replace('/\s+/', '', $request->text));
+
         $count = 0;
 
         foreach ($users as $user) {
-            $slack_id = str_replace('<@', '', explode('|', $user)[0]);
+            $slack_id = explode('|', $user)[0];
+
             $user = User::where('slack_id', $slack_id)->first();
             if ($user) {
                 Slack::removeFromGroup($slack_id, 'isolation-center');

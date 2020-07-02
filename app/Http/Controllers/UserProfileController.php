@@ -452,7 +452,7 @@ class UserProfileController extends Controller
             return response()->json('You are not a valid user on this workspace', 200);
         }
         if ($user->role === 'intern') {
-            return response()->json('This operation is only preserved for admins', 200);
+            return response()->json('This operation is only reserved for admins', 200);
         }
 
         // if (!is_numeric(substr($request->channel_name, -1)) || strpos($request->channel_name, 'stage') === false || strlen($request->channel_name) > 7) {
@@ -483,4 +483,41 @@ class UserProfileController extends Controller
         return response()->json($count . " user(s) promoted successfully. " . (count($users) - $count) . " failed", 200);
 
     }
+
+    public function demoteByCommand(Request $request)
+    {
+        $user = User::where('slack_id', $request->user_id)->first();
+        if (!$user) {
+            return response()->json('You are not a valid user on this workspace', 200);
+        }
+        if ($user->role === 'intern') {
+            return response()->json('This operation is only reserved for admins', 200);
+        }
+
+        $users = explode(' ', $request->text);
+        $count = 0;
+
+        foreach ($users as $user) {
+            $slack_id = str_replace('<@', '', explode('|', $user)[0]);
+            $user = User::where('slack_id', $slack_id)->first();
+            if ($user) {
+                $currentStage = $user->stage;
+                $previousStage = $currentStage - 1;
+
+                if ($previousStage < 1) {
+                    continue;
+                } else {
+                    Slack::removeFromChannel($slack_id, $currentStage);
+                    Slack::addToChannel($slack_id, $previousStage);
+                    $user->stage = $nextStage;
+                    $count += 1;
+                    $user->save();
+                }
+            }
+        }
+
+        return response()->json($count . " user(s) demoted successfully. " . (count($users) - $count) . " failed", 200);
+
+    }
+
 }

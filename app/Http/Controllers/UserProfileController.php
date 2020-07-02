@@ -476,8 +476,8 @@ class UserProfileController extends Controller
             $slack_id = explode('|', $user)[0];
             $user = User::where('slack_id', $slack_id)->first();
             if ($user) {
-                $currentStage = $stage - 1;
-                $nextStage = $currentStage + 1;
+                $currentStage = intval($stage) - 1;
+                // $nextStage = $currentStage + 1;
                 if (intval($stage) < 1 || intval($stage) > 10) {
                     continue;
                 } else {

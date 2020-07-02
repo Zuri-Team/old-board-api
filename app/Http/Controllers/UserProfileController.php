@@ -464,7 +464,7 @@ class UserProfileController extends Controller
         // };
 
         $users = explode(' ', $request->text);
-        $stage = (int) $users[0];
+        $stage = $users[0];
         array_splice($users, 0, 1);
         $count = 0;
         if (!is_numeric($stage)) {
@@ -478,7 +478,7 @@ class UserProfileController extends Controller
             if ($user) {
                 $currentStage = $user->stage;
                 $nextStage = $currentStage + 1;
-                if ($stage < 1 || $stage > 10) {
+                if (intval($stage) < 1 || intval($stage) > 10) {
                     continue;
                 } else {
                     Slack::removeFromChannel($slack_id, $currentStage);
@@ -490,7 +490,7 @@ class UserProfileController extends Controller
             }
         }
 
-        return response()->json($count . " user(s) promoted successfully. " . (count($users) - $count) . " failed", 200);
+        return response()->json($count . " user(s) promoted to stage " . $stage . " successfully. " . (count($users) - $count) . " failed", 200);
 
     }
 
@@ -508,13 +508,7 @@ class UserProfileController extends Controller
         }
 
         $users = explode(' ', $request->text);
-        $stage = (int) $users[0];
-        array_splice($users, 0, 1);
         $count = 0;
-        if (!is_numeric($stage)) {
-            return response()->json('Please specify a stage', 200);
-
-        }
 
         foreach ($users as $user) {
             $slack_id = str_replace('<@', '', explode('|', $user)[0]);
@@ -523,11 +517,11 @@ class UserProfileController extends Controller
                 $currentStage = $user->stage;
                 $previousStage = $currentStage - 1;
 
-                if ($stage < 1 || $stage > 10) {
+                if ($previousStage < 1) {
                     continue;
                 } else {
                     Slack::removeFromChannel($slack_id, $currentStage);
-                    Slack::addToChannel($slack_id, $stage);
+                    Slack::addToChannel($slack_id, $previousStage);
                     $user->stage = $previousStage;
                     $count += 1;
                     $user->save();

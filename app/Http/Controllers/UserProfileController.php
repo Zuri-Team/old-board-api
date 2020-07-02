@@ -547,7 +547,7 @@ class UserProfileController extends Controller
             $slack_id = str_replace('<@', '', explode('|', $user)[0]);
             $user = User::where('slack_id', $slack_id)->first();
             if ($user) {
-                Slack::addToGroup($slack_id, 'privategroup');
+                Slack::addToGroup($slack_id, 'isolation-center');
                 $count += 1;
                 $user->save();
             }
@@ -577,7 +577,7 @@ class UserProfileController extends Controller
             $slack_id = str_replace('<@', '', explode('|', $user)[0]);
             $user = User::where('slack_id', $slack_id)->first();
             if ($user) {
-                Slack::removeFromGroup($slack_id, 'privategroup');
+                Slack::removeFromGroup($slack_id, 'isolation-centa');
                 $count += 1;
                 $user->save();
             }

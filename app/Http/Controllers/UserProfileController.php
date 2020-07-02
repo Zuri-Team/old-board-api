@@ -481,7 +481,7 @@ class UserProfileController extends Controller
                 if (intval($stage) < 1 || intval($stage) > 10) {
                     continue;
                 } else {
-                    Slack::removeFromChannel($slack_id, $currentStage);
+                    Slack::removeFromChannel($slack_id, $stage - 1);
                     Slack::addToChannel($slack_id, $stage);
                     $user->stage = $stage;
                     $count += 1;

@@ -583,7 +583,7 @@ class UserProfileController extends Controller
             }
         }
 
-        return response()->json($count . " user(s) removed from isolation center successfully. " . (count($users) - $count) . " failed: " . $request->channel_name , 200);
+        return response()->json($count . " user(s) removed from isolation center successfully. " . (count($users) - $count) . " failed", 200);
 
     }
 

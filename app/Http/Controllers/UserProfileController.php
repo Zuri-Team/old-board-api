@@ -577,7 +577,7 @@ class UserProfileController extends Controller
             $slack_id = str_replace('<@', '', explode('|', $user)[0]);
             $user = User::where('slack_id', $slack_id)->first();
             if ($user) {
-                Slack::removeFromGroup($slack_id, 'random');
+                Slack::removeFromGroup($slack_id, 'isolation-center');
                 $count += 1;
                 $user->save();
             }

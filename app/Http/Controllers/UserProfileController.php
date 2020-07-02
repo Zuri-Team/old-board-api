@@ -463,9 +463,9 @@ class UserProfileController extends Controller
         //     return response()->json('Promotion can only be done in stage 1 to stage 10 channels', 200);
         // };
 
-        $rawArray = explode(' ', $request->text);
-        $stage = (int) $rawArray[0];
-        $users = array_splice($rawArray, 0, 1);
+        $users = explode(' ', $request->text);
+        $stage = (int) $users[0];
+        array_splice($users, 0, 1);
         $count = 0;
         if (!is_numeric($stage)) {
             return response()->json('Please specify a stage', 200);
@@ -507,9 +507,9 @@ class UserProfileController extends Controller
             return response()->json('This operation is only reserved for admins', 200);
         }
 
-        $rawArray = explode(' ', $request->text);
-        $stage = (int) $rawArray[0];
-        $users = array_splice($rawArray, 0, 1);
+        $users = explode(' ', $request->text);
+        $stage = (int) $users[0];
+        array_splice($users, 0, 1);
         $count = 0;
         if (!is_numeric($stage)) {
             return response()->json('Please specify a stage', 200);

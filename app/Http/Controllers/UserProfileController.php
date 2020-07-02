@@ -455,9 +455,9 @@ class UserProfileController extends Controller
             return response()->json('This operation is only preserved for admins', 200);
         }
 
-        if (!is_numeric(substr($request->channel_name, -1)) || strpos($request->channel_name, 'stage') === false || strlen($request->channel_name) > 7) {
-            return response()->json('Promotion can only be done in stage 1 to stage 10 channels', 200);
-        };
+        // if (!is_numeric(substr($request->channel_name, -1)) || strpos($request->channel_name, 'stage') === false || strlen($request->channel_name) > 7) {
+        //     return response()->json('Promotion can only be done in stage 1 to stage 10 channels', 200);
+        // };
 
         $users = explode(' ', $request->text);
         $count = 0;
@@ -472,7 +472,7 @@ class UserProfileController extends Controller
                     continue;
                 } else {
                     Slack::removeFromChannel($slack_id, $currentStage);
-                    Slack::addToChannel($slack_id, $stage);
+                    Slack::addToChannel($slack_id, $nextStage);
                     $user->stage = $nextStage;
                     $count += 1;
                     $user->save();

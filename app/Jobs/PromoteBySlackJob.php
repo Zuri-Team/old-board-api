@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Slack;
 use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -35,7 +36,7 @@ class PromoteBySlackJob implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
+    public function handle(Slack $slack)
     {
         $count = 0;
         foreach ($this->users as $user) {
@@ -50,8 +51,8 @@ class PromoteBySlackJob implements ShouldQueue
                     $user->stage = $this->stage;
                     if ($user->save()) {
                         $count += 1;
-                        \App\Slack::removeFromChannel($slack_id, $currentStage);
-                        \App\Slack::addToChannel($slack_id, $this->stage);
+                        $slack::removeFromChannel($slack_id, $currentStage);
+                        $slack::addToChannel($slack_id, $this->stage);
                     };
                 }
             }

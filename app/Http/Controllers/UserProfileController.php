@@ -474,10 +474,29 @@ class UserProfileController extends Controller
 
         }
 
-        $job = (new PromoteBySlackJob($stage, $users, $request->response_url))->delay(Carbon::now()->addSeconds(5));
-        dispatch($job);
+       
+        $count = 0;
+        foreach ($this->users as $user) {
+            $slack_id = explode('|', $user)[0];
+            $user = User::where('slack_id', $slack_id)->first();
+            if ($user) {
+                $currentStage = intval($this->stage) - 1;
+                // $nextStage = $currentStage + 1;
+                if (intval($this->stage) < 1 || intval($this->stage) > 10 || $user->stage == $this->stage) {
+                    continue;
+                } else {
+                    $count += 1;
+                    Slack::removeFromChannel($slack_id, $currentStage);
+                    Slack::addToChannel($slack_id, $this->stage);
+                    $user->stage = $this->stage;
+                    $user->save();
+                }
+            }
+        } // $job = (new PromoteBySlackJob($stage, $users, $request->response_url))->delay(Carbon::now()->addSeconds(5));
+        // dispatch($job);
 
-        return response()->json("Promoting users shortly", 200);
+        // return response()->json("Promoting users shortly", 200);
+        return response()->json($count . " user(s) promoted successfully. " . (count($users) - $count) . " failed", 200);
 
     }
 

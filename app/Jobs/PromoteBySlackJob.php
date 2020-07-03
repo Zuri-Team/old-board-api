@@ -36,7 +36,7 @@ class PromoteBySlackJob implements ShouldQueue
      *
      * @return void
      */
-    public function handle(Slack $slack)
+    public function handle()
     {
         $count = 0;
         foreach ($this->users as $user) {
@@ -51,8 +51,8 @@ class PromoteBySlackJob implements ShouldQueue
                     $user->stage = $this->stage;
                     if ($user->save()) {
                         $count += 1;
-                        $slack::removeFromChannel($slack_id, $currentStage);
-                        $slack::addToChannel($slack_id, $this->stage);
+                        Slack::removeFromChannel($slack_id, $currentStage);
+                        Slack::addToChannel($slack_id, $this->stage);
                     };
                 }
             }

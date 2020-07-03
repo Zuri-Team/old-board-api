@@ -82,10 +82,10 @@ return [
             'model' => App\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'slack' => [
+            'driver' => 'eloquent',
+            'model' => App\Slack::class,
+        ],
     ],
 
     /*

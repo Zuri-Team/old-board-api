@@ -8,6 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class PromoteBySlackJob implements ShouldQueue
 {
@@ -61,5 +62,7 @@ class PromoteBySlackJob implements ShouldQueue
         $response = $client->post($this->url, array(
             'form_params' => $data,
         ));
+        Log::info($response);
+
     }
 }

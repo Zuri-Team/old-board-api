@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Classes\ResponseTrait;
+use App\Jobs\PromoteBySlackJob;
 use App\Notifications\UserNotifications;
 use App\Slack;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -463,35 +465,19 @@ class UserProfileController extends Controller
         //     return response()->json('Promotion can only be done in stage 1 to stage 10 channels', 200);
         // };
 
-        $users = explode('<@', preg_replace('/\s+/', '', $request->text)); 
+        $users = explode('<@', preg_replace('/\s+/', '', $request->text));
         $stage = $users[0];
         array_splice($users, 0, 1);
         $count = 0;
         if (!is_numeric($stage)) {
-            return response()->json('Please specify a stage', 200); 
+            return response()->json('Please specify a stage', 200);
 
         }
 
-        foreach ($users as $user) {
-            $slack_id = explode('|', $user)[0];
-            $user = User::where('slack_id', $slack_id)->first();
-            if ($user) {
-                $currentStage = intval($stage) - 1;
-                // $nextStage = $currentStage + 1;
-                if (intval($stage) < 1 || intval($stage) > 10) {
-                    continue;
-                } else {
-                    $user->stage = $stage;
-                    $count += 1;
-                    if ($user->save()) {
-                        Slack::removeFromChannel($slack_id, $currentStage);
-                        Slack::addToChannel($slack_id, $stage);
-                    };
-                }
-            }
-        }
+        $job = (new PromoteBySlackJob($stage, $users, $request->response_url))->delay(Carbon::now()->addSeconds(5));
+        dispatch($job);
 
-        return response()->json($count . " user(s) promoted to stage " . $stage . " successfully. " . (count($users) - $count) . " failed", 200);
+        return response()->json("Promoting users shortly", 200);
 
     }
 
@@ -551,7 +537,7 @@ class UserProfileController extends Controller
         }
 
         $users = explode('<@', preg_replace('/\s+/', '', $request->text));
-        array_splice($users, 0, 1); 
+        array_splice($users, 0, 1);
 
         $count = 0;
 

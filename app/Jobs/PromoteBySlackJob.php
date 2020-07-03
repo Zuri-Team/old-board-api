@@ -2,15 +2,14 @@
 
 namespace App\Jobs;
 
+use App\Slack;
+use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
-use App\Slack;
-use App\User;
-
 
 class PromoteBySlackJob implements ShouldQueue
 {
@@ -60,9 +59,11 @@ class PromoteBySlackJob implements ShouldQueue
         }
         $client = new \GuzzleHttp\Client();
 
-        $data['text'] = $count . " user(s) demoted successfully. " . (count($this->users) - $count) . " failed";
+        $text = $count . " user(s) demoted successfully. " . (count($this->users) - $count) . " failed";
         $response = $client->post($this->url, array(
-            'form_params' => $data,
+            'form_params' => [
+                "text" => $text,
+            ],
         ));
         Log::info($response);
 

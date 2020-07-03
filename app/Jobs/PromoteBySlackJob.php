@@ -56,15 +56,14 @@ class PromoteBySlackJob implements ShouldQueue
                 }
             }
         }
-        $client = new \GuzzleHttp\Client([
-            'headers' => ['Content-Type' => 'application/json'],
-        ]);
+        $client = new \GuzzleHttp\Client();
 
         $text = $count . " user(s) demoted successfully. " . (count($this->users) - $count) . " failed";
-        $response = $client->post($this->url, array(
-            'body' => json_encode([
+        $response = $client->request('POST', $this->url, array(
+            'json' => [
+                "response_type" => "ephemeral",
                 "text" => $text,
-            ]),
+            ],
         ));
         Log::info($response);
 

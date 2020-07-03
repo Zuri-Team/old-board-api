@@ -446,7 +446,7 @@ class UserProfileController extends Controller
         return $this->sendSuccess([], 'make intern', 200);
     }
 
-    public function promoteByCommand(Request $request)
+    public function promoteByCommand(Request $request, Slack $slack)
     {
         // Log::info($request);
         if (!$request->text) {

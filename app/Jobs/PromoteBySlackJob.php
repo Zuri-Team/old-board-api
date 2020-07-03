@@ -18,17 +18,19 @@ class PromoteBySlackJob implements ShouldQueue
     protected $stage;
     protected $users;
     protected $url;
+    protected $slack;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($stage, $users, $url)
+    public function __construct($stage, $users, $url, Slack $slack)
     {
         $this->stage = $stage;
         $this->users = $users;
         $this->url = $url;
+        $this->slack = $slack;
     }
 
     /**
@@ -36,7 +38,7 @@ class PromoteBySlackJob implements ShouldQueue
      *
      * @return void
      */
-    public function handle(Slack $slack)
+    public function handle()
     {
         $count = 0;
         foreach ($this->users as $user) {
@@ -49,8 +51,8 @@ class PromoteBySlackJob implements ShouldQueue
                     continue;
                 } else {
                     $count += 1;
-                    $slack->removeFromChannel($slack_id, $currentStage);
-                    $slack->addToChannel($slack_id, $this->stage);
+                    $this->slack->removeFromChannel($slack_id, $currentStage);
+                    $this->slack->addToChannel($slack_id, $this->stage);
                     $user->stage = $this->stage;
                     $user->save();
                 }

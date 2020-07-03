@@ -476,19 +476,19 @@ class UserProfileController extends Controller
 
        
         $count = 0;
-        foreach ($this->users as $user) {
+        foreach ($users as $user) {
             $slack_id = explode('|', $user)[0];
             $user = User::where('slack_id', $slack_id)->first();
             if ($user) {
-                $currentStage = intval($this->stage) - 1;
+                $currentStage = intval($stage) - 1;
                 // $nextStage = $currentStage + 1;
-                if (intval($this->stage) < 1 || intval($this->stage) > 10 || $user->stage == $this->stage) {
+                if (intval($stage) < 1 || intval($stage) > 10 || $user->stage == $stage) {
                     continue;
                 } else {
                     $count += 1;
                     Slack::removeFromChannel($slack_id, $currentStage);
-                    Slack::addToChannel($slack_id, $this->stage);
-                    $user->stage = $this->stage;
+                    Slack::addToChannel($slack_id, $stage);
+                    $user->stage = $stage;
                     $user->save();
                 }
             }

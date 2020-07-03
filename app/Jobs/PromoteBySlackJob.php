@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
-use App\User;
 use App\Slack;
+use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -45,7 +45,7 @@ class PromoteBySlackJob implements ShouldQueue
             if ($user) {
                 $currentStage = intval($this->stage) - 1;
                 // $nextStage = $currentStage + 1;
-                if (intval($this->stage) < 1 || intval($this->stage) > 10) {
+                if (intval($this->stage) < 1 || intval($this->stage) > 10 || $user->stage == $this->stage) {
                     continue;
                 } else {
                     $user->stage = $this->stage;

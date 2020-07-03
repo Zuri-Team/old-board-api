@@ -9,6 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use \App\Slack;
 
 class PromoteBySlackJob implements ShouldQueue
 {
@@ -50,8 +51,8 @@ class PromoteBySlackJob implements ShouldQueue
                     $user->stage = $this->stage;
                     if ($user->save()) {
                         $count += 1;
-                        \App\Slack::removeFromChannel($slack_id, $currentStage);
-                        \App\Slack::addToChannel($slack_id, $this->stage);
+                        Slack::removeFromChannel($slack_id, $currentStage);
+                        Slack::addToChannel($slack_id, $this->stage);
                     };
                 }
             }

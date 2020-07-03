@@ -61,9 +61,9 @@ class PromoteBySlackJob implements ShouldQueue
 
         $text = $count . " user(s) demoted successfully. " . (count($this->users) - $count) . " failed";
         $response = $client->post($this->url, array(
-            'form_params' => [
+            'form_params' => json_encode([
                 "text" => $text,
-            ],
+            ]),
         ));
         Log::info($response);
 

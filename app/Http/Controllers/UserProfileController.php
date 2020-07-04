@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Classes\ResponseTrait;
-use App\Jobs\PromoteBySlackJob;
 use App\Notifications\UserNotifications;
 use App\Slack;
 use App\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -461,6 +459,10 @@ class UserProfileController extends Controller
             return response()->json('This operation is only reserved for admins', 200);
         }
 
+        if (count($users) > 5) {
+            return response()->json('Only 5 users can be promoted at a time', 200);
+        }
+
         // if (!is_numeric(substr($request->channel_name, -1)) || strpos($request->channel_name, 'stage') === false || strlen($request->channel_name) > 7) {
         //     return response()->json('Promotion can only be done in stage 1 to stage 10 channels', 200);
         // };
@@ -474,7 +476,6 @@ class UserProfileController extends Controller
 
         }
 
-       
         $count = 0;
         foreach ($users as $user) {
             $slack_id = explode('|', $user)[0];
@@ -482,7 +483,7 @@ class UserProfileController extends Controller
             if ($user) {
                 $currentStage = intval($stage) - 1;
                 // $nextStage = $currentStage + 1;
-                if (intval($stage) < 1 || intval($stage) > 10 || $user->stage == $stage) {
+                if (intval($stage) < 1 || intval($stage) > 10) {
                     continue;
                 } else {
                     $count += 1;
@@ -496,8 +497,14 @@ class UserProfileController extends Controller
         // dispatch($job);
 
         // return response()->json("Promoting users shortly", 200);
-        return response()->json($count . " user(s) promoted successfully. " . (count($users) - $count) . " failed", 200);
 
+        $data['text'] = $count . " user(s) promoted successfully by " . $user->firstname . " " . $user->lastname . ". " . (count($users) - $count) . " failed";
+        $data['channel'] = $request->channel_id;
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request('POST', $request->response_url, array(
+            'json' => $data,
+        ));
+        // return response()->json($data, 200);
     }
 
     public function demoteByCommand(Request $request)

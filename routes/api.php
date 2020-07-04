@@ -12,9 +12,9 @@
  */
 
 Route::get('slacks/test/{prev}/{next}', 'SlackController@show');
-Route::post('slacks/verify','SlackController@verify_user');
-Route::post('slacks/profile','SlackController@slack_user_profile');
-Route::get('slacks/test','SlackController@test');
+Route::post('slacks/verify', 'SlackController@verify_user');
+Route::post('slacks/profile', 'SlackController@slack_user_profile');
+Route::get('slacks/test', 'SlackController@test');
 
 Route::post('login', 'AuthController@login');
 Route::post('register', 'AuthController@register');
@@ -32,11 +32,15 @@ Route::get('profile/{user}', 'ProfileController@index');
 //Status
 Route::get('status', 'StatusController@status');
 
-
 //get all tracks without signing in
 Route::get('track/all', 'TrackController@all');
 
 Route::get('/stats/summary', 'StatsController@summary');
+Route::post('/slack/events/promote', 'UserProfileController@promoteByCommand');
+Route::post('/slack/events/demote', 'UserProfileController@demoteByCommand');
+Route::post('/slack/events/isolate', 'UserProfileController@isolateByCommand');
+Route::post('/slack/events/pardon', 'UserProfileController@pardonByCommand');
+
 Route::group(['middleware' => 'auth:api', 'throttle:60,1'], function () {
 
     //User Profile Routes
@@ -60,7 +64,6 @@ Route::group(['middleware' => 'auth:api', 'throttle:60,1'], function () {
 
     });
 
-        
     //Activity Routes
     Route::group(['prefix' => 'activity'], function () {
         Route::get('/all', 'ActivityController@get_all_activities');
@@ -68,12 +71,11 @@ Route::group(['middleware' => 'auth:api', 'throttle:60,1'], function () {
         Route::get('/admins', 'ActivityController@get_all_admin_activities');
         Route::get('/search/{query}', 'ActivityController@search_all_logs');
 
-
         // Route::get('/search/interns/{query}', 'ActivityController@search_all_intern_logs');
         // Route::get('/search/admins/{query}', 'ActivityController@search_all_admin_logs');
     });
 
-    Route::group(['prefix' => 'post-comment'], function() {
+    Route::group(['prefix' => 'post-comment'], function () {
         Route::get('/{id}/comments', 'PostCommentController@retrieve_post_comments');
         Route::post('/{id}/comment', 'PostCommentController@user_post_comment');
         Route::put('/comment/{id}', 'PostCommentController@update_user_comment');
@@ -81,7 +83,7 @@ Route::group(['middleware' => 'auth:api', 'throttle:60,1'], function () {
     });
     // makeIntern
     //Exports Routes
-    Route::group(['prefix' => 'exports'], function() {
+    Route::group(['prefix' => 'exports'], function () {
         Route::get('/interns', 'ExportController@interns');
         Route::get('/admins', 'ExportController@admins');
         Route::get('/active', 'ExportController@active_interns');
@@ -92,7 +94,7 @@ Route::group(['middleware' => 'auth:api', 'throttle:60,1'], function () {
     });
 
     //Track Request routes
-    Route::group(['prefix' => 'track-requests'], function() {
+    Route::group(['prefix' => 'track-requests'], function () {
         Route::get('/all', 'TrackRequestController@all');
         Route::get('/request-count', 'TrackRequestController@get_request_count');
         Route::post('/send-request', 'TrackRequestController@request');
@@ -101,9 +103,8 @@ Route::group(['middleware' => 'auth:api', 'throttle:60,1'], function () {
         Route::get('/delete_all', 'TrackRequestController@deleteAll');
     });
 
-
-     //Course Request routes
-     Route::group(['prefix' => 'course-requests'], function() {
+    //Course Request routes
+    Route::group(['prefix' => 'course-requests'], function () {
         Route::get('/all', 'CourseRequestController@all');
         Route::get('/request-count', 'CourseRequestController@get_request_count');
         Route::post('/send-request', 'CourseRequestController@request');
@@ -112,17 +113,16 @@ Route::group(['middleware' => 'auth:api', 'throttle:60,1'], function () {
         Route::get('/delete_all', 'CourseRequestController@deleteAll');
     });
 
-
-    Route::group(['prefix' => 'course'], function() {
+    Route::group(['prefix' => 'course'], function () {
         Route::post('/import', 'CourseController@importCourse');
     });
-    
+
 //stat
-Route::get('/stats/dashboard', 'StatsController@dashboard');
-Route::get('/interns', 'InternsController@get_all_interns');
-Route::get('/admins', 'InternsController@get_all_admins');
-Route::get('/user/search/{query}', 'InternsController@search_users');
-Route::delete('intern/delete/{id}', 'InternsController@destroy');
+    Route::get('/stats/dashboard', 'StatsController@dashboard');
+    Route::get('/interns', 'InternsController@get_all_interns');
+    Route::get('/admins', 'InternsController@get_all_admins');
+    Route::get('/user/search/{query}', 'InternsController@search_users');
+    Route::delete('intern/delete/{id}', 'InternsController@destroy');
 
     Route::post('/password/update', 'AuthController@updatePassword');
     Route::post('/logout', 'AuthController@logout');
@@ -151,24 +151,23 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
     Route::post('promote_5', 'TaskSubmissionController@promote_to_stage_5'); //promote interns to stage 2
     Route::post('remove_stage_3', 'TaskSubmissionController@remove_stage_3'); //promote interns to stage 2
     Route::post('test_promotion', 'TaskSubmissionController@test_promotion'); //test promotion
-    Route::post('grading_task_submissions', 'TaskSubmissionController@grading_task_submissions'); 
+    Route::post('grading_task_submissions', 'TaskSubmissionController@grading_task_submissions');
 
-
-    Route::get('move_zero', 'TaskSubmissionController@moveToZero'); 
-    Route::post('task_2_promotion', 'TaskSubmissionController@task_2_promotion'); 
-    Route::post('get_pass_list', 'TaskSubmissionController@get_pass_list'); 
+    Route::get('move_zero', 'TaskSubmissionController@moveToZero');
+    Route::post('task_2_promotion', 'TaskSubmissionController@task_2_promotion');
+    Route::post('get_pass_list', 'TaskSubmissionController@get_pass_list');
     Route::post('send_slack_msg', 'TaskSubmissionController@sendSlackMessage');
 
     Route::get('design_promotion', 'TaskSubmissionController@design_promotion');
     Route::get('stage3_promotion', 'TaskSubmissionController@stage3_promotion');
     Route::get('isolate', 'TaskSubmissionController@isolate');
 
-    Route::get('percent/{percent}/{type}', 'TaskSubmissionController@check_percent'); 
-    Route::get('more_percent/{percent}/{type}', 'TaskSubmissionController@dynamic_percent'); 
-    Route::get('check_percent/{percent}', 'TaskSubmissionController@percent'); 
-    Route::post('submit_team', 'TaskSubmissionController@submitTeamTask'); 
-    Route::get('export_final', 'TaskSubmissionController@exportFinals'); 
-    Route::get('export_isolated', 'TaskSubmissionController@exportIsolated'); 
+    Route::get('percent/{percent}/{type}', 'TaskSubmissionController@check_percent');
+    Route::get('more_percent/{percent}/{type}', 'TaskSubmissionController@dynamic_percent');
+    Route::get('check_percent/{percent}', 'TaskSubmissionController@percent');
+    Route::post('submit_team', 'TaskSubmissionController@submitTeamTask');
+    Route::get('export_final', 'TaskSubmissionController@exportFinals');
+    Route::get('export_isolated', 'TaskSubmissionController@exportIsolated');
 
     //check_percent
     //remove_stage_3
@@ -193,7 +192,7 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
     Route::get('user/task/', 'TasksController@intern_view_track_task');
 
 //    Route::get('track/{id}/tasks', 'TasksController@viewTracktask');
-//    Route::get('tasks/{id}', 'TasksController@viewTask');
+    //    Route::get('tasks/{id}', 'TasksController@viewTask');
 
     Route::put('tasks/changestatus/{id}', 'TasksController@changeTaskStatus');
 
@@ -201,7 +200,6 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
     Route::post('teams/add-member', 'TeamController@addMember');
     Route::post('teams/remove-member', 'TeamController@removeMember');
     Route::get('teams/members/{id}', 'TeamController@viewMembers');
-
 
     Route::resource('posts', 'PostsController');
     Route::get('posts/view/{post}', 'PostsController@view_a_post');
@@ -215,21 +213,20 @@ Route::delete('intern/delete/{id}', 'InternsController@destroy');
     Route::delete('user/unprobate', 'ProbationController@unprobate_by_admin');
     Route::get('probation/status/{user}', 'ProbationController@is_on_onprobation');
     Route::get('probation/all', 'ProbationController@list_probations');
-    
+
     // NOTIFICATION
     Route::get('notifications', 'NotificationController@index');
     Route::delete('notifications', 'NotificationController@destroy');
     Route::post('notifications/markasread', 'NotificationController@markAsRead');
     Route::post('notifications/read', 'NotificationController@markOneAsRead');
     Route::get('notifications/notification_count', 'NotificationController@notification_count');
-    
-});
 
+});
 
 Route::get('leaderboard/{track}', 'LeaderboardController@viewAll');
 
 //Course Routes
-Route::group(['prefix' => 'course'], function() {
+Route::group(['prefix' => 'course'], function () {
     Route::post('/import', 'CourseController@importCourse');
     Route::post('/create', 'CourseController@createCourse');
     Route::get('/all', 'CourseController@allCourses');

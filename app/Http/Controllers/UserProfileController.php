@@ -529,6 +529,9 @@ class UserProfileController extends Controller
 
         $users = explode('<@', preg_replace('/\s+/', '', $request->text));
         array_splice($users, 0, 1);
+        if (count($users) > 5) {
+            return response()->json('Only 5 users can be promoted at a time', 200);
+        }
 
         $count = 0;
 
@@ -624,6 +627,40 @@ class UserProfileController extends Controller
         }
 
         return response()->json($count . " user(s) removed from isolation center successfully. " . (count($users) - $count) . " failed", 200);
+
+    }
+
+    public function getStageByCommand(Request $request)
+    {
+        if (!$request->text) {
+            return response()->json('You failed to specify a slack handle', 200);
+        }
+        $user = User::where('slack_id', $request->user_id)->first();
+        if (!$user) {
+            return response()->json('You are not a valid user on this workspace', 200);
+        }
+        if ($user->role === 'intern') {
+            return response()->json('This operation is only reserved for admins', 200);
+        }
+
+        $users = explode('<@', preg_replace('/\s+/', '', $request->text));
+        array_splice($users, 0, 1);
+        if (count($users) > 1) {
+            return response()->json('This operation can only be run on one user at a time', 200);
+        }
+
+        $user_stage = "";
+
+        foreach ($users as $user) {
+            $slack_id = explode('|', $user)[0];
+
+            $user = User::where('slack_id', $slack_id)->first();
+            if ($user) {
+                $user_stage = $user->stage;
+            }
+        }
+
+        return response()->json("Stage" . $user_stage, 200);
 
     }
 }

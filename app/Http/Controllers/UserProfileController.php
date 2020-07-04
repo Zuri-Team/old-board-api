@@ -645,7 +645,7 @@ class UserProfileController extends Controller
 
         $text = preg_replace('/\s+/', '', $request->text);
         if (strpos(trim($text), '<@') === false) {
-            $user = User::where('email', $text)->first();
+            $user = User::where('email', trim($text))->first();
             return response()->json("Email: Stage " . $user->email, 200);
 
         }

@@ -644,7 +644,7 @@ class UserProfileController extends Controller
         }
 
         $text = preg_replace('/\s+/', '', $request->text);
-        if (filter_var($text, FILTER_VALIDATE_EMAIL)) {
+        if (!filter_var($text, FILTER_VALIDATE_EMAIL)) {
             $user = User::where('email', $text)->first();
             return response()->json("Stage " . $text, 200);
 

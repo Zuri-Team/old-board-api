@@ -458,7 +458,7 @@ class UserProfileController extends Controller
         if ($req_user->role === 'intern') {
             return response()->json('This operation is only reserved for admins', 200);
         }
-        if ($req_user->channel_id !== 'C016BUB37RU') {
+        if ($request->channel_id !== 'C016BUB37RU') {
             return response()->json('You can only run this command from #promotion-log channel', 200);
         }
 
@@ -479,8 +479,11 @@ class UserProfileController extends Controller
         }
 
         $count = 0;
+        $prom_users = '';
         foreach ($users as $user) {
-            $slack_id = explode('|', $user)[0];
+            $parsed_user = explode('|', $user);
+            $slack_id = $parsed_user[0];
+            $prom_users .= " <@" . $parsed_user[1];
             $user = User::where('slack_id', $slack_id)->first();
             if ($user) {
                 $currentStage = intval($stage) - 1;
@@ -500,10 +503,10 @@ class UserProfileController extends Controller
 
         // return response()->json("Promoting users shortly", 200);
 
-        $data['text'] = $count . " user(s) promoted successfully by " . $req_user->firstname . " " . $req_user->lastname . $request->channel_id. ". " . (count($users) - $count) . " failed";
+        $data['text'] = $count . " user(s) promoted successfully by " . $req_user->firstname . " " . $req_user->lastname . $request->channel_id . ". " . (count($users) - $count) . " failed";
         $data['response_type'] = "in_channel";
         $data['channel'] = $request->channel_id;
-        $text = $count . " user(s) promoted successfully by " . $req_user->firstname . " " . $req_user->lastname . ". " . (count($users) - $count) . " failed";
+        $text = $prom_users . " promoted successfully by " . $req_user->firstname . " " . $req_user->lastname . ". " . (count($users) - $count) . " failed";
 
         return response()->json($data, 200);
     }

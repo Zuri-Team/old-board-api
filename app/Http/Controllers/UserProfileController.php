@@ -458,6 +458,9 @@ class UserProfileController extends Controller
         if ($req_user->role === 'intern') {
             return response()->json('This operation is only reserved for admins', 200);
         }
+        if ($req_user->channel_id !== 'C016BUB37RU') {
+            return response()->json('You can only run this command from #promotion-log channel', 200);
+        }
 
         // if (!is_numeric(substr($request->channel_name, -1)) || strpos($request->channel_name, 'stage') === false || strlen($request->channel_name) > 7) {
         //     return response()->json('Promotion can only be done in stage 1 to stage 10 channels', 200);

@@ -479,9 +479,11 @@ class UserProfileController extends Controller
         }
 
         $count = 0;
+        $prom_users = '';
         foreach ($users as $user) {
             $parsed_user = explode('|', $user);
             $slack_id = $parsed_user[0];
+            $prom_users .= " <@" . '|' . $parsed_user[1];
             $user = User::where('slack_id', $slack_id)->first();
             if ($user) {
                 $currentStage = intval($stage) - 1;
@@ -501,7 +503,7 @@ class UserProfileController extends Controller
 
         // return response()->json("Promoting users shortly", 200);
 
-        $data['text'] = $request->text . " promoted successfully by " . $req_user->firstname . " " . $req_user->lastname . ". " . (count($users) - $count) . " failed";
+        $data['text'] = $prom_users . " promoted successfully by " . $req_user->firstname . " " . $req_user->lastname . ". " . (count($users) - $count) . " failed";
         $data['response_type'] = "in_channel";
         $data['channel'] = $request->channel_id;
         $text = $prom_users . " promoted successfully by " . $req_user->firstname . " " . $req_user->lastname . ". " . (count($users) - $count) . " failed";
@@ -616,6 +618,4 @@ class UserProfileController extends Controller
         return response()->json($count . " user(s) removed from isolation center successfully. " . (count($users) - $count) . " failed", 200);
 
     }
-
-}
 }

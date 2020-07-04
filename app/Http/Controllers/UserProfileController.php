@@ -646,7 +646,7 @@ class UserProfileController extends Controller
         Log::info($request);
 
         $text = preg_replace('/\s+/', '', $request->text);
-        $mail = str_replace('>', explode('|', $text)[0]);
+        $mail = str_replace('>', '', explode('|', $text)[0]);
         if (filter_var($mail, FILTER_VALIDATE_EMAIL)) {
             $user = User::where('email', $mail)->first();
             return response()->json("Email: Stage " . $mail, 200);

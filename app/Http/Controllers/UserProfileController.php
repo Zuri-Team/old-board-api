@@ -483,7 +483,7 @@ class UserProfileController extends Controller
         foreach ($users as $user) {
             $parsed_user = explode('|', $user);
             $slack_id = $parsed_user[0];
-            $prom_users .= " <@" . $parsed_user[1];
+            $prom_users .= " <@" . '|' . $parsed_user[1];
             $user = User::where('slack_id', $slack_id)->first();
             if ($user) {
                 $currentStage = intval($stage) - 1;

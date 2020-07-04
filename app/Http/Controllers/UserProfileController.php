@@ -643,13 +643,13 @@ class UserProfileController extends Controller
             return response()->json('This operation is only reserved for admins', 200);
         }
 
-            Log::info($request);
-
+        Log::info($request);
 
         $text = preg_replace('/\s+/', '', $request->text);
-        if (strpos(trim($text), '<@') === false) {
-            $user = User::where('email', trim($text))->first();
-            return response()->json("Email: Stage " . $request, 200);
+        $mail = str_replace('>', explode('|', $text)[0]);
+        if (filter_var($mail, FILTER_VALIDATE_EMAIL)) {
+            $user = User::where('email', $mail)->first();
+            return response()->json("Email: Stage " . $user->stage, 200);
 
         }
 

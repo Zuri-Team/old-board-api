@@ -1062,7 +1062,7 @@ class TaskSubmissionController extends Controller
      }
 
      public function isolate(){
-        $users = User::where('role', 'intern')->where('stage', '!=', '5')->get();
+        $users = User::where('role', 'intern')->where('stage', '!=', '5')->orWhere('stage', '!=', '111')->get();
  
         foreach($users as $user){
                 $user = User::find($user->id);
@@ -1071,7 +1071,7 @@ class TaskSubmissionController extends Controller
                 $slack_id =  $user->slack_id;
                 // Slack::removeFromChannel($slack_id, 1);
                 Slack::addToGroup($slack_id, 'isolation-center');
-                $user->stage = 00;
+                $user->stage = 111;
                 $user->save();
         }
      }

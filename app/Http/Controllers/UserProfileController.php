@@ -643,8 +643,8 @@ class UserProfileController extends Controller
             return response()->json('This operation is only reserved for admins', 200);
         }
 
-        $text = '' . preg_replace('/\s+/', '', $request->text);
-        if (!strpos($text, '|')) {
+        $text = preg_replace('/\s+/', '', $request->text);
+        if (strpos($text, '|') === false) {
             $user = User::where('email', $text)->first();
             return response()->json("Stage " . $user->stage, 200);
 

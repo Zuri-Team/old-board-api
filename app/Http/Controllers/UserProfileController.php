@@ -505,7 +505,7 @@ class UserProfileController extends Controller
         $data['response_type'] = "in_channel";
         $data['channel'] = $request->channel_id;
         
-        return response()->json($data, 200);
+        return response()->json(json_encode($data), 200);
     }
 
     public function demoteByCommand(Request $request)

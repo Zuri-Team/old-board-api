@@ -504,8 +504,10 @@ class UserProfileController extends Controller
         $data['text'] = $count . " user(s) promoted successfully by " . $user->firstname . " " . $user->lastname . ". " . (count($users) - $count) . " failed";
         $data['response_type'] = "in_channel";
         $data['channel'] = $request->channel_id;
+        $text = $count . " user(s) promoted successfully by " . $user->firstname . " " . $user->lastname . ". " . (count($users) - $count) . " failed";
+
         
-        return response()->json(json_encode($data), 200);
+        return response()->json($text, 200);
     }
 
     public function demoteByCommand(Request $request)

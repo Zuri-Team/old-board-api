@@ -660,7 +660,7 @@ class UserProfileController extends Controller
             }
         }
 
-        return response()->json("Stage" . $user_stage, 200);
+        return response()->json("Stage " . $user_stage, 200);
 
     }
 }

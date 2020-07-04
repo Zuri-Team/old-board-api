@@ -643,6 +643,9 @@ class UserProfileController extends Controller
             return response()->json('This operation is only reserved for admins', 200);
         }
 
+            Log::info($request);
+
+
         $text = preg_replace('/\s+/', '', $request->text);
         if (strpos(trim($text), '<@') === false) {
             $user = User::where('email', trim($text))->first();

@@ -1066,7 +1066,6 @@ class TaskSubmissionController extends Controller
  
         foreach($users as $user){
                 $user = User::find($user->id);
-                return (object)$user;
  
                 $slack_id =  $user->slack_id;
                 // Slack::removeFromChannel($slack_id, 1);

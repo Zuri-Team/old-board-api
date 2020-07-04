@@ -451,11 +451,11 @@ class UserProfileController extends Controller
             return response()->json('You failed to specify a slack handle', 200);
         }
 
-        $user = User::where('slack_id', $request->user_id)->first();
-        if (!$user) {
+        $req_user = User::where('slack_id', $request->user_id)->first();
+        if (!$req_user) {
             return response()->json('You are not a valid user on this workspace', 200);
         }
-        if ($user->role === 'intern') {
+        if ($req_user->role === 'intern') {
             return response()->json('This operation is only reserved for admins', 200);
         }
 
@@ -497,10 +497,10 @@ class UserProfileController extends Controller
 
         // return response()->json("Promoting users shortly", 200);
 
-        $data['text'] = $count . " user(s) promoted successfully by " . $user->firstname . " " . $user->lastname . ". " . (count($users) - $count) . " failed";
+        $data['text'] = $count . " user(s) promoted successfully by " . $req_user->firstname . " " . $req_user->lastname . ". " . (count($users) - $count) . " failed";
         $data['response_type'] = "in_channel";
         $data['channel'] = $request->channel_id;
-        $text = $count . " user(s) promoted successfully by " . $user->firstname . " " . $user->lastname . ". " . (count($users) - $count) . " failed";
+        $text = $count . " user(s) promoted successfully by " . $req_user->firstname . " " . $req_user->lastname . ". " . (count($users) - $count) . " failed";
 
         return response()->json(json_encode($data), 200);
     }

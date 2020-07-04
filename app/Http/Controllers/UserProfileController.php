@@ -504,7 +504,7 @@ class UserProfileController extends Controller
         // return response()->json("Promoting users shortly", 200);
 
         $data['text'] = count($users) . " promoted successfully by " . $req_user->firstname . " " . $req_user->lastname . ". " . (count($users) - $count) . " failed";
-        // $data['response_type'] = "in_channel";
+        $data['response_type'] = "in_channel";
         $data['channel'] = $request->channel_id;
         $text = $prom_users . " promoted successfully by " . $req_user->firstname . " " . $req_user->lastname . ". " . (count($users) - $count) . " failed";
 

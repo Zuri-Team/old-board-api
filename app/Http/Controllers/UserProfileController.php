@@ -503,7 +503,7 @@ class UserProfileController extends Controller
 
         // return response()->json("Promoting users shortly", 200);
 
-        $data['text'] = $count . " promoted successfully by " . $req_user->firstname . " " . $req_user->lastname . ". " . (count($users) - $count) . " failed";
+        $data['text'] = $count . " user(s) promoted successfully by " . $req_user->firstname . " " . $req_user->lastname . ". " . (count($users) - $count) . " failed";
         $data['response_type'] = "in_channel";
         $data['channel'] = $request->channel_id;
         // $text = $prom_users . " promoted successfully by " . $req_user->firstname . " " . $req_user->lastname . ". " . (count($users) - $count) . " failed";
@@ -516,12 +516,15 @@ class UserProfileController extends Controller
         if (!$request->text) {
             return response()->json('You failed to specify a slack handle', 200);
         }
-        $user = User::where('slack_id', $request->user_id)->first();
-        if (!$user) {
+        $req_user = User::where('slack_id', $request->user_id)->first();
+        if (!$req_user) {
             return response()->json('You are not a valid user on this workspace', 200);
         }
-        if ($user->role === 'intern') {
+        if ($req_user->role === 'intern') {
             return response()->json('This operation is only reserved for admins', 200);
+        }
+        if ($request->channel_id !== 'C016BUB37RU') {
+            return response()->json('You can only run this command from #promotion-log channel', 200);
         }
 
         $users = explode('<@', preg_replace('/\s+/', '', $request->text));
@@ -549,7 +552,12 @@ class UserProfileController extends Controller
             }
         }
 
-        return response()->json($count . " user(s) demoted successfully. " . (count($users) - $count) . " failed", 200);
+        $data['text'] = $count . " user(s) demoted successfully by " . $req_user->firstname . " " . $req_user->lastname . ". " . (count($users) - $count) . " failed";
+        $data['response_type'] = "in_channel";
+        $data['channel'] = $request->channel_id;
+        // $text = $prom_users . " promoted successfully by " . $req_user->firstname . " " . $req_user->lastname . ". " . (count($users) - $count) . " failed";
+
+        return response()->json($data, 200);
 
     }
 

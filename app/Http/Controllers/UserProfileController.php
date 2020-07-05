@@ -650,7 +650,7 @@ class UserProfileController extends Controller
         if (filter_var($mail, FILTER_VALIDATE_EMAIL)) {
             $user = User::where('email', $mail)->first();
             if ($user) {
-                return response()->json("Email: Stage " . $user->stage, 200);
+                return response()->json("Stage " . $user->stage, 200);
             } else {
                 return response()->json("No user with that email address found", 200);
             }

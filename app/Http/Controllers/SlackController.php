@@ -15,7 +15,7 @@ use Craftyx\SlackApi\Facades\SlackChannel;
 class SlackController extends Controller
 {
 
-    public function test(){
+    public function test($stage_name){
         // $result = SlackUser::lookupByEmail('seyi@hng.tech');
 
         // $result = Slack::removeFromGroup('U013RAALL3W', 'stage0');
@@ -53,11 +53,12 @@ class SlackController extends Controller
         $res = array();
                     
         foreach($groups->groups as $group){
-            array_push($res, $group->name);
-            // if($group->name == $stage_name){
-            //     return $group->id;
-            //     break;
-            // }
+            array_push($res, $group);
+            if($group->name == $stage_name){
+                // return $group->id;
+            array_push($res, $group);
+            // break;
+            }
         }
 
         dd($res);

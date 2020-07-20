@@ -643,7 +643,21 @@ class UserProfileController extends Controller
             return response()->json('This operation is only reserved for admins', 200);
         }
 
-        $users = explode('<@', preg_replace('/\s+/', '', $request->text));
+        Log::info($request);
+
+        $text = preg_replace('/\s+/', '', $request->text);
+        $mail = str_replace('>', '', explode('|', $text)[1]);
+        if (filter_var($mail, FILTER_VALIDATE_EMAIL)) {
+            $user = User::where('email', $mail)->first();
+            if ($user) {
+                return response()->json("Stage " . $user->stage, 200);
+            } else {
+                return response()->json("No user with that email address found", 200);
+            }
+
+        }
+
+        $users = explode('<@', $text);
         array_splice($users, 0, 1);
         if (count($users) > 1) {
             return response()->json('This operation can only be run on one user at a time', 200);
@@ -653,7 +667,6 @@ class UserProfileController extends Controller
 
         foreach ($users as $user) {
             $slack_id = explode('|', $user)[0];
-
             $user = User::where('slack_id', $slack_id)->first();
             if ($user) {
                 $user_stage = $user->stage;

@@ -1064,7 +1064,7 @@ class TaskSubmissionController extends Controller
      public function isolate(){
         // $users = User::where('role', 'intern')->where('stage', '!=', '7')->where('stage', '!=', '111')->get();
         
-        $users = User::where('role', 'intern')->where('stage', '==', '111')->get();
+        $users = User::where('role', 'intern')->where('stage', '111')->get();
  
         foreach($users as $user){
                 $user = User::find($user->id);

@@ -60,7 +60,7 @@ class SlackController extends Controller
                 foreach($group->members as $member){
                     $user = User::where('slack_id', $member)->where('role', 'intern')->first();
                     if($user){
-                        $user->stage = 6;
+                        $user->stage = 5;
                         $user->save();
                     }
                 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Slack;
+use App\User;
 use Validator;
 use Illuminate\Http\Request;
 use Craftyx\SlackApi\Facades\SlackApi;
@@ -56,12 +57,19 @@ class SlackController extends Controller
             array_push($res, $group);
             if($group->name == $stage_name){
                 // return $group->id;
-            array_push($res, $group);
+                foreach($group->members as $member){
+                    $user = User::where('slack_id', $member)->where('role', 'intern')->first();
+                    if($user){
+                        $user->stage = 6;
+                        $user->save();
+                    }
+                }
+            // array_push($res, $group);
             // break;
             }
         }
 
-        dd($res);
+        // dd($res);
 
         // $us = SlackApi::get('users.list', [
         //     'cursor' => 'dXNlcjpVMDE0NTE1REJKQg==',

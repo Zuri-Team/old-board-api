@@ -1090,17 +1090,17 @@ public function stage8_promotion($stage_name){
 
     foreach($groups->groups as $group){
     if($group->name == $stage_name){
-            foreach($group->members as $member){
-                $user = User::where('slack_id', $member)->where('role', 'intern')->where('stage', 7)->first();
-                if($user){
-                    $slack_id =  $user->slack_id;
-                    Slack::removeFromChannel($slack_id, 7);
-                    Slack::addToChannel($slack_id, 8);
-                    $user->stage = 8;
-                    $user->save();
-                }
+        foreach($group->members as $member){
+            $user = User::where('slack_id', $member)->where('role', 'intern')->where('stage', 7)->first();
+            if($user){
+                $slack_id =  $user->slack_id;
+                Slack::removeFromChannel($slack_id, 7);
+                Slack::addToChannel($slack_id, 8);
+                $user->stage = 8;
+                $user->save();
             }
         }
+    }
     // break;
 }
 

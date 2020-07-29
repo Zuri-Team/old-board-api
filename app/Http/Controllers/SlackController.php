@@ -57,13 +57,14 @@ class SlackController extends Controller
             array_push($res, $group);
             if($group->name == $stage_name){
                 // return $group->id;
-                foreach($group->members as $member){
-                    $user = User::where('slack_id', $member)->where('role', 'intern')->first();
-                    if($user){
-                        $user->stage = 5;
-                        $user->save();
-                    }
-                }
+                dd($group);
+                // foreach($group->members as $member){
+                //     $user = User::where('slack_id', $member)->where('role', 'intern')->first();
+                //     if($user){
+                //         $user->stage = 5;
+                //         $user->save();
+                //     }
+                // }
             // array_push($res, $group);
             // break;
             }

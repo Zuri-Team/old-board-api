@@ -1092,7 +1092,7 @@ public function stage8_promotion($stage_name){
     // if($group->name == $stage_name){
     if($group->name == 'isolation-center'){
         foreach($group->members as $member){
-            $user = User::where('slack_id', $member)->where('role', 'intern')->where('stage', 7)->first();
+            $user = User::where('slack_id', $member)->where('role', 'intern')->where('stage', 8)->first();
             if($user){
                 $slack_id =  $user->slack_id;
                 // Slack::removeFromChannel($slack_id, 7);

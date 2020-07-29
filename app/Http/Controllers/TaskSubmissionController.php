@@ -1087,24 +1087,29 @@ class TaskSubmissionController extends Controller
 public function stage8_promotion($stage_name){
     // $users = User::where('role', 'intern')->where('stage', '8')->get();
     $groups = SlackGroup::lists(false);
+    $res = array();
 
     foreach($groups->groups as $group){
+        array_push($res, $group->name);
+
     // if($group->name == $stage_name){
-    if($group->name == 'announcements'){
-        foreach($group->members as $member){
-            $user = User::where('slack_id', $member)->where('role', 'intern')->where('stage', 7)->first();
-            if($user){
-                $slack_id =  $user->slack_id;
-                // Slack::removeFromChannel($slack_id, 7);
-                // Slack::addToChannel($slack_id, 8);
-                Slack::addToGroup($slack_id, 'isolation-center');
-                $user->stage = 707;
-                $user->save();
-            }
-        }
-    }
+    // if($group->name == 'announcements'){
+    //     foreach($group->members as $member){
+    //         $user = User::where('slack_id', $member)->where('role', 'intern')->where('stage', 7)->first();
+    //         if($user){
+    //             $slack_id =  $user->slack_id;
+    //             // Slack::removeFromChannel($slack_id, 7);
+    //             // Slack::addToChannel($slack_id, 8);
+    //             Slack::addToGroup($slack_id, 'isolation-center');
+    //             $user->stage = 707;
+    //             $user->save();
+    //         }
+    //     }
+    // }
     // break;
 }
+
+dd($res);
 
 }
 

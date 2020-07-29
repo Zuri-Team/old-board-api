@@ -1086,10 +1086,10 @@ class TaskSubmissionController extends Controller
 
 public function stage8_promotion($stage_name){
     // $users = User::where('role', 'intern')->where('stage', '8')->get();
-    $groups = SlackGroup::lists(false);
+    $groups = SlackChannel::lists(false);
     $res = array();
 
-    foreach($groups->groups as $group){
+    foreach($groups->channels as $group){
         array_push($res, $group->name);
 
     // if($group->name == $stage_name){

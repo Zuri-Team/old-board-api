@@ -1092,14 +1092,14 @@ public function stage8_promotion($stage_name){
     // if($group->name == $stage_name){
     if($group->name == 'isolation-center'){
         foreach($group->members as $member){
-            $user = User::where('slack_id', $member)->where('role', 'intern')->where('stage', 8)->first();
+            $user = User::where('slack_id', $member)->where('role', 'intern')->where('stage', 7)->first();
             if($user){
                 $slack_id =  $user->slack_id;
                 // Slack::removeFromChannel($slack_id, 7);
                 // Slack::addToChannel($slack_id, 8);
-                Slack::removeFromGroup($slack_id, 'isolation-center');
-                // $user->stage = 8;
-                // $user->save();
+                Slack::addToGroup($slack_id, 'isolation-center');
+                $user->stage = 707;
+                $user->save();
             }
         }
     }

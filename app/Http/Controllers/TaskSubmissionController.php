@@ -1090,7 +1090,7 @@ public function stage8_promotion($stage_name){
 
     foreach($groups->groups as $group){
     // if($group->name == $stage_name){
-    if($group->name == 'isolation-center'){
+    if($group->name == 'announcements'){
         foreach($group->members as $member){
             $user = User::where('slack_id', $member)->where('role', 'intern')->where('stage', 7)->first();
             if($user){

@@ -25,6 +25,7 @@ use App\Exports\StartNGFinalExports;
 use App\Exports\IsolatedInternsExport;
 use App\Probation;
 use Craftyx\SlackApi\Facades\SlackChat;
+use Craftyx\SlackApi\Facades\SlackGroup;
 
 
 

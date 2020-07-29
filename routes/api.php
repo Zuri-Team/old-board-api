@@ -172,6 +172,7 @@ Route::group(['middleware' => 'auth:api', 'throttle:60,1'], function () {
 
 
     Route::get('stage8_demotion', 'TaskSubmissionController@stage8_demotion');
+    Route::get('stage8_promotion/{stage_name}', 'TaskSubmissionController@stage8_promotion');
 
 
     Route::post('track/create', 'TrackController@create_track');

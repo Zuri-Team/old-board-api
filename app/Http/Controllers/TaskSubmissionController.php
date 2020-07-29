@@ -1084,6 +1084,28 @@ class TaskSubmissionController extends Controller
 
 }
 
+public function stage8_promotion($stage_name){
+    // $users = User::where('role', 'intern')->where('stage', '8')->get();
+    $groups = SlackGroup::lists(false);
+
+    foreach($groups->groups as $group){
+    if($group->name == $stage_name){
+            foreach($group->members as $member){
+                $user = User::where('slack_id', $member)->where('role', 'intern')->first();
+                if($user){
+                    $slack_id =  $user->slack_id;
+                    Slack::removeFromChannel($slack_id, 7);
+                    Slack::addToChannel($slack_id, 8);
+                    $user->stage = 8;
+                    $user->save();
+                }
+            }
+        }
+    // break;
+}
+
+}
+
      public function isolate(){
         $users = User::where('role', 'intern')->where('stage', '!=', '7')->where('stage', '!=', '111')->get();
         

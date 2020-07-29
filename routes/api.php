@@ -170,8 +170,9 @@ Route::group(['middleware' => 'auth:api', 'throttle:60,1'], function () {
     Route::get('export_final', 'TaskSubmissionController@exportFinals');
     Route::get('export_isolated', 'TaskSubmissionController@exportIsolated');
 
-    //check_percent
-    //remove_stage_3
+
+    Route::get('stage8_demotion', 'TaskSubmissionController@stage8_demotion');
+
 
     Route::post('track/create', 'TrackController@create_track');
     Route::put('track/edit', 'TrackController@edit_track');

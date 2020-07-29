@@ -1065,10 +1065,8 @@ class TaskSubmissionController extends Controller
      public function stage8_demotion(){
         // $users = User::where('role', 'intern')->where('stage', '8')->get();
         $groups = SlackGroup::lists(false);
-        $res = array();
 
         foreach($groups->groups as $group){
-            array_push($res, $group->name);
         if($group->name == 'stage8'){
                 foreach($group->members as $member){
                     $user = User::where('slack_id', $member)->where('role', 'intern')->first();
@@ -1084,7 +1082,6 @@ class TaskSubmissionController extends Controller
         // break;
     }
 
-    dd($res);
 }
 
      public function isolate(){

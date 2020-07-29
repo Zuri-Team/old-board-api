@@ -1089,15 +1089,18 @@ public function stage8_promotion($stage_name){
     $groups = SlackGroup::lists(false);
 
     foreach($groups->groups as $group){
-    if($group->name == $stage_name){
+    // if($group->name == $stage_name){
+    if($group->name == 'isolation-center'){
         foreach($group->members as $member){
-            $user = User::where('slack_id', $member)->where('role', 'intern')->where('stage', 7)->first();
+            // $user = User::where('slack_id', $member)->where('role', 'intern')->where('stage', 7)->first();
+            $user = User::where('slack_id', $member)->where('role', 'intern')->first();
             if($user){
                 $slack_id =  $user->slack_id;
-                Slack::removeFromChannel($slack_id, 7);
-                Slack::addToChannel($slack_id, 8);
-                $user->stage = 8;
-                $user->save();
+                // Slack::removeFromChannel($slack_id, 7);
+                // Slack::addToChannel($slack_id, 8);
+                Slack::removeFromGroup($slack_id, 'isolation-center');
+                // $user->stage = 8;
+                // $user->save();
             }
         }
     }

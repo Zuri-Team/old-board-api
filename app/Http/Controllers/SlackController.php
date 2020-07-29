@@ -54,7 +54,7 @@ class SlackController extends Controller
         $res = array();
                     
         foreach($groups->groups as $group){
-            array_push($res, $group);
+            array_push($res, $group->name);
             // if($group->name == $stage_name){
             //     // return $group->id;
             //     dd($group);

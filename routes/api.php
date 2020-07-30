@@ -50,9 +50,9 @@ Route::group(['middleware' => 'auth:api', 'throttle:60,1'], function () {
 
         Route::get('/{user}', 'UserProfileController@index');
         Route::get('/{user}/track', 'UserProfileController@user_tracks');
-        Route::put('/promote/{user}', 'UserProfileController@promote');
-        Route::put('/demote/{user}', 'UserProfileController@demote');
-        Route::put('/update-stage/{user}', 'UserProfileController@update_stage');
+        // Route::put('/promote/{user}', 'UserProfileController@promote');
+        // Route::put('/demote/{user}', 'UserProfileController@demote');
+        // Route::put('/update-stage/{user}', 'UserProfileController@update_stage');
         Route::put('/deactivate/{user}', 'UserProfileController@deactivate');
         Route::put('/activate/{user}', 'UserProfileController@activate');
         Route::put('/make-admin/{user}', 'UserProfileController@make_admin');

@@ -478,6 +478,13 @@ class UserProfileController extends Controller
             return response()->json('Only 5 users can be promoted at a time', 200);
         }
 
+         $allowed = array('U013XMDBR1P', 'U013XRP4CRX');
+
+         if (!in_array ($req_user->slack_id, $allowed)) {
+            return response()->json('You are not part of the chosen. why try ?', 200);
+        }
+
+
         $count = 0;
         $prom_users = '';
         foreach ($users as $user) {
@@ -526,6 +533,13 @@ class UserProfileController extends Controller
         if ($request->channel_id !== 'C016BUB37RU') {
             return response()->json('You can only run this command from #promotion-log channel', 200);
         }
+        
+        $allowed = array('U013XMDBR1P', 'U013XRP4CRX');
+
+         if (!in_array ($req_user->slack_id, $allowed)) {
+            return response()->json('You are not part of the chosen. why try ?', 200);
+        }
+
 
         $users = explode('<@', preg_replace('/\s+/', '', $request->text));
         array_splice($users, 0, 1);

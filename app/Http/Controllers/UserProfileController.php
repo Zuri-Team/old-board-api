@@ -500,8 +500,13 @@ class UserProfileController extends Controller
                     continue;
                 } else {
                     $count += 1;
+                    if(intval($stage) == 10){
+                    Slack::removeFromChannel($slack_id, $currentStage);
+                    Slack::addToGroup($slack_id, 'finalists');
+                    } else {
                     Slack::removeFromChannel($slack_id, $currentStage);
                     Slack::addToChannel($slack_id, $stage);
+                    }
                     $user->stage = $stage;
                     $user->save();
                 }
@@ -693,3 +698,4 @@ class UserProfileController extends Controller
 
     }
 }
+    

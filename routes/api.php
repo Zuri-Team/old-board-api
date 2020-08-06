@@ -53,11 +53,11 @@ Route::group(['middleware' => 'auth:api', 'throttle:60,1'], function () {
         // Route::put('/promote/{user}', 'UserProfileController@promote');
         // Route::put('/demote/{user}', 'UserProfileController@demote');
         // Route::put('/update-stage/{user}', 'UserProfileController@update_stage');
-        Route::put('/deactivate/{user}', 'UserProfileController@deactivate');
-        Route::put('/activate/{user}', 'UserProfileController@activate');
-        Route::put('/make-admin/{user}', 'UserProfileController@make_admin');
-        Route::put('/remove-admin/{user}', 'UserProfileController@remove_admin');
-        Route::delete('/delete/{user}', 'UserProfileController@destroy');
+        // Route::put('/deactivate/{user}', 'UserProfileController@deactivate');
+        // Route::put('/activate/{user}', 'UserProfileController@activate');
+        // Route::put('/make-admin/{user}', 'UserProfileController@make_admin');
+        // Route::put('/remove-admin/{user}', 'UserProfileController@remove_admin');
+        // Route::delete('/delete/{user}', 'UserProfileController@destroy');
 
         Route::get('/reset_pass/{user}', 'UserProfileController@resetUserPass');
         Route::get('/details/{user}', 'UserProfileController@getUserDetails');

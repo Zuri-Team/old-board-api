@@ -478,12 +478,11 @@ class UserProfileController extends Controller
             return response()->json('Only 5 users can be promoted at a time', 200);
         }
 
-         $allowed = array('U013XMDBR1P', 'U013XRP4CRX', 'U013RAALL3W', 'U013L3YC8CA'); //xyluz, mark, jude, abesh
+        $allowed = array('U013XMDBR1P', 'U013XRP4CRX', 'U013RAALL3W', 'U013L3YC8CA'); //xyluz, mark, jude, abesh
 
-         if (!in_array ($req_user->slack_id, $allowed)) {
+        if (!in_array($req_user->slack_id, $allowed)) {
             return response()->json('You are not part of the chosen. why try ?', 200);
         }
-
 
         $count = 0;
         $prom_users = '';
@@ -498,9 +497,18 @@ class UserProfileController extends Controller
                 if (intval($stage) < 1 || intval($stage) > 10) {
                     continue;
                 } else {
+                    if (intval($stage) == 10) {
+                        if(intval($user->stage) !== 9){
+                            continue;
+                        } else {
+                            Slack::removeFromChannel($slack_id, $currentStage);
+                            Slack::addToGroup($slack_id, 'finalists');
+                        }
+                    } else {
+                        Slack::removeFromChannel($slack_id, $currentStage);
+                        Slack::addToChannel($slack_id, $stage);
+                    }
                     $count += 1;
-                    Slack::removeFromChannel($slack_id, $currentStage);
-                    Slack::addToChannel($slack_id, $stage);
                     $user->stage = $stage;
                     $user->save();
                 }
@@ -510,7 +518,7 @@ class UserProfileController extends Controller
 
         // return response()->json("Promoting users shortly", 200);
 
-        $data['text'] = $count . " user(s) promoted successfully by " . $req_user->firstname . " " . $req_user->lastname . ". " . (count($users) - $count) . " failed";
+        $data['text'] = intval($stage) == 10 ? $count . " user(s) elevated to greatness by " . $req_user->firstname . " " . $req_user->lastname . ". " . (count($users) - $count) . " failed" : $count . " user(s) promoted successfully by " . $req_user->firstname . " " . $req_user->lastname . ". " . (count($users) - $count) . " failed";
         $data['response_type'] = "in_channel";
         $data['channel'] = $request->channel_id;
         // $text = $prom_users . " promoted successfully by " . $req_user->firstname . " " . $req_user->lastname . ". " . (count($users) - $count) . " failed";
@@ -533,14 +541,12 @@ class UserProfileController extends Controller
         if ($request->channel_id !== 'C016BUB37RU') {
             return response()->json('You can only run this command from #promotion-log channel', 200);
         }
-        
+
         $allowed = array('U013XMDBR1P', 'U013XRP4CRX', 'U013RAALL3W', 'U013L3YC8CA'); //xyluz, mark, jude, abesh
 
-
-         if (!in_array ($req_user->slack_id, $allowed)) {
+        if (!in_array($req_user->slack_id, $allowed)) {
             return response()->json('You are not part of the chosen. why try ?', 200);
         }
-
 
         $users = explode('<@', preg_replace('/\s+/', '', $request->text));
         array_splice($users, 0, 1);

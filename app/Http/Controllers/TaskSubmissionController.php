@@ -1096,7 +1096,7 @@ public function check_users($stage_name){
     // if($group->name == $stage_name){
     if($group->name == $stage_name){
         foreach($group->members as $member){
-            $user = User::where('slack_id', $member)->where('role', 'intern')->first();
+            $user = User::where('slack_id', $member)->first();
             if($user){
                 $username =  $user->slack_id;
                 array_push($res, $user->username);

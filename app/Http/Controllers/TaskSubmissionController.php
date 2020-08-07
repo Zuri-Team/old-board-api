@@ -1095,7 +1095,7 @@ public function check_users($stage_name){
 
     // if($group->name == $stage_name){
     if($group->name == $stage_name){
-        dd($group->members);
+        dd($group);
         foreach($group->members as $member){
 
             $user = User::where('slack_id', $member)->first();

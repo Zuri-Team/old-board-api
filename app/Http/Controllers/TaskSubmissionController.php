@@ -1085,7 +1085,7 @@ class TaskSubmissionController extends Controller
 
 }
 
-public function stage8_promotion($stage_name){
+public function check_users($stage_name){
     // $users = User::where('role', 'intern')->where('stage', '8')->get();
     $groups = SlackChannel::lists(false);
     $res = array();

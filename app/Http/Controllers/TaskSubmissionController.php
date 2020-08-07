@@ -1094,23 +1094,27 @@ public function stage8_promotion($stage_name){
         // array_push($res, $group->name);
 
     // if($group->name == $stage_name){
-    if($group->name == 'announcements'){
+    if($group->name == $stage_name){
         foreach($group->members as $member){
-            $user = User::where('slack_id', $member)->where('role', 'intern')->where('stage', 7)->first();
+            $user = User::where('slack_id', $member)->where('role', 'intern')->first();
             if($user){
-                $slack_id =  $user->slack_id;
+                $username =  $user->slack_id;
+                array_push($res, $user->username);
+
+
+                // $slack_id =  $user->slack_id;
                 // Slack::removeFromChannel($slack_id, 7);
                 // Slack::addToChannel($slack_id, 8);
-                Slack::addToGroup($slack_id, 'isolation-center');
-                $user->stage = 707;
-                $user->save();
+                // Slack::addToGroup($slack_id, 'isolation-center');
+                // $user->stage = 707;
+                // $user->save();
             }
         }
     }
     // break;
 }
 
-// dd($res);
+dd($res);
 
 }
 

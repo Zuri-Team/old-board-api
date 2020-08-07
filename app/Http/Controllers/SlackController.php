@@ -17,36 +17,7 @@ class SlackController extends Controller
 {
 
     public function test($stage_name){
-        // $result = SlackUser::lookupByEmail('seyi@hng.tech');
-
-        // $result = Slack::removeFromGroup('U013RAALL3W', 'stage0');
-        // $result = Slack::addToChannel('U013RAALL3W', '2');
-        // $result = Slack::addToGroup('U013RAALL3W', 'team-incredibles');
-        // $result = Slack::addToGroup('U013RAALL3W', 'stage3');
-
-        // $groups = SlackChannel::lists(false);
-
-        // $result = array();
-                    
-        // // foreach($groups->channels as $group){
-        //     foreach($groups->channels[1]->members as $group){
-        //     array_push($result, $group->id);
-        //     // if($group->name == $stage_name){
-        //     //     return $group->id;
-        //     //     break;
-        //     // }
-        // }
-        // $result = SlackGroup::lists(); 
-
-        // $result = SlackGroup::invite('C0146LZ5DFD', 'U013RAALL3W');
-
-        // $us = SlackUser::lists(
-        //     [
-        //         'cursor' => 'dxN1cjpVMDE0NTE1REJKQg=='
-        //     ]
-        // ); //all()
-
-        // dd($us);
+      
 
         $groups = SlackGroup::lists(false);
 
@@ -72,24 +43,6 @@ class SlackController extends Controller
 
         dd($res);
 
-        // $us = SlackApi::get('users.list', [
-        //     'cursor' => 'dXNlcjpVMDE0NTE1REJKQg==',
-        //     'limit' => 2
-        // ]);
-
-        // $result = slack()->get('users.list', [
-        //     'cursor' => 'dxN1cjpVMDE0NTE1REJKQg=='
-        // ]);
-
-
-        // $result = array();
-        // $result[] = $us->response_metadata->next_cursor;
-
-        // foreach($us->members as $u){
-        //     $result[] = $u->id;
-        // }
-
-        // dd($result);
     }
     /**
      * Display a listing of the resource.

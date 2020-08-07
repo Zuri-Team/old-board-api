@@ -480,7 +480,6 @@ class UserProfileController extends Controller
 
          $allowed = array('U013XMDBR1P', 'U013XRP4CRX', 'U013RAALL3W', 'U013L3YC8CA'); //xyluz, mark, jude, abesh
 
-
          if (!in_array ($req_user->slack_id, $allowed)) {
             return response()->json('You are not part of the chosen. why try ?', 200);
         }

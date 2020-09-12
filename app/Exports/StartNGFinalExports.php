@@ -13,7 +13,7 @@ class StartNGFinalExports implements FromView
     public function view(): View
     {
         return view('exports.final', [
-            'users' => User::where('stage', 5)->where('role', 'intern')->get()
+            'users' => User::where('role', 'intern')->where('stage', 10)->get()
         ]);
     }
 }

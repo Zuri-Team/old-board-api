@@ -95,14 +95,34 @@ class User extends Authenticatable
     }
 
 
-    public function probation()
+    public function probations()
     {
-        return $this->hasOne(Probation::class);
+        // return $this->hasOne(Probation::class);
+        return $this->hasMany(Probation::class);
     }
     
     public function submissions()
     {
         return $this->hasMany('App\TaskSubmission');
+    }
+
+    public function probationReasons(){
+        $db = DB::table('probations')
+            ->where('user_id', $this->id)
+            ->get()
+            ->pluck('probation_reason')
+            ->toArray();
+
+        
+        return $db;
+    }
+
+    public function probationCount(){
+        $db = DB::table('probations')
+            ->where('user_id', $this->id)
+            ->count();
+        
+        return $db;
     }
 
     public function totalScore(){
@@ -142,7 +162,7 @@ class User extends Authenticatable
         $totalScore = $this->totalScore();
         $coursesTotal = $this->courseTotal();
         
-        $userPercent = round(($totalScore / $coursesTotal) * 100, 2);
+        $userPercent = $coursesTotal == 0 ? 0 : round(($totalScore / $coursesTotal) * 100, 2);
         return $userPercent;
     }
 

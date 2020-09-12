@@ -843,6 +843,15 @@ class TaskSubmissionController extends Controller
         return Excel::download(new StartNGFinalExports, 'startng_finals.xlsx');
     }
 
+    public function exp(){
+        $d = User::where('id', 4933)->first();
+        // $d = Probation::where('user_id', 838)->get();
+
+
+        dd($d->probationCount());
+        // dd($d->probationReasons());
+    }
+
     public function check_percent($percent){
 
         //get all courses
